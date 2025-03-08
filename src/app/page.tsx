@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -15,9 +16,10 @@ export default function Home() {
         />
         <ol>
           <li>
-            Get started by editing <code>src/app/page.tsx</code>.
+            Get started by editing <code>src/app/page.tsx</code> Cool!!!.
           </li>
           <li>Save and see your changes instantly.</li>
+          <li>Follow this link to check out the first event page of the app: <Link href="/events/1">Event page</Link></li>
         </ol>
 
         <div className={styles.ctas}>

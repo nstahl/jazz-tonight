@@ -25,6 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <header className="p-4 bg-gray-100 text-black">
+          Here's some info from the layout file that propagates to all pages.
+        </header>
         {children}
       </body>
     </html>
