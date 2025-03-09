@@ -30,10 +30,10 @@ model User {
 
 model Venue {
   id            String       @default(cuid()) @id
-  name          String
+  name          String       @unique
   url           String
   events        Event[]
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
   @@map(name: "venues")
 }
 
@@ -42,8 +42,10 @@ model Event {
   name          String
   url           String
   dateTime      DateTime
-  venue         Venue   @relation(fields: [venueId], references: [id])
+  venue         Venue        @relation(fields: [venueId], references: [id])
   venueId       String
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+  
+  @@unique([name, dateTime, venueId])
   @@map(name: "events")
 }
