@@ -33,7 +33,7 @@ export default async function Page() {
 
   return (
     <div className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4 text-center">Events</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">Jazz Tonight NYC</h1>
       {Object.entries(groupedEvents).map(([date, dateEvents]) => (
         <div key={date} className="mb-6">
           <h2 className="text-xl font-semibold mb-2 text-center">{date}</h2>
@@ -43,7 +43,15 @@ export default async function Page() {
               .map((event) => (
                 <a 
                   key={event.id}
-                  className="block p-4 bg-white bg-opacity-90 rounded-lg shadow hover:shadow-md hover:bg-gray-300 hover:bg-opacity-90 transition-all w-full max-w-[500px]" 
+                  className={`
+                    block p-4 
+                    bg-white/60
+                    backdrop-blur-sm
+                    rounded-lg shadow 
+                    hover:shadow-md hover:bg-gray-300/60
+                    transition-all 
+                    w-full max-w-[500px]
+                  `}
                   href={event.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
