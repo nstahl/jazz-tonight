@@ -2,4 +2,11 @@
 
 body {
   background-color: #dbdbdb;
+  background-image: url('/jazz-background.png'); /* Replace with your actual image filename */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  backdrop-filter: blur(5px); /* Add blur effect */
+  -webkit-backdrop-filter: blur(5px); /* For Safari support */
 }
