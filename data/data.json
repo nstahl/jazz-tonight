@@ -1,4 +1,643 @@
-[
+[ 
+{
+  "date": "03-14",
+  "time": null,
+  "event_name": "WILLERM DELISFORT TRIO",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/13708/"
+},
+{
+  "date": "03-14",
+  "time": null,
+  "event_name": "OPEN FOR COCKTAILS",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/open-tonight-for-cocktails-jazz-recorded-2-2/"
+},
+{
+  "date": "03-15",
+  "time": null,
+  "event_name": "OPEN FOR COCKTAILS",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/open-tonight-for-cocktails-jazz-recorded-2/"
+},
+{
+  "date": "03-15",
+  "time": "18:00",
+  "event_name": "YOTAM SILBERSTEIN QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": true,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29386-yotam-silberstein-quartet/"
+},
+{
+  "date": "03-15",
+  "time": "18:00",
+  "event_name": "GILLIAN MARGOT & GEOFFREY KEEZER",
+  "venue": "Mezzrow",
+  "is_sold_out": true,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29384-gillian-margot-geoffrey-keezer/"
+},
+{
+  "date": "03-15",
+  "time": "19:30",
+  "event_name": "YOTAM SILBERSTEIN QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": true,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29386-yotam-silberstein-quartet/"
+},
+{
+  "date": "03-15",
+  "time": "19:30",
+  "event_name": "GILLIAN MARGOT & GEOFFREY KEEZER",
+  "venue": "Mezzrow",
+  "is_sold_out": true,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29384-gillian-margot-geoffrey-keezer/"
+},
+{
+  "date": "03-15",
+  "time": "20:00",
+  "event_name": "BILL STEWART TRIO",
+  "venue": "Village Vanguard",
+  "is_sold_out": true,
+  "events_url": "https://villagevanguard.squadup.com/2022.html",
+  "event_url": null
+},
+{
+  "date": "03-15",
+  "time": "21:00",
+  "event_name": "DAVE STRYKER TRIO",
+  "venue": "Smalls",
+  "is_sold_out": true,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29388-dave-stryker-trio/"
+},
+{
+  "date": "03-15",
+  "time": "21:00",
+  "event_name": "CAMERON CAMPBELL QUARTET",
+  "venue": "Mezzrow",
+  "is_sold_out": true,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29507-cameron-campbell-quartet/"
+},
+{
+  "date": "03-15",
+  "time": "22:00",
+  "event_name": "BILL STEWART TRIO",
+  "venue": "Village Vanguard",
+  "is_sold_out": true,
+  "events_url": "https://villagevanguard.squadup.com/2022.html",
+  "event_url": null
+},
+{
+  "date": "03-15",
+  "time": "22:30",
+  "event_name": "DAVE STRYKER TRIO",
+  "venue": "Smalls",
+  "is_sold_out": true,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29388-dave-stryker-trio/"
+},
+{
+  "date": "03-15",
+  "time": "22:30",
+  "event_name": "CAMERON CAMPBELL QUARTET",
+  "venue": "Mezzrow",
+  "is_sold_out": true,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29507-cameron-campbell-quartet/"
+},
+{
+  "date": "03-15",
+  "time": "24:00",
+  "event_name": "JUSTIN ROBINSON QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29579-justin-robinson-quartet/"
+},
+{
+  "date": "03-15",
+  "time": "24:00",
+  "event_name": "ROUND MIDNIGHT SOLO PIANO WITH YAGO VAZQUEZ",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29490-round-midnight-solo-piano-with-yago-vazquez/"
+},
+{
+  "date": "03-16",
+  "time": null,
+  "event_name": "VALTINHO ANAST\u00c1CIO BRAZILIAN JAZZ & BOSSA",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/so-brasil-valtinho-anastacio-2/"
+},
+{
+  "date": "03-16",
+  "time": "18:00",
+  "event_name": "ANDY FARBER QUINTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29389-andy-farber-quintet/"
+},
+{
+  "date": "03-16",
+  "time": "18:00",
+  "event_name": "GABRIELLE STRAVELLI TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29390-gabrielle-stravelli-trio/"
+},
+{
+  "date": "03-16",
+  "time": "19:30",
+  "event_name": "ANDY FARBER QUINTET",
+  "venue": "Smalls",
+  "is_sold_out": true,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29389-andy-farber-quintet/"
+},
+{
+  "date": "03-16",
+  "time": "19:30",
+  "event_name": "GABRIELLE STRAVELLI TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29390-gabrielle-stravelli-trio/"
+},
+{
+  "date": "03-16",
+  "time": "20:00",
+  "event_name": "BILL STEWART TRIO",
+  "venue": "Village Vanguard",
+  "is_sold_out": true,
+  "events_url": "https://villagevanguard.squadup.com/2022.html",
+  "event_url": null
+},
+{
+  "date": "03-16",
+  "time": "21:00",
+  "event_name": "TAD SHULL QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29391-tad-shull-quartet/"
+},
+{
+  "date": "03-16",
+  "time": "21:00",
+  "event_name": "JAMILE TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29480-jamile-trio/"
+},
+{
+  "date": "03-16",
+  "time": "22:00",
+  "event_name": "BILL STEWART TRIO",
+  "venue": "Village Vanguard",
+  "is_sold_out": false,
+  "events_url": "https://villagevanguard.squadup.com/2022.html",
+  "event_url": null
+},
+{
+  "date": "03-16",
+  "time": "22:30",
+  "event_name": "TAD SHULL QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29391-tad-shull-quartet/"
+},
+{
+  "date": "03-16",
+  "time": "22:30",
+  "event_name": "JAMILE TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29480-jamile-trio/"
+},
+{
+  "date": "03-16",
+  "time": "24:00",
+  "event_name": "TIM MCCALL QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29518-tim-mccall-quartet/"
+},
+{
+  "date": "03-17",
+  "time": null,
+  "event_name": "THE DAVIS WHITFIELD TRIO",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/the-davis-whitfield-trio/"
+},
+{
+  "date": "03-17",
+  "time": "18:00",
+  "event_name": "ALAN BROADBENT TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29492-alan-broadbent-trio/"
+},
+{
+  "date": "03-17",
+  "time": "19:30",
+  "event_name": "ALAN BROADBENT TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29492-alan-broadbent-trio/"
+},
+{
+  "date": "03-17",
+  "time": "19:30",
+  "event_name": "ARI HOENIG TRIO",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29392-ari-hoenig-trio/"
+},
+{
+  "date": "03-17",
+  "time": "21:00",
+  "event_name": "ARI HOENIG TRIO",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29392-ari-hoenig-trio/"
+},
+{
+  "date": "03-17",
+  "time": "21:00",
+  "event_name": "PASQUALE GRASSO TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29493-pasquale-grasso-trio/"
+},
+{
+  "date": "03-17",
+  "time": "22:30",
+  "event_name": "PASQUALE GRASSO TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29493-pasquale-grasso-trio/"
+},
+{
+  "date": "03-17",
+  "time": "22:30",
+  "event_name": "PHILIP HARPER QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29469-philip-harper-quartet/"
+},
+{
+  "date": "03-17",
+  "time": "24:00",
+  "event_name": "PHILIP HARPER QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29469-philip-harper-quartet/"
+},
+{
+  "date": "03-18",
+  "time": null,
+  "event_name": "DION BERARDO TRIO",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/dion-berardo-trio/"
+},
+{
+  "date": "03-18",
+  "time": "18:00",
+  "event_name": "TAL RONEN TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29393-tal-ronen-trio/"
+},
+{
+  "date": "03-18",
+  "time": "19:30",
+  "event_name": "TAL RONEN TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29393-tal-ronen-trio/"
+},
+{
+  "date": "03-18",
+  "time": "19:30",
+  "event_name": "MARK SHERMAN QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29394-mark-sherman-quartet/"
+},
+{
+  "date": "03-18",
+  "time": "21:00",
+  "event_name": "MARK SHERMAN QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29394-mark-sherman-quartet/"
+},
+{
+  "date": "03-18",
+  "time": "21:00",
+  "event_name": "NEAL MINER TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29336-neal-miner-trio/"
+},
+{
+  "date": "03-18",
+  "time": "22:30",
+  "event_name": "NEAL MINER TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29336-neal-miner-trio/"
+},
+{
+  "date": "03-18",
+  "time": "22:30",
+  "event_name": "BENNY BENACK SEXTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29465-benny-benack-sextet/"
+},
+{
+  "date": "03-18",
+  "time": "24:00",
+  "event_name": "BENNY BENACK SEXTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29465-benny-benack-sextet/"
+},
+{
+  "date": "03-19",
+  "time": null,
+  "event_name": "JOHNNY O\u2019NEAL",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/johnny-oneal/"
+},
+{
+  "date": "03-19",
+  "time": "18:00",
+  "event_name": "MARK MCCARRON TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29422-mark-mccarron-trio/"
+},
+{
+  "date": "03-19",
+  "time": "19:30",
+  "event_name": "MARK MCCARRON TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29422-mark-mccarron-trio/"
+},
+{
+  "date": "03-19",
+  "time": "19:30",
+  "event_name": "OWEN HOWARD QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29395-owen-howard-quartet/"
+},
+{
+  "date": "03-19",
+  "time": "20:00",
+  "event_name": "AARON PARKS QUARTET",
+  "venue": "Village Vanguard",
+  "is_sold_out": true,
+  "events_url": "https://villagevanguard.squadup.com/2022.html",
+  "event_url": null
+},
+{
+  "date": "03-19",
+  "time": "21:00",
+  "event_name": "OWEN HOWARD QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29395-owen-howard-quartet/"
+},
+{
+  "date": "03-19",
+  "time": "21:00",
+  "event_name": "FELIX LEMERLE TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29494-felix-lemerle-trio/"
+},
+{
+  "date": "03-19",
+  "time": "22:00",
+  "event_name": "AARON PARKS QUARTET",
+  "venue": "Village Vanguard",
+  "is_sold_out": false,
+  "events_url": "https://villagevanguard.squadup.com/2022.html",
+  "event_url": null
+},
+{
+  "date": "03-19",
+  "time": "22:30",
+  "event_name": "FELIX LEMERLE TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29494-felix-lemerle-trio/"
+},
+{
+  "date": "03-19",
+  "time": "22:30",
+  "event_name": "PAUL WELLS QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29466-paul-wells-quartet/"
+},
+{
+  "date": "03-19",
+  "time": "24:00",
+  "event_name": "PAUL WELLS QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29466-paul-wells-quartet/"
+},
+{
+  "date": "03-20",
+  "time": "18:00",
+  "event_name": "RAPHAEL D'LUGOFF TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29468-raphael-dlugoff-trio/"
+},
+{
+  "date": "03-20",
+  "time": "19:30",
+  "event_name": "RAPHAEL D'LUGOFF TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29468-raphael-dlugoff-trio/"
+},
+{
+  "date": "03-20",
+  "time": "19:30",
+  "event_name": "TIM HEGARTY BAND",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29397-tim-hegarty-band/"
+},
+{
+  "date": "03-20",
+  "time": "21:00",
+  "event_name": "TIM HEGARTY BAND",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29397-tim-hegarty-band/"
+},
+{
+  "date": "03-20",
+  "time": "21:00",
+  "event_name": "JD WALTER TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29396-jd-walter-trio/"
+},
+{
+  "date": "03-20",
+  "time": "22:30",
+  "event_name": "JD WALTER TRIO",
+  "venue": "Mezzrow",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29396-jd-walter-trio/"
+},
+{
+  "date": "03-20",
+  "time": "22:30",
+  "event_name": "JACOB CHUNG QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29467-jacob-chung-quartet/"
+},
+{
+  "date": "03-20",
+  "time": "24:00",
+  "event_name": "JACOB CHUNG QUARTET",
+  "venue": "Smalls",
+  "is_sold_out": false,
+  "events_url": "https://www.smallslive.com",
+  "event_url": "https://www.smallslive.com/events/29467-jacob-chung-quartet/"
+},
+{
+  "date": "03-21",
+  "time": null,
+  "event_name": "MINGUS DYNASTY",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/mingus-dynasty/"
+},
+{
+  "date": "03-24",
+  "time": null,
+  "event_name": "LESLIE PINTCHIK",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/piano-jazz-series-leslie-pintchik/"
+},
+{
+  "date": "03-25",
+  "time": null,
+  "event_name": "SAM DILLON QUARTET",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/sam-dillon-quartet/"
+},
+{
+  "date": "03-26",
+  "time": null,
+  "event_name": "ARCOIRIS SANDOVAL TRIO",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/arcoiris-sandoval-sonic-asylum-trio-no/"
+},
+{
+  "date": "03-28",
+  "time": null,
+  "event_name": "SAMUEL TORRES PRESENTS ALEGRIA",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/samuel-torres-presents-alegria/"
+},
+{
+  "date": "03-31",
+  "time": null,
+  "event_name": "JONATHAN KREISBERG QUARTET",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/guitar-masters-series-jonathan-kreisberg-2-2-2-2-2/"
+},
+{
+  "date": "04-02",
+  "time": null,
+  "event_name": "TERRY WALDO\u2019S GOTHAM CITY RAGTIME BAND",
+  "venue": "Zinc",
+  "is_sold_out": false,
+  "events_url": "https://www.zincbar.com",
+  "event_url": "https://www.zincbar.com/event/terry-waldos-gotham-city-ragtime-band-2-2-3-2/"
+},
     {
       "date": "11-23",
       "time": null,

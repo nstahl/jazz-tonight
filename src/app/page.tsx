@@ -13,6 +13,12 @@ interface Event {
 
 export default async function Page() {
   const events = await prisma.event.findMany({
+    where: {
+      dateTime: {
+        gte: new Date(new Date().setHours(0, 0, 0, 0)), // Start of today
+        lt: new Date(new Date().setHours(0, 0, 0, 0) + 5 * 24 * 60 * 60 * 1000) // 5 days from start of today
+      }
+    },
     include: {
       venue: true
     },

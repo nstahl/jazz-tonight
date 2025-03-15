@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 async function loadData() {
   try {
     // Read the JSON file
-    const rawData = fs.readFileSync(path.join(process.cwd(), 'data.json'), 'utf-8')
+    const rawData = fs.readFileSync(path.join(process.cwd(), 'data/data.json'), 'utf-8')
     const events = JSON.parse(rawData)
 
     // Group events by venue
