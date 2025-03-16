@@ -63,3 +63,31 @@ npx prisma db push --force-reset
 
 This will drop the existing database and create a new one.
 
+## Update Prisma Schema
+
+When making changes to your Prisma schema (`schema.prisma`), follow these steps:
+
+1. Make your changes to `schema.prisma`
+
+2. Push the schema changes to the database:
+```bash
+npx prisma db push --force-reset
+```
+
+3. Generate the new Prisma Client:
+```bash
+npx prisma generate
+```
+
+4. Restart Prisma Studio to see the new tables:
+```bash
+npx prisma studio
+```
+
+5. Restart the Next.js development server:
+```bash
+npm run dev
+```
+
+Note: Using `--force-reset` will drop your existing database. Make sure to back up any important data before running this command.
+

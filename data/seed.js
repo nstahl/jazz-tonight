@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import fs from 'fs'
 import path from 'path'
+import * as dateFnsTz from 'date-fns-tz';
 
 const prisma = new PrismaClient()
 
@@ -9,6 +10,8 @@ async function loadData() {
     // Read the JSON file
     const rawData = fs.readFileSync(path.join(process.cwd(), 'data/data.json'), 'utf-8')
     const events = JSON.parse(rawData)
+    // console.log("Printing all events");
+    // console.log(events);
 
     // Group events by venue
     const venueGroups = events.reduce((acc, event) => {
@@ -40,44 +43,41 @@ async function loadData() {
 
       // Process each event for the venue
       for (const eventData of venueData.events) {
-        // Parse date and time
-        const year = new Date().getFullYear()
-        const [month, day] = eventData.date.split('-')
-        let dateTime
-        let dateTimeStr
-        
-        if (eventData.time) {
-          // If we have a time, create a full datetime
-          const timeStr = eventData.time
-          dateTimeStr = `${year}-${month}-${day}T${timeStr}:00-04:00`
-          dateTime = new Date(dateTimeStr)
-        } else {
-          // If no time, just create a date at start of day
-          dateTimeStr = `${year}-${month}-${day}`
-          dateTime = new Date(dateTimeStr)
-        }
 
-        // Create unique identifier for event
-        const eventIdentifier = `${eventData.event_name}-${dateTimeStr}-${venue.id}`
+        // Parse date
+        const year = new Date().getFullYear();
+        const [month, day] = eventData.date.split('-');
+        const dateString = `${year}-${month}-${day}`;
+
+        // Handle optional time
+        let timeString = eventData.time || '';
+
+        console.log(`Processing event: ${eventData.event_name} on ${dateString}`);
+        console.log('eventData', eventData);
+        console.log('extracted date', dateString);
+        console.log('extracted time', timeString);
 
         await prisma.event.upsert({
           where: { 
-            name_dateTime_venueId: {
+            name_dateString_timeString_venueId: {
               name: eventData.event_name,
-              dateTime: dateTime,
+              dateString: dateString,
+              timeString: timeString,
               venueId: venue.id
             }
           },
           update: {
             name: eventData.event_name,
             url: eventData.event_url || eventData.events_url,
-            dateTime: dateTime,
+            dateString: dateString,
+            timeString: timeString,
             venueId: venue.id,
           },
           create: {
             name: eventData.event_name,
             url: eventData.event_url || eventData.events_url,
-            dateTime: dateTime,
+            dateString: dateString,
+            timeString: timeString,
             venueId: venue.id,
           },
         })

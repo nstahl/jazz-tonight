@@ -103,7 +103,7 @@
     "time": "22:00",
     "event_name": "BILL STEWART TRIO",
     "venue": "Village Vanguard",
-    "is_sold_out": false,
+    "is_sold_out": true,
     "events_url": "https://villagevanguard.squadup.com/2022.html",
     "event_url": null
   },
@@ -127,7 +127,7 @@
   },
   {
     "date": "03-16",
-    "time": "24:00",
+    "time": "23:55",
     "event_name": "TIM MCCALL QUARTET",
     "venue": "Smalls",
     "is_sold_out": false,
@@ -208,7 +208,7 @@
   },
   {
     "date": "03-17",
-    "time": "24:00",
+    "time": "23:55",
     "event_name": "PHILIP HARPER QUARTET",
     "venue": "Smalls",
     "is_sold_out": false,
@@ -289,7 +289,7 @@
   },
   {
     "date": "03-18",
-    "time": "24:00",
+    "time": "23:55",
     "event_name": "BENNY BENACK SEXTET",
     "venue": "Smalls",
     "is_sold_out": false,
@@ -388,7 +388,7 @@
   },
   {
     "date": "03-19",
-    "time": "24:00",
+    "time": "23:55",
     "event_name": "PAUL WELLS QUARTET",
     "venue": "Smalls",
     "is_sold_out": false,
@@ -478,7 +478,7 @@
   },
   {
     "date": "03-20",
-    "time": "24:00",
+    "time": "23:55",
     "event_name": "JACOB CHUNG QUARTET",
     "venue": "Smalls",
     "is_sold_out": false,
@@ -568,7 +568,7 @@
   },
   {
     "date": "03-21",
-    "time": "24:00",
+    "time": "23:55",
     "event_name": "SAUL RUBIN ZEBTET",
     "venue": "Smalls",
     "is_sold_out": false,
@@ -577,7 +577,7 @@
   },
   {
     "date": "03-21",
-    "time": "24:00",
+    "time": "23:55",
     "event_name": "ROUND MIDNIGHT SOLO PIANO WITH WILLERM DELISFORT",
     "venue": "Mezzrow",
     "is_sold_out": false,
