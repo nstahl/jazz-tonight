@@ -43,6 +43,23 @@ To seed the development database:
 
 1. Ensure your database connection is configured in `.env`
 2. Run the seed script:
-    node data/seed.js
+```bash
+node data/seed.js
+```
+or
+```bash
+npx prisma db seed
+```
 
 This will populate your database with initial test data. The seed script can be found in `prisma/seed.ts`.
+
+## Reset the database
+
+To reset the database, run the following command:
+
+```bash 
+npx prisma db push --force-reset
+```
+
+This will drop the existing database and create a new one.
+

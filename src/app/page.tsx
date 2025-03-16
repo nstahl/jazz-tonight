@@ -29,11 +29,13 @@ export default async function Page() {
   
   // Group events by date only
   const groupedEvents = events.reduce((acc, event) => {
-    const date = event.dateTime.toLocaleDateString();
-    if (!acc[date]) {
-      acc[date] = [];
+    const nyDate = new Date(event.dateTime).toLocaleDateString('en-US', {
+      timeZone: 'America/New_York'
+    });
+    if (!acc[nyDate]) {
+      acc[nyDate] = [];
     }
-    acc[date].push(event);
+    acc[nyDate].push(event);
     return acc;
   }, {} as Record<string, Event[]>);
 
@@ -42,7 +44,14 @@ export default async function Page() {
       <h1 className="text-2xl font-bold mb-4 text-center">Jazz Tonight NYC</h1>
       {Object.entries(groupedEvents).map(([date, dateEvents]) => (
         <div key={date} className="mb-6">
-          <h2 className="text-xl font-semibold mb-2 text-center">{date}</h2>
+          <h2 className="text-xl font-semibold mb-2 text-center">
+            {new Date(dateEvents[0].dateTime).toLocaleDateString('en-US', {
+              weekday: 'long',
+              timeZone: 'America/New_York'
+            })}
+            <br />
+            {date}
+          </h2>
           <div className="grid gap-4 place-items-center">
             {dateEvents
               .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime())
@@ -64,7 +73,19 @@ export default async function Page() {
                 >
                   <div className="text-lg font-medium mb-2">{event.name}</div>
                   <div className="flex justify-between text-sm">
-                    <span>{event.dateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    <span>
+                      {!isNaN(event.dateTime.getTime()) && (
+                        <>
+                          {new Date(event.dateTime).toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            timeZone: 'America/New_York'
+                          })}
+                          {' '}
+                          <span className="text-gray-600">ET</span>
+                        </>
+                      )}
+                    </span>
                     <span>{event.venue.name}</span>
                   </div>
                 </a>

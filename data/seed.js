@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import fs from 'fs'
 import path from 'path'
-import { zonedTimeToUtc } from 'date-fns-tz'
 
 const prisma = new PrismaClient()
 
@@ -44,10 +43,19 @@ async function loadData() {
         // Parse date and time
         const year = new Date().getFullYear()
         const [month, day] = eventData.date.split('-')
-        const timeStr = eventData.time || '00:00'
-        const dateTimeStr = `${year}-${month}-${day}T${timeStr}:00`
-        // Create date in NY timezone
-        const dateTime = zonedTimeToUtc(dateTimeStr, 'America/New_York')
+        let dateTime
+        let dateTimeStr
+        
+        if (eventData.time) {
+          // If we have a time, create a full datetime
+          const timeStr = eventData.time
+          dateTimeStr = `${year}-${month}-${day}T${timeStr}:00-04:00`
+          dateTime = new Date(dateTimeStr)
+        } else {
+          // If no time, just create a date at start of day
+          dateTimeStr = `${year}-${month}-${day}`
+          dateTime = new Date(dateTimeStr)
+        }
 
         // Create unique identifier for event
         const eventIdentifier = `${eventData.event_name}-${dateTimeStr}-${venue.id}`
