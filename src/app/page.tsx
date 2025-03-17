@@ -12,6 +12,8 @@ interface Event {
   };
 }
 
+export const revalidate = 300; // Revalidate every 5 minutes (in seconds)
+
 export default async function Page() {
   const events = await prisma.event.findMany({
     where: {
