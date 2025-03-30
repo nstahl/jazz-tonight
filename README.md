@@ -91,3 +91,16 @@ npm run dev
 
 Note: Using `--force-reset` will drop your existing database. Make sure to back up any important data before running this command.
 
+## Clear node_modules and reinstall dependencies
+
+```bash
+rm -rf node_modules
+npm install
+```
+
+This can sometimes fix issues with the prism client, regenerate the client with
+
+```bash
+npx prisma generate
+```
+
