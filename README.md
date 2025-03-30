@@ -1,6 +1,8 @@
-# nycjazz
+# Jazz Tonight in NYC
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+A website that shows upcoming jazz concerts in select jazz clubs across NYC. Work in progress.
+
+> This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
