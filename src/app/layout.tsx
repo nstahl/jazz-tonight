@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Analytics } from "@vercel/analytics/react"
  
 // These styles apply to every route in the application
 import './globals.css'
