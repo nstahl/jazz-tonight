@@ -6,8 +6,8 @@ import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
  
 export const metadata: Metadata = {
-  title: 'Jazz Tonight',
-  description: 'Nightly jazz events in NYC',
+  title: 'Mosaic Jazz',
+  description: 'Nightly jazz events around NYC',
 }
  
 export default function RootLayout({
