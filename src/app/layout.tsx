@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { Analytics } from "@vercel/analytics/react"
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import Analytics from '@vercel/analytics/react'
  
 // These styles apply to every route in the application
 import './globals.css'
