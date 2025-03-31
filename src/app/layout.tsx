@@ -6,7 +6,7 @@ import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
  
 export const metadata: Metadata = {
-  title: 'Mosaic Jazz',
+  title: 'Jazz Tonic',
   description: 'Nightly jazz events around NYC',
 }
  
