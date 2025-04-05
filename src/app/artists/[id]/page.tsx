@@ -48,14 +48,25 @@ export default async function Page({ params }: { params: { id: string } }) {
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-2">YouTube Videos</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {artist.youtubeUrls.map((url, index) => (
-              <div key={index}>
-                <a href={url} target="_blank" rel="noopener noreferrer" 
-                   className="text-blue-600 hover:underline">
-                  {url}
-                </a>
-              </div>
-            ))}
+            {artist.youtubeUrls.map((url, index) => {
+              const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
+              
+              if (!videoId) return null;
+
+              return (
+                <div key={index} className="aspect-video">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
