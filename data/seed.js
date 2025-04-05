@@ -93,4 +93,58 @@ async function loadData() {
   }
 }
 
-loadData()
+async function loadArtistProfiles() {
+  try {
+    // Read the artist profiles file
+    const rawData = fs.readFileSync(path.join(process.cwd(), 'data/artist_profiles.txt'), 'utf-8')
+    const profiles = rawData.split('\n')
+      .filter(line => line.trim()) // Remove empty lines
+      .map(line => JSON.parse(line))
+
+    for (const profile of profiles) {
+      // Create or update artist profile
+      const artist = await prisma.artistProfile.upsert({
+        where: { name: profile.artist_name },
+        update: {
+          website: profile.website,
+          instagram: profile.instagram,
+          youtubeUrls: profile.youtube_urls,
+          biography: profile.biography,
+        },
+        create: {
+          name: profile.artist_name,
+          website: profile.website,
+          instagram: profile.instagram,
+          youtubeUrls: profile.youtube_urls,
+          biography: profile.biography,
+        },
+      })
+
+      // Find and link events that match the artist name
+      await prisma.event.updateMany({
+        where: {
+          name: {
+            contains: profile.artist_name,
+            mode: 'insensitive' // Case-insensitive matching
+          }
+        },
+        data: {
+          artistId: artist.id
+        }
+      })
+    }
+
+    console.log('Artist profiles import completed successfully')
+  } catch (error) {
+    console.error('Error importing artist profiles:', error)
+    throw error
+  }
+}
+
+// Execute both functions in sequence
+async function main() {
+  await loadData()
+  await loadArtistProfiles()
+}
+
+main()

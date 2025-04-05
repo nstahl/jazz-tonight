@@ -18,6 +18,19 @@ model Venue {
   @@map(name: "venues")
 }
 
+model ArtistProfile {
+  id            String       @default(cuid()) @id
+  name          String       @unique
+  website       String?
+  instagram     String?
+  youtubeUrls   String[]    // Array of YouTube URLs
+  biography     String?      @db.Text        // Using Text type for longer content
+  events        Event[]      // One-to-many relationship with events
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+
+  @@map(name: "artist_profiles")
+}
+
 model Event {
   id            String       @default(cuid()) @id
   name          String
@@ -26,6 +39,8 @@ model Event {
   timeString    String?      // Optional "00:00"
   venue         Venue        @relation(fields: [venueId], references: [id])
   venueId       String
+  artist        ArtistProfile?  @relation(fields: [artistId], references: [id])
+  artistId      String?
   updatedAt     DateTime     @updatedAt @map(name: "updated_at")
   
   @@unique([name, dateString, timeString, venueId])
