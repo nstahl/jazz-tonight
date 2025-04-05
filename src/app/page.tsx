@@ -10,6 +10,10 @@ interface Event {
   venue: {
     name: string;
   };
+  artist: {
+    id: string;
+    name: string;
+  } | null;
 }
 
 export const revalidate = 300; // Revalidate every 5 minutes (in seconds)
@@ -23,7 +27,8 @@ export default async function Page() {
       }
     },
     include: {
-      venue: true
+      venue: true,
+      artist: true // Include artist data
     },
     orderBy: [
       { dateString: 'asc' },
@@ -60,53 +65,64 @@ export default async function Page() {
           <div className="grid gap-4 place-items-center">
             {dateEvents
               .sort((a, b) => {
-                // Handle cases where timeString is null or empty
-                if (!a.timeString) return 1;  // Move empty times to the end
+                if (!a.timeString) return 1;
                 if (!b.timeString) return -1;
-                // Compare time strings directly since they're in "HH:MM" format
                 return a.timeString.localeCompare(b.timeString);
               })
               .map((event) => (
-                <a 
+                <div 
                   key={event.id}
                   className={`
                     block p-4 
                     bg-white/60
                     backdrop-blur-sm
                     rounded-lg shadow 
-                    hover:shadow-md hover:bg-gray-300/60
-                    transition-all 
                     w-full max-w-[500px]
+                    relative
                   `}
-                  href={event.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
                 >
-                  <div className="text-lg font-medium mb-2">{event.name}</div>
-                  <div className="flex justify-between text-sm">
-                    <span>
-                      {new Date(event.dateString).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        timeZone: 'UTC'
-                      })} • {' '}
-                      {event.timeString ? (
-                        <>
-                          {new Date(`2000-01-01T${event.timeString}`).toLocaleTimeString('en-US', {
-                            hour: 'numeric',
-                            minute: '2-digit',
-                            hour12: true
-                          })}
-                          {' '}
-                          <span className="text-gray-600">ET</span>
-                        </>
-                      ) : (
-                        <span className="text-gray-600">Time TBA</span>
+                  <a 
+                    className="block hover:bg-gray-300/60 -m-4 p-4 rounded-lg transition-all"
+                    href={event.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    <div className="text-lg font-medium mb-2 flex items-center justify-between">
+                      <span>{event.name}</span>
+                      {event.artist && (
+                        <a 
+                          href={`/artists/${event.artist.id}`}
+                          className="text-sm text-blue-600 hover:text-blue-800 pointer-events-auto z-10"
+                        >
+                          View Artist Profile →
+                        </a>
                       )}
-                    </span>
-                    <span>{event.venue.name}</span>
-                  </div>
-                </a>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>
+                        {new Date(event.dateString).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          timeZone: 'UTC'
+                        })} • {' '}
+                        {event.timeString ? (
+                          <>
+                            {new Date(`2000-01-01T${event.timeString}`).toLocaleTimeString('en-US', {
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              hour12: true
+                            })}
+                            {' '}
+                            <span className="text-gray-600">ET</span>
+                          </>
+                        ) : (
+                          <span className="text-gray-600">Time TBA</span>
+                        )}
+                      </span>
+                      <span>{event.venue.name}</span>
+                    </div>
+                  </a>
+                </div>
               ))}
           </div>
         </div>
