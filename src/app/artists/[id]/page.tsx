@@ -4,7 +4,13 @@ import { notFound } from 'next/navigation'
 export default async function Page({ params }: { params: { id: string } }) {
   const artist = await prisma.artistProfile.findUnique({
     where: { id: params.id },
-    include: { events: true }
+    include: { 
+      events: {
+        include: {
+          venue: true
+        }
+      }
+    }
   })
 
   if (!artist) {
@@ -78,7 +84,17 @@ export default async function Page({ params }: { params: { id: string } }) {
             {artist.events.map((event) => (
               <li key={event.id} className="border p-3 rounded">
                 <h3 className="font-semibold">{event.name}</h3>
-                <p>{event.dateString} {event.timeString}</p>
+                <p className="text-gray-600">
+                  {event.dateString} {event.timeString} • {event.venue.name}
+                </p>
+                <a 
+                  href={event.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline mt-1 inline-block"
+                >
+                  Event details
+                </a>
               </li>
             ))}
           </ul>
