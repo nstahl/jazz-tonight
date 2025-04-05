@@ -48,7 +48,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-2">YouTube Videos</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {artist.youtubeUrls.map((url, index) => {
+            {artist.youtubeUrls.slice(0, 4).map((url: string, index: number) => {
               const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
               
               if (!videoId) return null;
