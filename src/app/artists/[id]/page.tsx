@@ -1,7 +1,13 @@
 import prisma from '../../../../lib/prisma';
 import { notFound } from 'next/navigation'
 
-export default async function Page({ params }: { params: { id: string } }) {
+// Add this type definition for the page props
+type Props = {
+  params: { id: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default function ArtistPage({ params, searchParams }: Props) {
   const artist = await prisma.artistProfile.findUnique({
     where: { id: params.id },
     include: { 
