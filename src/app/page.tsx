@@ -83,20 +83,10 @@ export default async function Page() {
                 >
                   <a 
                     className="block hover:bg-gray-300/60 -m-4 p-4 rounded-lg transition-all"
-                    href={event.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                    href={`/events/${event.id}`}
                   >
-                    <div className="text-lg font-medium mb-2 flex items-center justify-between">
+                    <div className="text-lg font-medium mb-2">
                       <span>{event.name}</span>
-                      {event.artist && (
-                        <a 
-                          href={`/artists/${event.artist.id}`}
-                          className="text-sm text-blue-600 hover:text-blue-800 pointer-events-auto z-10"
-                        >
-                          View Artist Profile →
-                        </a>
-                      )}
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>
