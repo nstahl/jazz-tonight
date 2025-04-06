@@ -1,8 +1,12 @@
 @import 'tailwindcss';
 
+html {
+  overflow-y: scroll;
+}
+
 body {
   background-color: #dbdbdb;
-  background-image: url('/jazz-background.png'); /* Replace with your actual image filename */
+  /* background-image: url('/jazz-background.png'); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
