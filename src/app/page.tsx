@@ -47,7 +47,7 @@ export default async function Page() {
 
   return (
     <div className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4 text-center">Fractal Jazz: NYC Edition</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">NYC Edition</h1>
       {Object.entries(groupedEvents).map(([dateString, dateEvents]) => (
         <div key={dateString} className="mb-6">
           <h2 className="text-xl font-semibold mb-2 text-center">
