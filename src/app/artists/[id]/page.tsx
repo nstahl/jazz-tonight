@@ -49,9 +49,9 @@ export default async function ArtistPage({ params }: PageProps) {
         {artist.instagram && (
           <div>
             <h2 className="text-xl font-semibold mb-2">Instagram</h2>
-            <a href={`https://instagram.com/${artist.instagram}`} target="_blank" 
+            <a href={artist.instagram.replace('@', '')} target="_blank" 
                rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              @{artist.instagram}
+              @{artist.instagram.split('/').filter(Boolean).pop()}
             </a>
           </div>
         )}
