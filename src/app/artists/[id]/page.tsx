@@ -1,15 +1,16 @@
 import prisma from '../../../../lib/prisma';
 import { notFound } from 'next/navigation'
 
-// Add this type definition for the page props
-type Props = {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
+type PageProps = {
+  params: Promise<{ id: string }>
 }
 
-export default function ArtistPage({ params, searchParams }: Props) {
+export default async function ArtistPage({ params }: PageProps) {
+
+  const { id } = await params;
+
   const artist = await prisma.artistProfile.findUnique({
-    where: { id: params.id },
+    where: { id: id },
     include: { 
       events: {
         include: {

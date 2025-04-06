@@ -106,3 +106,14 @@ This can sometimes fix issues with the prism client, regenerate the client with
 npx prisma generate
 ```
 
+## Build locally
+
+```bash
+npx next build
+```
+
+## Run linter
+
+```bash
+npm run lint
+```
