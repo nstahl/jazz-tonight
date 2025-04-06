@@ -79,7 +79,7 @@ export default async function Page({ params }: PageProps) {
             </div>
           )}
           
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             {event.artist.website && (
               <div>
                 <h3 className="text-xl font-semibold mb-2">Website</h3>
