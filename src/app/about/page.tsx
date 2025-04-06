@@ -13,7 +13,7 @@ export default function AboutPage() {
         
         <p className="mb-4">
           Our mission is to connect jazz enthusiasts with the best live performances, from intimate club settings
-          to grand concert halls. Whether you're a longtime jazz aficionado or just beginning to explore the genre,
+          to grand concert halls. Whether you&apos;re a longtime jazz aficionado or just beginning to explore the genre,
           Fractal Jazz helps you find your next musical adventure.
         </p>
         
@@ -21,12 +21,12 @@ export default function AboutPage() {
         <p className="mb-4">
           Founded by a group of passionate jazz lovers, Fractal Jazz emerged from a simple idea: 
           to make it easier for people to discover and enjoy live jazz music in NYC. We believe that
-          jazz is more than just music—it's a living, breathing art form that brings communities together.
+          jazz is more than just music—it&apos;s a living, breathing art form that brings communities together.
         </p>
         
         <h2 className="text-2xl font-semibold mt-6 mb-4">Contact Us</h2>
         <p>
-          Have questions or suggestions? We'd love to hear from you! Reach out to us at 
+          Have questions or suggestions? We&apos;d love to hear from you! Reach out to us at 
           <a href="mailto:info@fractaljazz.com" className="text-blue-600 hover:underline ml-1">
             info@fractaljazz.com
           </a>
