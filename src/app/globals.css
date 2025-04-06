@@ -5,12 +5,12 @@ html {
 }
 
 body {
-  background-color: #dbdbdb;
-  /* background-image: url('/jazz-background.png'); */
+  background-color: rgba(1, 1, 1, 0.735);
+  background-image: linear-gradient(rgba(5, 5, 5, 0.8), rgba(5, 5, 5, 0.8)), url('/hudson-ai-optimal.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   min-height: 100vh;
-  backdrop-filter: blur(5px); /* Add blur effect */
-  -webkit-backdrop-filter: blur(5px); /* For Safari support */
+  color: rgb(228, 228, 228);
 }

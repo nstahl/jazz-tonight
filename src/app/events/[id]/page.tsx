@@ -42,11 +42,28 @@ export default async function Page({ params }: PageProps) {
   return (
     <div className="max-w-4xl mx-auto p-6">
       {/* Event Header Section */}
-      <div className="bg-gray-100 p-6 rounded-lg mb-8">
+      <div className="rounded-lg mb-8">
         <h1 className="text-3xl font-bold mb-2">{event.name}</h1>
 
-        <p className="text-gray-600 mt-2">
-          {event.dateString} {event.timeString} • {event.venue.name}
+        <p className="text-gray-100 mt-2">
+          {new Date(event.dateString).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            timeZone: 'UTC'
+          })} • {' '}
+          {event.timeString ? (
+            <>
+              {new Date(`2000-01-01T${event.timeString}`).toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+              })}
+              {' '}
+              <span className="text-gray-100">ET</span>
+            </>
+          ) : (
+            <span className="text-gray-100">Time TBA</span>
+          )} • {event.venue.name}
         </p>
       </div>
 
@@ -67,7 +84,7 @@ export default async function Page({ params }: PageProps) {
               <div>
                 <h3 className="text-xl font-semibold mb-2">Website</h3>
                 <a href={event.artist.website} target="_blank" rel="noopener noreferrer" 
-                   className="text-blue-600 hover:underline">
+                   className="text-blue-300 hover:underline">
                   {event.artist.website}
                 </a>
               </div>
@@ -77,7 +94,7 @@ export default async function Page({ params }: PageProps) {
               <div>
                 <h3 className="text-xl font-semibold mb-2">Instagram</h3>
                 <a href={event.artist.instagram.replace('@', '')} target="_blank" 
-                   rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                   rel="noopener noreferrer" className="text-blue-300 hover:underline">
                   @{event.artist.instagram.split('/').filter(Boolean).pop()}
                 </a>
               </div>
@@ -121,12 +138,12 @@ export default async function Page({ params }: PageProps) {
             {event.artist.events.map((otherEvent) => (
               <li key={otherEvent.id} className="border p-3 rounded">
                 <h3 className="font-semibold">{otherEvent.name}</h3>
-                <p className="text-gray-600">
+                <p className="text-gray-400">
                   {otherEvent.dateString} {otherEvent.timeString} • {otherEvent.venue.name}
                 </p>
                 <a 
                   href={`/events/${otherEvent.id}`}
-                  className="text-sm text-blue-600 hover:underline mt-1 inline-block"
+                  className="text-sm text-blue-400 hover:underline mt-1 inline-block"
                 >
                   Event details
                 </a>

@@ -5,15 +5,16 @@ import Image from 'next/image';
 
 const Navbar = () => {
   return (
-    <nav className="bg-gray-800 text-white p-4">
+    <nav className="bg-gray-800/60 text-white p-4">
       <div className="container mx-auto flex justify-between items-center max-w-4xl">
         <Link href="/" className="flex items-center space-x-2 cursor-pointer">
           <div>
             <Image
-              src="/fractal-white.svg"
-              alt="Fractal Jazz Logo"
+              src="/atrium.svg"
+              alt="Atrium Jazz Logo"
               width={500}
               height={100}
+              priority
               className="h-8 w-auto hover:opacity-80"
             />
           </div>

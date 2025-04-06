@@ -74,7 +74,7 @@ export default async function Page() {
                   key={event.id}
                   className={`
                     block p-4 
-                    bg-white/60
+                    bg-white/10
                     backdrop-blur-sm
                     rounded-lg shadow 
                     w-full max-w-[500px]
@@ -103,10 +103,10 @@ export default async function Page() {
                               hour12: true
                             })}
                             {' '}
-                            <span className="text-gray-600">ET</span>
+                            <span className="text-gray-100">ET</span>
                           </>
                         ) : (
-                          <span className="text-gray-600">Time TBA</span>
+                          <span className="text-gray-100">Time TBA</span>
                         )}
                       </span>
                       <span>{event.venue.name}</span>
