@@ -24,12 +24,7 @@ interface Event {
 
 export const revalidate = 300; // Revalidate every 5 minutes (in seconds)
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { page?: string }
-}) {
-  const currentPage = Number(searchParams.page) || 0;
+export default async function Page() {
   const events = await prisma.event.findMany({
     where: {
       dateString: {
@@ -56,12 +51,8 @@ export default async function Page({
     return acc;
   }, {} as Record<string, Event[]>);
 
-  // Convert to array of [date, events] pairs for easier slicing
+  // Just convert to array of [date, events] pairs - remove pagination logic
   const dateGroups = Object.entries(groupedEvents);
-  const totalPages = Math.ceil(dateGroups.length / 5);
-  const startIdx = currentPage * 5;
-  const hasNextPage = startIdx + 5 < dateGroups.length;
-  const hasPrevPage = currentPage > 0;
 
   return (
     <div className="h-screen flex flex-col">
