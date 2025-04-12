@@ -57,7 +57,7 @@ export default async function Page() {
 
   return (
       <div>
-          <div className="grid grid-flow-col auto-cols-[minmax(300px,400px)] gap-6 overflow-hidden">
+          <div className="grid grid-flow-col auto-cols-[minmax(300px,400px)] gap-6">
             {dateGroups.map(([dateString, dateEvents]) => (
               <h2 key={dateString} className="text-xl font-semibold text-center">
                 {new Date(dateEvents[0].dateString).toLocaleDateString('en-US', {
@@ -74,7 +74,7 @@ export default async function Page() {
             ))}
           </div>
 
-          <div className="grid grid-flow-col auto-cols-[minmax(300px,400px)] gap-6 overflow-hidden">
+          <div className="grid grid-flow-col auto-cols-[minmax(300px,400px)] gap-6">
             {dateGroups.map(([dateString, dateEvents]) => (
               <div key={dateString} className="mb-6 md:mb-0">
                 <div className="grid gap-4">
