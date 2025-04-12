@@ -28,6 +28,27 @@ interface Event {
 export default function Page() {
   const [dateGroups, setDateGroups] = useState<[string, Event[]][]>([]);
   const [loading, setLoading] = useState(true);
+  const [columnsCount, setColumnsCount] = useState(1);
+
+  useEffect(() => {
+    const calculateColumns = () => {
+      const columnWidth = 400 + 24; // max width of each column
+      const screenWidth = Math.min(window.innerWidth, 1536) - 32; // max width of container is 1536px; 16px padding on each side; 
+      const columns = Math.max(1, Math.floor(screenWidth / columnWidth));
+      console.log("screenWidth", screenWidth);
+      console.log("columns", columns);
+      setColumnsCount(columns);
+    };
+
+    // Calculate initially
+    calculateColumns();
+
+    // Add resize listener
+    window.addEventListener('resize', calculateColumns);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', calculateColumns);
+  }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -60,27 +81,23 @@ export default function Page() {
   }
 
   return (
-      <div>
-          <div className="grid grid-flow-col auto-cols-[minmax(300px,400px)] gap-6">
-            {dateGroups.map(([dateString, dateEvents]) => (
-              <h2 key={dateString} className="text-xl font-semibold text-center">
-                {new Date(dateEvents[0].dateString).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  timeZone: 'UTC'
-                })}
-                {', '}
-                {new Date(dateString).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  timeZone: 'UTC'
-                })}
-              </h2>
-            ))}
-          </div>
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4">
+          <div className="grid grid-flow-col auto-cols-[minmax(300px,1fr)] gap-6 overflow-hidden">
+            {dateGroups.slice(0, columnsCount).map(([dateString, dateEvents]) => (
+              <div key={dateString}>
+                <h2 className="text-xl font-semibold text-center mb-6">
+                  {new Date(dateEvents[0].dateString).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    timeZone: 'UTC'
+                  })}
+                  {', '}
+                  {new Date(dateString).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    timeZone: 'UTC'
+                  })}
+                </h2>
 
-          <div className="grid grid-flow-col auto-cols-[minmax(300px,400px)] gap-6">
-            {dateGroups.map(([dateString, dateEvents]) => (
-              <div key={dateString} className="mb-6 md:mb-0">
                 <div className="grid gap-4">
                   {dateEvents
                     .sort((a, b) => {
@@ -98,6 +115,7 @@ export default function Page() {
                           rounded-lg shadow 
                           w-full max-w-[500px]
                           relative
+                          mx-auto
                         `}
                       >
                         <a 

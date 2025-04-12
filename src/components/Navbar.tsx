@@ -25,9 +25,6 @@ const Navbar = () => {
             />
           </div>
         </Link>
-        <div className={`text-lg font-semibold ${fugazOne.className}`}>
-          Jazz in NYC
-        </div>
         <div className="space-x-8">
           <Link href="/" className="hover:text-gray-300">
             Home
