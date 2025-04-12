@@ -1,5 +1,6 @@
 import prisma from '../../lib/prisma';
 import { Fugaz_One } from 'next/font/google';
+import styles from './page.module.css';
 
 const fugazOne = Fugaz_One({
   weight: '400',
@@ -51,14 +52,12 @@ export default async function Page() {
     return acc;
   }, {} as Record<string, Event[]>);
 
-  // Just convert to array of [date, events] pairs - remove pagination logic
   const dateGroups = Object.entries(groupedEvents);
+  console.log(dateGroups);
 
   return (
-    <div className="h-screen flex flex-col">
-      <div className="sticky top-0 z-20 bg-black/80 backdrop-blur-sm">
-        <div className="px-4 md:px-36 py-2">
-          <div className="grid grid-flow-col auto-cols-[minmax(300px,400px)] gap-6">
+      <div>
+          <div className="grid grid-flow-col auto-cols-[minmax(300px,400px)] gap-6 overflow-hidden">
             {dateGroups.map(([dateString, dateEvents]) => (
               <h2 key={dateString} className="text-xl font-semibold text-center">
                 {new Date(dateEvents[0].dateString).toLocaleDateString('en-US', {
@@ -74,12 +73,8 @@ export default async function Page() {
               </h2>
             ))}
           </div>
-        </div>
-      </div>
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="px-4 md:px-36 py-4">
-          <div className="grid grid-flow-col auto-cols-[minmax(300px,400px)] gap-6 pb-4 overflow-x-auto">
+          <div className="grid grid-flow-col auto-cols-[minmax(300px,400px)] gap-6 overflow-hidden">
             {dateGroups.map(([dateString, dateEvents]) => (
               <div key={dateString} className="mb-6 md:mb-0">
                 <div className="grid gap-4">
@@ -138,8 +133,6 @@ export default async function Page() {
               </div>
             ))}
           </div>
-        </div>
       </div>
-    </div>
   );
 }

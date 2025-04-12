@@ -1,15 +1,18 @@
 @import 'tailwindcss';
 
-html {
-  overflow-y: scroll;
+:root {
+  --clr-text: rgb(227, 227, 227);
 }
 
-body {
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+html {
   background-color: rgba(1, 1, 1, 1);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  min-height: 100vh;
-  color: rgb(228, 228, 228);
+  color: var(--clr-text); /* Text color */
 }
