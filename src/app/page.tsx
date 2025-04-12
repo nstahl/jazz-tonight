@@ -1,4 +1,6 @@
-import prisma from '../../lib/prisma';
+'use client'
+
+import { useEffect, useState } from 'react';
 import { Fugaz_One } from 'next/font/google';
 import styles from './page.module.css';
 
@@ -23,37 +25,39 @@ interface Event {
   } | null;
 }
 
-export const revalidate = 300; // Revalidate every 5 minutes (in seconds)
+export default function Page() {
+  const [dateGroups, setDateGroups] = useState<[string, Event[]][]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function Page() {
-  const events = await prisma.event.findMany({
-    where: {
-      dateString: {
-        gte: new Date().toISOString().split('T')[0],
-        lte: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // Fetch 15 days
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/api/events');
+        const events = await response.json();
+        
+        // Group events by date
+        const groupedEvents = events.reduce((acc: Record<string, Event[]>, event: Event) => {
+          if (!acc[event.dateString]) {
+            acc[event.dateString] = [];
+          }
+          acc[event.dateString].push(event);
+          return acc;
+        }, {});
+
+        setDateGroups(Object.entries(groupedEvents));
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      } finally {
+        setLoading(false);
       }
-    },
-    include: {
-      venue: true,
-      artist: true
-    },
-    orderBy: [
-      { dateString: 'asc' },
-      { timeString: 'asc' }
-    ]
-  });
-  
-  // Group events by date only
-  const groupedEvents = events.reduce((acc, event) => {
-    if (!acc[event.dateString]) {
-      acc[event.dateString] = [];
-    }
-    acc[event.dateString].push(event);
-    return acc;
-  }, {} as Record<string, Event[]>);
+    };
 
-  const dateGroups = Object.entries(groupedEvents);
-  console.log(dateGroups);
+    fetchEvents();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
       <div>
