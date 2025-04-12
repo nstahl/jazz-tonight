@@ -1,5 +1,11 @@
 import prisma from '../../../../lib/prisma';
 import { notFound } from 'next/navigation'
+import { Fugaz_One } from 'next/font/google';
+
+const fugazOne = Fugaz_One({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 type PageProps = {
   params: Promise<{ id: string }>
@@ -43,7 +49,7 @@ export default async function Page({ params }: PageProps) {
     <div className="max-w-4xl mx-auto p-6">
       {/* Event Header Section */}
       <div className="rounded-lg mb-8">
-        <h1 className="text-3xl font-bold mb-2">{event.name}</h1>
+        <h1 className={`text-3xl font-bold mb-2 ${fugazOne.className}`}>{event.name}</h1>
 
         <p className="text-gray-100 mt-2">
           {new Date(event.dateString).toLocaleDateString('en-US', {
@@ -70,7 +76,6 @@ export default async function Page({ params }: PageProps) {
       {/* Artist Profile Section */}
       {event.artist && (
         <div className="border-t pt-8">
-          <h2 className="text-2xl font-bold mb-6">About the Artist</h2>
           
           {event.artist.biography && (
             <div className="mb-6">

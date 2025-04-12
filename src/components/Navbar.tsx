@@ -2,11 +2,17 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { Fugaz_One } from 'next/font/google';
+
+const fugazOne = Fugaz_One({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 const Navbar = () => {
   return (
-    <nav className="bg-gray-800/60 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center max-w-4xl">
+    <nav className="bg-black text-white p-4">
+      <div className="container mx-auto px-4 flex justify-between items-center">
         <Link href="/" className="flex items-center space-x-2 cursor-pointer">
           <div>
             <Image
@@ -19,6 +25,9 @@ const Navbar = () => {
             />
           </div>
         </Link>
+        <div className={`text-lg font-semibold ${fugazOne.className}`}>
+          Jazz in NYC
+        </div>
         <div className="space-x-8">
           <Link href="/" className="hover:text-gray-300">
             Home
