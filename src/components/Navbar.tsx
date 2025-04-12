@@ -2,12 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Fugaz_One } from 'next/font/google';
-
-const fugazOne = Fugaz_One({
-  weight: '400',
-  subsets: ['latin'],
-});
 
 const Navbar = () => {
   return (

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { Fugaz_One } from 'next/font/google';
-import styles from './page.module.css';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 
 const fugazOne = Fugaz_One({
