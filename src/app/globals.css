@@ -16,3 +16,7 @@ html {
   background-color: rgba(1, 1, 1, 1);
   color: var(--clr-text); /* Text color */
 }
+
+body {
+  overflow-y: scroll;
+}
