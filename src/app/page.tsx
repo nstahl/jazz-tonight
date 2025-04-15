@@ -83,7 +83,6 @@ export default function Page() {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4">
-
       <div className="grid grid-flow-col auto-cols-[minmax(300px,1fr)] gap-6 overflow-hidden">
         {dateGroups.slice(startIndex, startIndex + columnsCount).map(([dateString, dateEvents]) => (
           <div key={dateString}>
