@@ -113,7 +113,10 @@ export default async function Page({ params }: PageProps) {
                 <h3 className="text-xl font-semibold mb-2">Website</h3>
                 <a href={event.artist.website} target="_blank" rel="noopener noreferrer" 
                    className="text-blue-300 hover:underline">
-                  {event.artist.website}
+                  {event.artist.website.length > 40 
+                    ? `${new URL(event.artist.website).hostname}/...`
+                    : event.artist.website
+                  }
                 </a>
               </div>
             )}
@@ -133,9 +136,11 @@ export default async function Page({ params }: PageProps) {
             <div className="mb-6">
               <h3 className="text-xl font-semibold mb-2">YouTube Videos</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {event.artist.youtubeUrls.slice(0, 4).map((url: string, index: number) => {
-                  const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
-                  
+                {event.artist.youtubeUrls
+                  .slice(0, Math.min(6, event.artist.youtubeUrls.length))
+                  .map((url: string, index: number) => {
+                    const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
+                    
                   if (!videoId) return null;
 
                   return (
@@ -161,20 +166,43 @@ export default async function Page({ params }: PageProps) {
       {/* Upcoming Events Section */}
       {event.artist?.events && event.artist.events.length > 0 && (
         <div className="border-t pt-8 mt-8">
-          <h2 className="text-2xl font-bold mb-6">More Events with {event.artist.name}</h2>
-          <ul className="space-y-2">
+          <h2 className="text-2xl font-bold mb-6">More Sets</h2>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {event.artist.events.map((otherEvent) => (
-              <li key={otherEvent.id} className="border p-3 rounded">
-                <h3 className="font-semibold">{otherEvent.name}</h3>
-                <p className="text-gray-400">
-                  {otherEvent.dateString} {otherEvent.timeString} • {otherEvent.venue.name}
-                </p>
-                <a 
-                  href={`/events/${otherEvent.id}`}
-                  className="text-sm text-blue-400 hover:underline mt-1 inline-block"
-                >
-                  Event details
-                </a>
+              <li key={otherEvent.id}>
+                <div className="block p-4 bg-white/10 backdrop-blur-sm rounded-lg shadow w-full relative">
+                  <a 
+                    className="block hover:bg-gray-300/60 -m-4 p-4 rounded-lg transition-all"
+                    href={`/events/${otherEvent.id}`}
+                  >
+                    <div className={`text-lg font-medium mb-2 ${fugazOne.className}`}>
+                      <span>{otherEvent.name}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>
+                        {new Date(otherEvent.dateString).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          timeZone: 'UTC'
+                        })} • {' '}
+                        {otherEvent.timeString ? (
+                          <>
+                            {new Date(`2000-01-01T${otherEvent.timeString}`).toLocaleTimeString('en-US', {
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              hour12: true
+                            })}
+                            {' '}
+                            <span className="text-gray-100">ET</span>
+                          </>
+                        ) : (
+                          <span className="text-gray-100">Time TBA</span>
+                        )}
+                      </span>
+                      <span>{otherEvent.venue.name}</span>
+                    </div>
+                  </a>
+                </div>
               </li>
             ))}
           </ul>
