@@ -46,31 +46,54 @@ export default async function Page({ params }: PageProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 pb-[calc(1.5rem+88px)] md:pb-6">
       {/* Event Header Section */}
-      <div className="rounded-lg mb-8">
-        <h1 className={`text-3xl font-bold mb-2 ${fugazOne.className}`}>{event.name}</h1>
+      <div className="rounded-lg mb-8 flex justify-between items-start">
+        <div>
+          <h1 className={`text-3xl font-bold mb-2 ${fugazOne.className}`}>{event.name}</h1>
 
-        <p className="text-gray-100 mt-2">
-          {new Date(event.dateString).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            timeZone: 'UTC'
-          })} • {' '}
-          {event.timeString ? (
-            <>
-              {new Date(`2000-01-01T${event.timeString}`).toLocaleTimeString('en-US', {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-              })}
-              {' '}
-              <span className="text-gray-100">ET</span>
-            </>
-          ) : (
-            <span className="text-gray-100">Time TBA</span>
-          )} • {event.venue.name}
-        </p>
+          <p className="text-gray-100 mt-2">
+            {new Date(event.dateString).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              timeZone: 'UTC'
+            })} • {' '}
+            {event.timeString ? (
+              <>
+                {new Date(`2000-01-01T${event.timeString}`).toLocaleTimeString('en-US', {
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  hour12: true
+                })}
+                {' '}
+                <span className="text-gray-100">ET</span>
+              </>
+            ) : (
+              <span className="text-gray-100">Time TBA</span>
+            )} • {event.venue.name}
+          </p>
+        </div>
+
+        <a 
+          href={event.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden md:block bg-white text-black px-8 py-4 rounded-lg text-xl font-bold hover:bg-gray-200 transition-colors"
+        >
+          Attend
+        </a>
+      </div>
+
+      {/* Mobile CTA with background */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black p-6">
+        <a 
+          href={event.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block bg-white text-black py-3 text-lg font-bold hover:bg-gray-200 transition-colors text-center rounded-lg"
+        >
+          Attend
+        </a>
       </div>
 
       {/* Artist Profile Section */}
