@@ -7,26 +7,21 @@ export default function AboutPage() {
       
       <div className="prose max-w-none">
         <p className="mb-4">
-          Atrium Jazz is your go-to resource for discovering the vibrant jazz scene in New York City.
-          We curate and showcase nightly jazz events across the city, bringing together musicians and music lovers.
+          There is an abundance of great jazz music in New York City. Our mission is to help you connect with it.
         </p>
         
         <p className="mb-4">
-          Our mission is to connect jazz enthusiasts with the best live performances, from intimate club settings
-          to grand concert halls. Whether you&apos;re a longtime jazz aficionado or just beginning to explore the genre,
-          Atrium Jazz helps you find your next musical adventure.
+          Listings are updated once per week. If you you would like your club or event to be added, please email us at <a href="mailto:info@atriumjazz.com" className="text-blue-600 hover:underline ml-1">info@atriumjazz.com</a>.
         </p>
         
         <h2 className="text-2xl font-semibold mt-6 mb-4">Our Story</h2>
         <p className="mb-4">
-          Founded by a group of passionate jazz lovers, Atrium Jazz emerged from a simple idea: 
-          to make it easier for people to discover and enjoy live jazz music in NYC. We believe that
-          jazz is more than just music—it&apos;s a living, breathing art form that brings communities together.
+          Founded and built for the love of music and the people who make it.
         </p>
         
         <h2 className="text-2xl font-semibold mt-6 mb-4">Contact Us</h2>
         <p>
-          Have questions or suggestions? We&apos;d love to hear from you! Reach out to us at 
+          Questions or suggestions? We&apos;d love to hear from you! Reach out to us at 
           <a href="mailto:info@atriumjazz.com" className="text-blue-600 hover:underline ml-1">
             info@atriumjazz.com
           </a>
