@@ -117,3 +117,9 @@ npx next build
 ```bash
 npm run lint
 ```
+
+## Reset the database using the script
+
+```bash
+./reset-db.sh
+```
