@@ -11,6 +11,36 @@ type PageProps = {
   params: Promise<{ id: string }>
 }
 
+// Define the YouTube video type
+type YouTubeVideo = {
+  url: string;
+  videoId: string;
+}
+
+// Extend the artist type to include youtubeVideos
+type ArtistWithVideos = {
+  youtubeUrls: string[];
+  youtubeVideos?: YouTubeVideo[];
+  [key: string]: any;
+}
+
+// Define the event type with the extended artist type
+type EventWithArtist = {
+  artist: ArtistWithVideos | null;
+  [key: string]: any;
+}
+
+// Define the other event type
+type OtherEvent = {
+  id: string;
+  name: string;
+  dateString: string;
+  timeString: string | null;
+  venue: {
+    name: string;
+  };
+}
+
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
 
@@ -39,10 +69,24 @@ export default async function Page({ params }: PageProps) {
       },
       venue: true
     }
-  })
+  }) as EventWithArtist;
 
   if (!event) {
     notFound()
+  }
+
+  // Filter YouTube URLs to only include valid ones and store both URL and videoId
+  if (event.artist?.youtubeUrls) {
+    const validYoutubeVideos = event.artist.youtubeUrls
+      .map(url => {
+        const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/live\/)([^"&?\/\s]{11})/)?.[1];
+        return videoId ? { url, videoId } : null;
+      })
+      .filter((item): item is YouTubeVideo => item !== null)
+      .slice(0, 6);
+    
+    // Store the filtered videos in the event object
+    event.artist.youtubeVideos = validYoutubeVideos;
   }
 
   return (
@@ -132,31 +176,23 @@ export default async function Page({ params }: PageProps) {
             )}
           </div>
 
-          {event.artist.youtubeUrls?.length > 0 && (
+          {event.artist?.youtubeVideos && event.artist.youtubeVideos.length > 0 && (
             <div className="mb-6">
               <h3 className="text-xl font-semibold mb-2">YouTube Videos</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {event.artist.youtubeUrls
-                  .slice(0, Math.min(6, event.artist.youtubeUrls.length))
-                  .map((url: string, index: number) => {
-                    const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
-                    
-                  if (!videoId) return null;
-
-                  return (
-                    <div key={index} className="aspect-video">
-                      <iframe
-                        width="100%"
-                        height="100%"
-                        src={`https://www.youtube.com/embed/${videoId}`}
-                        title="YouTube video player"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
-                  );
-                })}
+                {event.artist.youtubeVideos.map((video: YouTubeVideo, index: number) => (
+                  <div key={index} className="aspect-video">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={`https://www.youtube.com/embed/${video.videoId}`}
+                      title="YouTube video player"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -168,7 +204,7 @@ export default async function Page({ params }: PageProps) {
         <div className="border-t pt-8 mt-8">
           <h2 className="text-2xl font-bold mb-6">More Sets</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {event.artist.events.map((otherEvent) => (
+            {event.artist.events.map((otherEvent: OtherEvent) => (
               <li key={otherEvent.id}>
                 <div className="block p-4 bg-white/10 backdrop-blur-sm rounded-lg shadow w-full relative">
                   <a 
