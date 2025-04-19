@@ -78,7 +78,33 @@ export default function Page() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 pb-24">
+        <div className="grid grid-cols-1 md:grid-flow-col md:auto-cols-[minmax(300px,1fr)] gap-6 overflow-hidden">
+          {[1, 2, 3].map((column) => (
+            <div key={column}>
+              <div className="h-8 bg-white/10 rounded-lg mb-6 animate-pulse" />
+              <div className="grid gap-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((card) => (
+                  <div 
+                    key={card}
+                    className="block p-4 bg-white/10 backdrop-blur-sm rounded-lg shadow w-full max-w-[500px] relative mx-auto"
+                  >
+                    <div className="space-y-3">
+                      <div className="h-6 bg-white/20 rounded animate-pulse" />
+                      <div className="flex justify-between">
+                        <div className="h-4 w-32 bg-white/20 rounded animate-pulse" />
+                        <div className="h-4 w-24 bg-white/20 rounded animate-pulse" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
