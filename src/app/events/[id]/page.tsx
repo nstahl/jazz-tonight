@@ -98,6 +98,7 @@ export default async function Page({ params }: PageProps) {
 
           <p className="text-gray-100 mt-2">
             {new Date(event.dateString).toLocaleDateString('en-US', {
+              weekday: 'long',
               month: 'short',
               day: 'numeric',
               timeZone: 'UTC'
