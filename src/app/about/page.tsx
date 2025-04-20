@@ -11,7 +11,7 @@ export default function AboutPage() {
         </p>
         
         <p className="mb-4">
-          Listings are updated once per week. If you'd like your club or event to be added, please email us at <a href="mailto:info@atriumjazz.com" className="text-blue-300 hover:underline ml-1">info@atriumjazz.com</a>.
+          Listings are updated once per week. If you&apos;d like your club or event to be added, please email us at <a href="mailto:info@atriumjazz.com" className="text-blue-300 hover:underline ml-1">info@atriumjazz.com</a>.
         </p>
         
         <h2 className="text-2xl font-semibold mt-6 mb-4">Our Story</h2>
