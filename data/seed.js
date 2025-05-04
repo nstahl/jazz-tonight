@@ -7,18 +7,19 @@ const prisma = new PrismaClient()
 
 async function loadData() {
   try {
-    // Read the JSON file
+    // Read the new line-delimited JSON file
     const rawData = fs.readFileSync(path.join(process.cwd(), 'data/data.json'), 'utf-8')
-    const events = JSON.parse(rawData)
-    // console.log("Printing all events");
-    // console.log(events);
+    const events = rawData
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => JSON.parse(line))
 
     // Group events by venue
     const venueGroups = events.reduce((acc, event) => {
       if (!acc[event.venue]) {
         acc[event.venue] = {
           name: event.venue,
-          url: event.events_url,
+          url: event.url, // Use the first event's URL for the venue, or set to null
           events: []
         }
       }
@@ -43,44 +44,41 @@ async function loadData() {
 
       // Process each event for the venue
       for (const eventData of venueData.events) {
+        // Loop over each date/time entry
+        for (const dt of eventData.dates_and_times) {
+          const dateString = dt.date
+          const timeString = dt.time || ''
 
-        // Parse date
-        const year = new Date().getFullYear();
-        const [month, day] = eventData.date.split('-');
-        const dateString = `${year}-${month}-${day}`;
+          console.log(`Processing event: ${eventData.event_title} on ${dateString}`);
+          console.log('eventData', eventData);
+          console.log('extracted date', dateString);
+          console.log('extracted time', timeString);
 
-        // Handle optional time
-        let timeString = eventData.time || '';
-
-        console.log(`Processing event: ${eventData.event_name} on ${dateString}`);
-        console.log('eventData', eventData);
-        console.log('extracted date', dateString);
-        console.log('extracted time', timeString);
-
-        await prisma.event.upsert({
-          where: { 
-            name_dateString_timeString_venueId: {
-              name: eventData.event_name,
+          await prisma.event.upsert({
+            where: { 
+              name_dateString_timeString_venueId: {
+                name: eventData.event_title,
+                dateString: dateString,
+                timeString: timeString,
+                venueId: venue.id
+              }
+            },
+            update: {
+              name: eventData.event_title,
+              url: eventData.url,
               dateString: dateString,
               timeString: timeString,
-              venueId: venue.id
-            }
-          },
-          update: {
-            name: eventData.event_name,
-            url: eventData.event_url || eventData.events_url,
-            dateString: dateString,
-            timeString: timeString,
-            venueId: venue.id,
-          },
-          create: {
-            name: eventData.event_name,
-            url: eventData.event_url || eventData.events_url,
-            dateString: dateString,
-            timeString: timeString,
-            venueId: venue.id,
-          },
-        })
+              venueId: venue.id,
+            },
+            create: {
+              name: eventData.event_title,
+              url: eventData.url,
+              dateString: dateString,
+              timeString: timeString,
+              venueId: venue.id,
+            },
+          })
+        }
       }
     }
 
@@ -96,7 +94,7 @@ async function loadData() {
 async function loadArtistProfiles() {
   try {
     // Read the artist profiles file
-    const rawData = fs.readFileSync(path.join(process.cwd(), 'data/artist_profiles.txt'), 'utf-8')
+    const rawData = fs.readFileSync(path.join(process.cwd(), 'data/artist_profiles.json'), 'utf-8')
     const profiles = rawData.split('\n')
       .filter(line => line.trim()) // Remove empty lines
       .map(line => JSON.parse(line))

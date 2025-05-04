@@ -6,7 +6,7 @@ export async function GET() {
     where: {
       dateString: {
         gte: new Date().toISOString().split('T')[0],
-        lte: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+        lte: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
       }
     },
     include: {
