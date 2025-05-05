@@ -31,16 +31,40 @@ model ArtistProfile {
   @@map(name: "artist_profiles")
 }
 
+model Performer {
+  id            String       @default(cuid()) @id
+  name          String
+  instrument    String
+  events        EventPerformer[]
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+
+  @@unique([name, instrument])
+  @@map(name: "performers")
+}
+
+model EventPerformer {
+  event         Event        @relation(fields: [eventId], references: [id])
+  eventId       String
+  performer     Performer    @relation(fields: [performerId], references: [id])
+  performerId   String
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+
+  @@id([eventId, performerId])
+  @@map(name: "event_performers")
+}
+
 model Event {
   id            String       @default(cuid()) @id
   name          String
   url           String
+  logline       String?      @db.Text        // Brief description of the event
   dateString    String       // Required "2025-03-16"
   timeString    String?      // Optional "00:00"
   venue         Venue        @relation(fields: [venueId], references: [id])
   venueId       String
   artist        ArtistProfile?  @relation(fields: [artistId], references: [id])
   artistId      String?
+  performers    EventPerformer[]
   updatedAt     DateTime     @updatedAt @map(name: "updated_at")
   
   @@unique([name, dateString, timeString, venueId])

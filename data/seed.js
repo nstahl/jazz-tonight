@@ -19,7 +19,7 @@ async function loadData() {
       if (!acc[event.venue]) {
         acc[event.venue] = {
           name: event.venue,
-          url: event.url, // Use the first event's URL for the venue, or set to null
+          url: event.url,
           events: []
         }
       }
@@ -46,15 +46,15 @@ async function loadData() {
       for (const eventData of venueData.events) {
         // Loop over each date/time entry
         for (const dt of eventData.dates_and_times) {
+          if (!dt.time) continue; // Skip if time is null, undefined, or empty
+
           const dateString = dt.date
-          const timeString = dt.time || ''
+          const timeString = dt.time
 
-          console.log(`Processing event: ${eventData.event_title} on ${dateString}`);
-          console.log('eventData', eventData);
-          console.log('extracted date', dateString);
-          console.log('extracted time', timeString);
+          console.log(`Processing event: ${eventData.event_title} at ${venueName} on ${dateString}`);
 
-          await prisma.event.upsert({
+          // Create or update the event
+          const event = await prisma.event.upsert({
             where: { 
               name_dateString_timeString_venueId: {
                 name: eventData.event_title,
@@ -66,6 +66,7 @@ async function loadData() {
             update: {
               name: eventData.event_title,
               url: eventData.url,
+              logline: eventData.event_logline,
               dateString: dateString,
               timeString: timeString,
               venueId: venue.id,
@@ -73,11 +74,52 @@ async function loadData() {
             create: {
               name: eventData.event_title,
               url: eventData.url,
+              logline: eventData.event_logline,
               dateString: dateString,
               timeString: timeString,
               venueId: venue.id,
             },
           })
+
+          // Process performers if they exist
+          if (eventData.performers && eventData.performers.length > 0) {
+            for (const performerData of eventData.performers) {
+              // Convert instrument to lowercase
+              performerData.instrument = performerData.instrument.toLowerCase();
+              // Create or update the performer
+              const performer = await prisma.performer.upsert({
+                where: {
+                  name_instrument: {
+                    name: performerData.name,
+                    instrument: performerData.instrument
+                  }
+                },
+                update: {
+                  name: performerData.name,
+                  instrument: performerData.instrument,
+                },
+                create: {
+                  name: performerData.name,
+                  instrument: performerData.instrument,
+                },
+              })
+
+              // Create the EventPerformer relationship
+              await prisma.eventPerformer.upsert({
+                where: {
+                  eventId_performerId: {
+                    eventId: event.id,
+                    performerId: performer.id
+                  }
+                },
+                update: {},
+                create: {
+                  eventId: event.id,
+                  performerId: performer.id,
+                },
+              })
+            }
+          }
         }
       }
     }
@@ -99,7 +141,11 @@ async function loadArtistProfiles() {
       .filter(line => line.trim()) // Remove empty lines
       .map(line => JSON.parse(line))
 
+    console.log(`Found ${profiles.length} artist profiles to process`);
+
     for (const profile of profiles) {
+      console.log(`Processing artist profile: ${profile.artist_name}`);
+
       // Create or update artist profile
       const artist = await prisma.artistProfile.upsert({
         where: { name: profile.artist_name },
@@ -118,8 +164,10 @@ async function loadArtistProfiles() {
         },
       })
 
+      console.log(`Linking events for artist: ${profile.artist_name}`);
+
       // Find and link events that match the artist name
-      await prisma.event.updateMany({
+      const updateResult = await prisma.event.updateMany({
         where: {
           name: {
             contains: profile.artist_name,
@@ -130,6 +178,8 @@ async function loadArtistProfiles() {
           artistId: artist.id
         }
       })
+
+      console.log(`Linked ${updateResult.count} events to ${profile.artist_name}`);
     }
 
     console.log('Artist profiles import completed successfully')

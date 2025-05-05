@@ -26,9 +26,15 @@ type ArtistWithVideos = {
 
 // Define the event type with the extended artist type
 type EventWithArtist = {
+  id: string;
+  name: string;
+  dateString: string;
+  timeString: string | null;
+  url: string;
+  logline?: string;
   artist: ArtistWithVideos | null;
-  [key: string]: any;
-}
+  venue: { name: string };
+};
 
 // Define the other event type
 type OtherEvent = {
@@ -46,20 +52,38 @@ export default async function Page({ params }: PageProps) {
 
   const event = await prisma.event.findUnique({
     where: { id: id },
-    include: {
+    select: {
+      id: true,
+      name: true,
+      dateString: true,
+      timeString: true,
+      url: true,
+      logline: true,
       artist: {
-        include: {
+        select: {
+          youtubeUrls: true,
+          biography: true,
+          website: true,
+          instagram: true,
           events: {
+            select: {
+              id: true,
+              name: true,
+              dateString: true,
+              timeString: true,
+              venue: {
+                select: {
+                  name: true
+                }
+              }
+            },
             where: {
               dateString: {
                 gte: new Date().toISOString().split('T')[0]
               },
               NOT: {
-                id: id // Exclude current event
+                id: id
               }
-            },
-            include: {
-              venue: true
             },
             orderBy: {
               dateString: 'asc'
@@ -67,12 +91,16 @@ export default async function Page({ params }: PageProps) {
           }
         }
       },
-      venue: true
+      venue: {
+        select: {
+          name: true
+        }
+      }
     }
-  }) as EventWithArtist;
+  }) as EventWithArtist | null;
 
   if (!event) {
-    notFound()
+    notFound();
   }
 
   // Filter YouTube URLs to only include valid ones and store both URL and videoId
@@ -141,45 +169,19 @@ export default async function Page({ params }: PageProps) {
         </a>
       </div>
 
-      {/* Artist Profile Section */}
       {event.artist && (
         <div className="border-t pt-8">
           
-          {event.artist.biography && (
+          {event.logline && (
             <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-2">Biography</h3>
-              <p className="whitespace-pre-wrap">{event.artist.biography}</p>
+              <p className="italic text-xl">{event.logline}</p>
             </div>
           )}
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            {event.artist.website && (
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Website</h3>
-                <a href={event.artist.website} target="_blank" rel="noopener noreferrer" 
-                   className="text-blue-300 hover:underline">
-                  {event.artist.website.length > 40 
-                    ? `${new URL(event.artist.website).hostname}/...`
-                    : event.artist.website
-                  }
-                </a>
-              </div>
-            )}
-            
-            {event.artist.instagram && (
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Instagram</h3>
-                <a href={event.artist.instagram.replace('@', '')} target="_blank" 
-                   rel="noopener noreferrer" className="text-blue-300 hover:underline">
-                  @{event.artist.instagram.split('/').filter(Boolean).pop()}
-                </a>
-              </div>
-            )}
-          </div>
+
+          <div className="border-t mb-6"></div>
 
           {event.artist?.youtubeVideos && event.artist.youtubeVideos.length > 0 && (
             <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-2">YouTube Videos</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {event.artist.youtubeVideos.map((video: YouTubeVideo, index: number) => (
                   <div key={index} className="aspect-video">
@@ -197,7 +199,9 @@ export default async function Page({ params }: PageProps) {
               </div>
             </div>
           )}
+        
         </div>
+        
       )}
 
       {/* Upcoming Events Section */}
