@@ -34,6 +34,7 @@ type EventWithArtist = {
   logline?: string;
   artist: ArtistWithVideos | null;
   venue: { name: string };
+  performers?: { performer: { name: string; instrument: string } }[];
 };
 
 // Define the other event type
@@ -94,6 +95,16 @@ export default async function Page({ params }: PageProps) {
       venue: {
         select: {
           name: true
+        }
+      },
+      performers: {
+        select: {
+          performer: {
+            select: {
+              name: true,
+              instrument: true,
+            }
+          }
         }
       }
     }
@@ -178,8 +189,43 @@ export default async function Page({ params }: PageProps) {
             </div>
           )}
 
-          <div className="border-t mb-6"></div>
+<div className="border-t mb-6"></div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {event.performers && event.performers.length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-2">Musicians</h3>
+              <ul>
+                {event.performers.map(({ performer }, idx) => (
+                  <li key={idx}>
+                    <span className="font-medium">{performer.name}</span>
+                    {performer.instrument && (
+                      <span className="text-gray-300"> // {performer.instrument}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+            
+            {(event.artist.website || event.artist.instagram) && (
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Learn more</h3>
+                <a href={event.artist.website} target="_blank" rel="noopener noreferrer" 
+                   className="text-blue-300 hover:underline">
+                  {new URL(event.artist.website).hostname}
+                </a><br />
+                <a href={event.artist.instagram.replace('@', '')} target="_blank" 
+                   rel="noopener noreferrer" className="text-blue-300 hover:underline">
+                  @{event.artist.instagram.split('/').filter(Boolean).pop()}
+                </a>
+              </div>
+            )}
+          </div>
+
+          
+
+          <h3 className="text-xl font-semibold mb-2">YouTube</h3>
           {event.artist?.youtubeVideos && event.artist.youtubeVideos.length > 0 && (
             <div className="mb-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
