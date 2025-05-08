@@ -96,15 +96,23 @@ export default function Page() {
     // Define the global YT object
     window.YT = {
       Player: class {
+        private player: any;
         constructor(element: any, options: any) {
           const iframe = element as HTMLIFrameElement;
           iframe.src = iframe.src + '&enablejsapi=1';
           if (options.events?.onReady) {
             // Simulate onReady after a short delay
             setTimeout(() => {
-              options.events.onReady({ target: { getDuration: () => 180, seekTo: (time: number) => {
-                iframe.src = iframe.src.split('&')[0] + `&start=${time}`;
-              }}});
+              this.player = {
+                getDuration: () => 180,
+                seekTo: (time: number) => {
+                  iframe.src = iframe.src.split('&')[0] + `&start=${time}`;
+                },
+                playVideo: () => {
+                  iframe.src = iframe.src.split('&')[0] + '&autoplay=1';
+                }
+              };
+              options.events.onReady({ target: this.player });
             }, 100);
           }
         }
@@ -124,6 +132,7 @@ export default function Page() {
     const duration = event.target.getDuration();
     const startTime = Math.floor(duration / 3);
     event.target.seekTo(startTime);
+    event.target.playVideo();
   };
 
   if (loading) {
@@ -285,7 +294,7 @@ export default function Page() {
                         <div className="relative pb-[56.25%] h-0">
                           <iframe
                             className="absolute top-0 left-0 w-full h-full rounded-lg"
-                            src={`https://www.youtube.com/embed/${playingVideo.videoId}?autoplay=1&enablejsapi=1`}
+                            src={`https://www.youtube.com/embed/${playingVideo.videoId}?enablejsapi=1&playsinline=1`}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             onLoad={(e) => {
