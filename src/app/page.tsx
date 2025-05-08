@@ -1,5 +1,13 @@
 'use client'
 
+declare global {
+  interface Window {
+    YT: {
+      Player: new (element: any, options: any) => any;
+    };
+  }
+}
+
 import { useEffect, useState } from 'react';
 import { Fugaz_One } from 'next/font/google';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
@@ -32,15 +40,12 @@ export default function Page() {
   const [columnsCount, setColumnsCount] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
   const [playingVideo, setPlayingVideo] = useState<{ videoId: string; eventId: string } | null>(null);
-  const [videoStartTime, setVideoStartTime] = useState<number | null>(null);
 
   useEffect(() => {
     const calculateColumns = () => {
       const columnWidth = 400 + 24; // max width of each column
       const screenWidth = Math.min(window.innerWidth, 1536) - 32; // max width of container is 1536px; 16px padding on each side; 
       const columns = Math.max(1, Math.floor(screenWidth / columnWidth));
-      console.log("screenWidth", screenWidth);
-      console.log("columns", columns);
       setColumnsCount(columns);
     };
 
@@ -62,7 +67,6 @@ export default function Page() {
         
         // Group events by date
         const groupedEvents = events.reduce((acc: Record<string, Event[]>, event: Event) => {
-          console.log("event", event);
           if (!acc[event.dateString]) {
             acc[event.dateString] = [];
           }
@@ -119,7 +123,6 @@ export default function Page() {
   const onPlayerReady = (event: any) => {
     const duration = event.target.getDuration();
     const startTime = Math.floor(duration / 3);
-    setVideoStartTime(startTime);
     event.target.seekTo(startTime);
   };
 
@@ -286,8 +289,8 @@ export default function Page() {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             onLoad={(e) => {
-                              // @ts-ignore
-                              const player = new YT.Player(e.target, {
+                              {/* @ts-expect-error YT.Player is defined globally by YouTube IFrame API */}
+                              new YT.Player(e.target, {
                                 events: {
                                   onReady: onPlayerReady
                                 }
