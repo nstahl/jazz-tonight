@@ -31,7 +31,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [columnsCount, setColumnsCount] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
-  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
+  const [playingVideo, setPlayingVideo] = useState<{ videoId: string; eventId: string } | null>(null);
   const [videoStartTime, setVideoStartTime] = useState<number | null>(null);
 
   useEffect(() => {
@@ -244,21 +244,58 @@ export default function Page() {
                       </div>
                     </a>
 
-                    {/* Small play button in top right corner */}
+                    {/* Play/Stop button in top right corner */}
                     {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
                       <button
                         onClick={(e) => {
                           e.preventDefault();
                           const videoId = getYoutubeVideoId(event.artist!.youtubeUrls![0]);
-                          if (videoId) setPlayingVideoId(videoId);
+                          if (videoId) {
+                            // If this card is already playing, close it. Otherwise, play this video
+                            setPlayingVideo(
+                              playingVideo?.eventId === event.id 
+                                ? null 
+                                : { videoId, eventId: event.id }
+                            );
+                          }
                         }}
                         className="absolute top-2 right-2 p-2 bg-gray-600/80 hover:bg-gray-500/80 text-white rounded-full shadow-lg transition-colors"
-                        title={`Play ${event.artist.name}`}
+                        title={playingVideo?.eventId === event.id ? 'Stop' : `Play ${event.artist.name}`}
                       >
-                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
+                        {playingVideo?.eventId === event.id ? (
+                          // Stop icon
+                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6 6h12v12H6z" />
+                          </svg>
+                        ) : (
+                          // Play icon
+                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        )}
                       </button>
+                    )}
+
+                    {/* YouTube player embedded in card */}
+                    {playingVideo?.eventId === event.id && (
+                      <div className="mt-4">
+                        <div className="relative pb-[56.25%] h-0">
+                          <iframe
+                            className="absolute top-0 left-0 w-full h-full rounded-lg"
+                            src={`https://www.youtube.com/embed/${playingVideo.videoId}?autoplay=1&enablejsapi=1`}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            onLoad={(e) => {
+                              // @ts-ignore
+                              const player = new YT.Player(e.target, {
+                                events: {
+                                  onReady: onPlayerReady
+                                }
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
                     )}
                   </div>
                 ))}
@@ -266,39 +303,6 @@ export default function Page() {
           </div>
         ))}
       </div>
-
-      {/* YouTube player modal */}
-      {playingVideoId && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-900 rounded-lg p-4 max-w-2xl w-full">
-            <div className="relative pb-[56.25%] h-0">
-              <iframe
-                className="absolute top-0 left-0 w-full h-full rounded-lg"
-                src={`https://www.youtube.com/embed/${playingVideoId}?autoplay=1&enablejsapi=1`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                onLoad={(e) => {
-                  // @ts-ignore
-                  const player = new YT.Player(e.target, {
-                    events: {
-                      onReady: onPlayerReady
-                    }
-                  });
-                }}
-              />
-            </div>
-            <button
-              onClick={() => {
-                setPlayingVideoId(null);
-                setVideoStartTime(null);
-              }}
-              className="mt-4 w-full py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

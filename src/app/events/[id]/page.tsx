@@ -130,7 +130,6 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className="max-w-4xl mx-auto p-6 pb-[calc(1.5rem+88px)] md:pb-6">
-      <iframe src="https://open.spotify.com/embed/artist/2hGh5VOeeqimQFxqXvfCUf" allow="encrypted-media"></iframe>
       {/* Event Header Section */}
       <div className="rounded-lg mb-8 flex justify-between items-start">
         <div>
