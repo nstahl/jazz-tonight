@@ -130,6 +130,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className="max-w-4xl mx-auto p-6 pb-[calc(1.5rem+88px)] md:pb-6">
+      <iframe src="https://open.spotify.com/embed/artist/2hGh5VOeeqimQFxqXvfCUf" allow="encrypted-media"></iframe>
       {/* Event Header Section */}
       <div className="rounded-lg mb-8 flex justify-between items-start">
         <div>
@@ -225,9 +226,9 @@ export default async function Page({ params }: PageProps) {
 
           
 
-          <h3 className="text-xl font-semibold mb-2">YouTube</h3>
           {event.artist?.youtubeVideos && event.artist.youtubeVideos.length > 0 && (
             <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-2">YouTube</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {event.artist.youtubeVideos.map((video: YouTubeVideo, index: number) => (
                   <div key={index} className="aspect-video">

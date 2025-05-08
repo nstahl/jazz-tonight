@@ -22,6 +22,7 @@ interface Event {
   artist: {
     id: string;
     name: string;
+    youtubeUrls?: string[];
   } | null;
 }
 
@@ -30,6 +31,8 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [columnsCount, setColumnsCount] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
+  const [videoStartTime, setVideoStartTime] = useState<number | null>(null);
 
   useEffect(() => {
     const calculateColumns = () => {
@@ -59,6 +62,7 @@ export default function Page() {
         
         // Group events by date
         const groupedEvents = events.reduce((acc: Record<string, Event[]>, event: Event) => {
+          console.log("event", event);
           if (!acc[event.dateString]) {
             acc[event.dateString] = [];
           }
@@ -76,6 +80,48 @@ export default function Page() {
 
     fetchEvents();
   }, []);
+
+  // Add this useEffect to load the YouTube API
+  useEffect(() => {
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+    // Define the global YT object
+    window.YT = {
+      Player: class {
+        constructor(element: any, options: any) {
+          const iframe = element as HTMLIFrameElement;
+          iframe.src = iframe.src + '&enablejsapi=1';
+          if (options.events?.onReady) {
+            // Simulate onReady after a short delay
+            setTimeout(() => {
+              options.events.onReady({ target: { getDuration: () => 180, seekTo: (time: number) => {
+                iframe.src = iframe.src.split('&')[0] + `&start=${time}`;
+              }}});
+            }, 100);
+          }
+        }
+      }
+    };
+  }, []);
+
+  // Helper function to extract video ID from YouTube URL
+  const getYoutubeVideoId = (url: string) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  // Function to handle video duration
+  const onPlayerReady = (event: any) => {
+    const duration = event.target.getDuration();
+    const startTime = Math.floor(duration / 3);
+    setVideoStartTime(startTime);
+    event.target.seekTo(startTime);
+  };
 
   if (loading) {
     return (
@@ -197,12 +243,62 @@ export default function Page() {
                         <span>{event.venue.name}</span>
                       </div>
                     </a>
+
+                    {/* Small play button in top right corner */}
+                    {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const videoId = getYoutubeVideoId(event.artist!.youtubeUrls![0]);
+                          if (videoId) setPlayingVideoId(videoId);
+                        }}
+                        className="absolute top-2 right-2 p-2 bg-gray-600/80 hover:bg-gray-500/80 text-white rounded-full shadow-lg transition-colors"
+                        title={`Play ${event.artist.name}`}
+                      >
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </button>
+                    )}
                   </div>
                 ))}
             </div>
           </div>
         ))}
       </div>
+
+      {/* YouTube player modal */}
+      {playingVideoId && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 rounded-lg p-4 max-w-2xl w-full">
+            <div className="relative pb-[56.25%] h-0">
+              <iframe
+                className="absolute top-0 left-0 w-full h-full rounded-lg"
+                src={`https://www.youtube.com/embed/${playingVideoId}?autoplay=1&enablejsapi=1`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                onLoad={(e) => {
+                  // @ts-ignore
+                  const player = new YT.Player(e.target, {
+                    events: {
+                      onReady: onPlayerReady
+                    }
+                  });
+                }}
+              />
+            </div>
+            <button
+              onClick={() => {
+                setPlayingVideoId(null);
+                setVideoStartTime(null);
+              }}
+              className="mt-4 w-full py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
