@@ -99,22 +99,36 @@ export default function Page() {
         private player: any;
         constructor(element: any, options: any) {
           const iframe = element as HTMLIFrameElement;
-          iframe.src = iframe.src + '&enablejsapi=1';
-          if (options.events?.onReady) {
-            // Simulate onReady after a short delay
-            setTimeout(() => {
-              this.player = {
-                getDuration: () => 180,
-                seekTo: (time: number) => {
-                  iframe.src = iframe.src.split('&')[0] + `&start=${time}`;
+          const videoId = iframe.src.split('/').pop()?.split('?')[0];
+          const startTime = Math.floor(180 / 3); // Start at 1/3 of the video
+          
+          // Wait for YT API to be ready
+          const initPlayer = () => {
+            if ((window as any).YT && (window as any).YT.Player) {
+              this.player = new (window as any).YT.Player(element, {
+                videoId: videoId,
+                playerVars: {
+                  autoplay: 1,
+                  playsinline: 1,
+                  start: startTime,
+                  enablejsapi: 1,
                 },
-                playVideo: () => {
-                  iframe.src = iframe.src.split('&')[0] + '&autoplay=1';
+                events: {
+                  onReady: (event: any) => {
+                    event.target.seekTo(startTime, true);
+                    event.target.playVideo();
+                    if (options.events?.onReady) {
+                      options.events.onReady(event);
+                    }
+                  }
                 }
-              };
-              options.events.onReady({ target: this.player });
-            }, 100);
-          }
+              });
+            } else {
+              setTimeout(initPlayer, 100);
+            }
+          };
+
+          initPlayer();
         }
       }
     };
@@ -125,14 +139,6 @@ export default function Page() {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
-  };
-
-  // Function to handle video duration
-  const onPlayerReady = (event: any) => {
-    const duration = event.target.getDuration();
-    const startTime = Math.floor(duration / 3);
-    event.target.seekTo(startTime);
-    event.target.playVideo();
   };
 
   if (loading) {
@@ -294,17 +300,9 @@ export default function Page() {
                         <div className="relative pb-[56.25%] h-0">
                           <iframe
                             className="absolute top-0 left-0 w-full h-full rounded-lg"
-                            src={`https://www.youtube.com/embed/${playingVideo.videoId}?enablejsapi=1&playsinline=1`}
+                            src={`https://www.youtube.com/embed/${playingVideo.videoId}?autoplay=1&playsinline=1&enablejsapi=1&start=${Math.floor(180 / 3)}`}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
-                            onLoad={(e) => {
-                              {/* @ts-expect-error YT.Player is defined globally by YouTube IFrame API */}
-                              new YT.Player(e.target, {
-                                events: {
-                                  onReady: onPlayerReady
-                                }
-                              });
-                            }}
                           />
                         </div>
                       </div>
