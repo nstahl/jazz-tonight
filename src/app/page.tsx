@@ -46,10 +46,8 @@ export default function Page() {
 
   // Helper function to extract video ID from YouTube URL
   const getYoutubeVideoId = (url: string) => {
-    console.log('Getting video ID from:', url);
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
-    console.log('Match:', match);
     return (match && match[2].length === 11) ? match[2] : null;
   };
 
@@ -256,15 +254,61 @@ export default function Page() {
                     )}
 
                     {/* YouTube player embedded in card */}
-                    {playingVideo?.eventId === event.id && (
+                    {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
                       <div className="mt-4">
                         <div className="relative pb-[56.25%] h-0">
-                          <iframe
-                            className="absolute top-0 left-0 w-full h-full rounded-lg"
-                            src={`https://www.youtube.com/embed/${playingVideo.videoId}?autoplay=1&playsinline=1&enablejsapi=1&start=${60 + Math.floor(Math.random() * 31)}`}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                          />
+                          {playingVideo?.eventId === event.id ? (
+                            <iframe
+                              className="absolute top-0 left-0 w-full h-full rounded-lg grayscale"
+                              src={`https://www.youtube.com/embed/${getYoutubeVideoId(event.artist.youtubeUrls[0])}?autoplay=1&playsinline=1&enablejsapi=1&start=${60 + Math.floor(Math.random() * 31)}`}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          ) : (
+                            <div 
+                              className="absolute top-0 left-0 w-full h-full rounded-lg cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                let videoId = null;
+                                for (const url of event.artist!.youtubeUrls!) {
+                                  videoId = getYoutubeVideoId(url);
+                                  if (videoId) break;
+                                }
+                                if (videoId) {
+                                  setPlayingVideo({ videoId, eventId: event.id });
+                                }
+                              }}
+                            >
+                              <img
+                                src={`https://img.youtube.com/vi/${getYoutubeVideoId(event.artist.youtubeUrls[0])}/maxresdefault.jpg`}
+                                alt={`${event.artist.name} preview`}
+                                className="w-full h-full object-cover rounded-lg grayscale"
+                                onLoad={e => {
+                                  const img = e.currentTarget;
+                                  // YouTube fallback is usually 120x90 or 480x360
+                                  if (img.naturalWidth === 120 && img.naturalHeight === 90) {
+                                    // Fallback detected, swap to a different thumbnail or placeholder
+                                    img.src = [ './placeholder-charcoal-455x260.png',
+                                                './charcoal_vibes_455x260.png',
+                                                './charcoal_guitar_bass_drums_455x260.png'
+                                              ][Math.floor(Math.random() * 3)];
+                                  }
+                                }}
+                                onError={e => {
+                                  // This will only fire for true network errors
+                                  const img = e.currentTarget;
+                                  console.log('Error loading image:', img.src);
+                                }}
+                              />
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
+                                  <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z" />
+                                  </svg>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
