@@ -44,29 +44,6 @@ export default function Page() {
   const [startIndex, setStartIndex] = useState(0);
   const [playingVideo, setPlayingVideo] = useState<{ videoId: string; eventId: string } | null>(null);
 
-  // First, let's create a function to load the YouTube API
-  const loadYouTubeAPI = () => {
-    return new Promise<void>((resolve) => {
-      // If the API is already loaded, resolve immediately
-      if (window.YT) {
-        resolve();
-        return;
-      }
-
-      // Create and load the script
-      const tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-
-      // Set up the global callback that YouTube API calls when ready
-      window.onYouTubeIframeAPIReady = () => {
-        console.log('YouTube API Ready');
-        resolve();
-      };
-    });
-  };
-
   // Helper function to extract video ID from YouTube URL
   const getYoutubeVideoId = (url: string) => {
     console.log('Getting video ID from:', url);
