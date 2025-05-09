@@ -14,6 +14,37 @@ async function loadData() {
       .filter(line => line.trim())
       .map(line => JSON.parse(line))
 
+    // Calculate min and max dates from all events
+    const allDates = events.flatMap(event => 
+      event.dates_and_times.map(dt => dt.date)
+    ).filter(Boolean);
+
+    const minDate = allDates.length > 0 ? allDates.reduce((min, date) => 
+      date < min ? date : min
+    ) : null;
+
+    const maxDate = allDates.length > 0 ? allDates.reduce((max, date) =>
+      date > max ? date : max  
+    ) : null;
+
+    console.log('Date range of events:');
+    console.log(`Min date: ${minDate}`);
+    console.log(`Max date: ${maxDate}`);
+
+    // Update all dates to 2025
+    events.forEach(event => {
+      event.dates_and_times = event.dates_and_times.map(dt => {
+        if (dt.date) {
+          // Parse the date and set year to 2025 while preserving month and day
+          const [year, month, day] = dt.date.split('-');
+          dt.date = `2025-${month}-${day}`;
+        }
+        return dt;
+      });
+    });
+
+    console.log('Updated all event dates to 2025');
+
     // Group events by venue
     const venueGroups = events.reduce((acc, event) => {
       if (!acc[event.venue]) {

@@ -5,6 +5,7 @@ declare global {
     YT: {
       Player: new (element: any, options: any) => any;
     };
+    onYouTubeIframeAPIReady: () => void;
   }
 }
 
@@ -35,11 +36,45 @@ interface Event {
 }
 
 export default function Page() {
+  console.log('Page component rendering');
+  
   const [dateGroups, setDateGroups] = useState<[string, Event[]][]>([]);
   const [loading, setLoading] = useState(true);
   const [columnsCount, setColumnsCount] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
   const [playingVideo, setPlayingVideo] = useState<{ videoId: string; eventId: string } | null>(null);
+
+  // First, let's create a function to load the YouTube API
+  const loadYouTubeAPI = () => {
+    return new Promise<void>((resolve) => {
+      // If the API is already loaded, resolve immediately
+      if (window.YT) {
+        resolve();
+        return;
+      }
+
+      // Create and load the script
+      const tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+      // Set up the global callback that YouTube API calls when ready
+      window.onYouTubeIframeAPIReady = () => {
+        console.log('YouTube API Ready');
+        resolve();
+      };
+    });
+  };
+
+  // Helper function to extract video ID from YouTube URL
+  const getYoutubeVideoId = (url: string) => {
+    console.log('Getting video ID from:', url);
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    console.log('Match:', match);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
 
   useEffect(() => {
     const calculateColumns = () => {
@@ -84,62 +119,6 @@ export default function Page() {
 
     fetchEvents();
   }, []);
-
-  // Add this useEffect to load the YouTube API
-  useEffect(() => {
-    // Load YouTube IFrame API
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-
-    // Define the global YT object
-    window.YT = {
-      Player: class {
-        private player: any;
-        constructor(element: any, options: any) {
-          const iframe = element as HTMLIFrameElement;
-          const videoId = iframe.src.split('/').pop()?.split('?')[0];
-          const startTime = Math.floor(180 / 3); // Start at 1/3 of the video
-          
-          // Wait for YT API to be ready
-          const initPlayer = () => {
-            if ((window as any).YT && (window as any).YT.Player) {
-              this.player = new (window as any).YT.Player(element, {
-                videoId: videoId,
-                playerVars: {
-                  autoplay: 1,
-                  playsinline: 1,
-                  start: startTime,
-                  enablejsapi: 1,
-                },
-                events: {
-                  onReady: (event: any) => {
-                    event.target.seekTo(startTime, true);
-                    event.target.playVideo();
-                    if (options.events?.onReady) {
-                      options.events.onReady(event);
-                    }
-                  }
-                }
-              });
-            } else {
-              setTimeout(initPlayer, 100);
-            }
-          };
-
-          initPlayer();
-        }
-      }
-    };
-  }, []);
-
-  // Helper function to extract video ID from YouTube URL
-  const getYoutubeVideoId = (url: string) => {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-  };
 
   if (loading) {
     return (
@@ -267,7 +246,12 @@ export default function Page() {
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          const videoId = getYoutubeVideoId(event.artist!.youtubeUrls![0]);
+                          let videoId = null;
+                          for (const url of event.artist!.youtubeUrls!) {
+                            videoId = getYoutubeVideoId(url);
+                            if (videoId) break;
+                          }
+                          console.log('Video ID:', videoId);
                           if (videoId) {
                             // If this card is already playing, close it. Otherwise, play this video
                             setPlayingVideo(
@@ -300,7 +284,7 @@ export default function Page() {
                         <div className="relative pb-[56.25%] h-0">
                           <iframe
                             className="absolute top-0 left-0 w-full h-full rounded-lg"
-                            src={`https://www.youtube.com/embed/${playingVideo.videoId}?autoplay=1&playsinline=1&enablejsapi=1&start=${Math.floor(180 / 3)}`}
+                            src={`https://www.youtube.com/embed/${playingVideo.videoId}?autoplay=1&playsinline=1&enablejsapi=1&start=${60 + Math.floor(Math.random() * 31)}`}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                           />
