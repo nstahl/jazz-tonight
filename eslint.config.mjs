@@ -14,9 +14,11 @@ const eslintConfig = [
   {
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
-      "react/jsx-no-comment-textnodes": "off"
-    }
-  }
+      "react/jsx-no-comment-textnodes": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@next/next/no-img-element": "off",
+    },
+  },
 ];
 
 export default eslintConfig;

@@ -1,13 +1,18 @@
 // @ts-nocheck
 
 import React, { useState } from 'react';
-
+import { Fugaz_One } from 'next/font/google';
 // Helper function to extract video ID from YouTube URL
 const getYoutubeVideoId = (url: string) => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   return (match && match[2].length === 11) ? match[2] : null;
 };
+
+const fugazOne = Fugaz_One({
+    weight: '400',
+    subsets: ['latin'],
+  });
 
 function EventCard({ event, playingVideo, setPlayingVideo }) {
   const [previewIndex, setPreviewIndex] = useState(0);
@@ -30,7 +35,7 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
         className="block hover:bg-gray-300/60 -m-4 p-4 rounded-lg transition-all"
         href={`/events/${event.id}`}
       >
-        <div className="text-lg font-medium mb-2 font-fugaz">
+        <div className={`text-lg font-medium mb-2 ${fugazOne.className}`}>
           <span>{event.name}</span>
         </div>
         <div className="flex justify-between text-sm">

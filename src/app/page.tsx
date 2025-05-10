@@ -12,14 +12,8 @@ declare global {
 }
 
 import { useEffect, useState } from 'react';
-import { Fugaz_One } from 'next/font/google';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import EventCard from '@/components/EventCard';
-
-const fugazOne = Fugaz_One({
-  weight: '400',
-  subsets: ['latin'],
-});
 
 interface Event {
   id: string;
@@ -45,13 +39,6 @@ export default function Page() {
   const [columnsCount, setColumnsCount] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
   const [playingVideo, setPlayingVideo] = useState<{ videoId: string; eventId: string } | null>(null);
-
-  // Helper function to extract video ID from YouTube URL
-  const getYoutubeVideoId = (url: string) => {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-  };
 
   useEffect(() => {
     const calculateColumns = () => {
