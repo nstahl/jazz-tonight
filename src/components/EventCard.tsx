@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Fugaz_One } from 'next/font/google';
 import YouTube from 'react-youtube';
@@ -18,43 +18,11 @@ const fugazOne = Fugaz_One({
   });
 
 function EventCard({ event }) {
-  const playerRef = useRef(null);
-  const currentVideoIndexRef = useRef(0);
-
-  console.log("Mounting EventCard");
-
 
   const { ref, inView } = useInView({
     threshold: 0.9,
   });
 
-  const onReady = (event) => {
-    console.log('YouTube player ready');
-    playerRef.current = event.target;
-  };
-
-  const onStateChange = (event) => {
-    const state = event.data;
-    console.log('YouTube player state changed:', state);
-  
-    if (state === window.YT.PlayerState.CUED) {
-      console.log('Video is cued and ready to play');
-      // Only attempt to play if we're in view
-      if (inView) {
-        playerRef.current.playVideo();
-      }
-    }
-  };
-
-  const handleNext = (direction) => {
-    console.log('handleNext', direction);
-    console.log('currentVideoIndexRef.current', currentVideoIndexRef.current);
-    const nextIndex = (currentVideoIndexRef.current + direction) % event.artist.youtubeUrls.length;
-    const nextVideoId = getYoutubeVideoId(event.artist.youtubeUrls[nextIndex]);
-    console.log('nextVideoId', nextVideoId);
-    playerRef.current.cueVideoById(nextVideoId);
-    currentVideoIndexRef.current = nextIndex;
-  };
 
   return (
     <div
@@ -112,43 +80,11 @@ function EventCard({ event }) {
         <div className="mt-4">
           <div className="relative pb-[56.25%] h-0">
             {/* Always show navigation arrows if multiple videos */}
-            {event.artist.youtubeUrls.length > 1 && (
-              <>
-                {currentVideoIndexRef.current > 0 && (
-                  <button
-                    className="absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white/90 hover:bg-blue-500/70 text-white rounded-full p-2 transition-colors"
-                    style={{ backdropFilter: 'blur(2px)' }}
-                    onClick={e => {
-                      e.preventDefault();
-                      handleNext(-1);
-                    }}
-                    title="Previous video"
-                  >
-                    <svg className="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
-                  </button>
-                )}
-                {currentVideoIndexRef.current < event.artist.youtubeUrls.length - 1 && (
-                  <button
-                    className="absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white/90 hover:bg-blue-500/70 text-white rounded-full p-2 transition-colors"
-                    style={{ backdropFilter: 'blur(2px)' }}
-                    onClick={e => {
-                      e.preventDefault();
-                      handleNext(1);
-                    }}
-                    title="Next video"
-                  >
-                    <svg className="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                  </button>
-                )}
-              </>
-            )}
             {/* Video or thumbnail */}
             {inView ? (
               <div className="absolute top-0 left-0 w-full h-full rounded-lg grayscale">
                 <YouTube
-                  videoId={getYoutubeVideoId(event.artist.youtubeUrls[currentVideoIndexRef.current])}
-                  onReady={onReady}
-                  onStateChange={onStateChange}
+                  videoId={getYoutubeVideoId(event.artist.youtubeUrls[0])}
                   opts={{ playerVars: { autoplay: 0, playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(',') } }}
                   className="w-full h-full"
                   iframeClassName="w-full h-full rounded-lg"
@@ -173,18 +109,6 @@ function EventCard({ event }) {
               </div>
             )}
           </div>
-          {/* Dots for multiple videos */}
-          {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 1 && (
-            <div className="flex justify-center gap-1 mt-2">
-              {event.artist.youtubeUrls.map((_, idx) => (
-                <span
-                  key={`${idx}-${event.id}`}
-                  className={`inline-block w-2 h-2 rounded-full ${currentVideoIndexRef.current === idx ? 'bg-white' : 'bg-white/40'}`}
-                  style={{ transition: 'background 0.2s' }}
-                />
-              ))}
-            </div>
-          )}
         </div>
       )}
     </div>
