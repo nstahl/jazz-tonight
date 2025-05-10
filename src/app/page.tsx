@@ -80,7 +80,7 @@ export default function Page() {
             console.log('No artist or date for for event:', event);
           }
         }
-        var events = [];
+        const tempEvents = [];
         for (const key in artistDateDict) {
           const disaggregatedEventsForArtistDate = artistDateDict[key];
           const timeStrings = disaggregatedEventsForArtistDate.map(event => event.timeString);
@@ -97,7 +97,7 @@ export default function Page() {
           events.push(artistDateEvent);
         }
 
-        events = [events[0]];
+        const events = [tempEvents[0]];
 
         // Group events by date
         const groupedEvents = events.reduce((acc: Record<string, Event[]>, event: Event) => {
