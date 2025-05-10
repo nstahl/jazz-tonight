@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Fugaz_One } from 'next/font/google';
 import YouTube from 'react-youtube';
@@ -33,11 +33,6 @@ function EventCard({ event }) {
   const onReady = (event) => {
     console.log('YouTube player ready');
     playerRef.current = event.target;
-
-    if (shouldAutoPlayRef.current) {
-        playerRef.current.playVideo();
-        shouldAutoPlayRef.current = false;
-      }
   };
 
   const onStateChange = (event) => {
@@ -65,26 +60,7 @@ function EventCard({ event }) {
     shouldAutoPlayRef.current = wasPlayingRef.current;
     const nextIndex = (currentVideoIndex + direction) % event.artist.youtubeUrls.length;
     setCurrentVideoIndex(nextIndex);
-    
-    // // Try autoplaying only if it was playing before
-    // setTimeout(() => {
-    //     console.log('Checking if i should play video, player ref:', playerRef.current);
-    //     if (wasPlayingRef.current) {
-    //       console.log('Attempting to play video');
-    //       playerRef.current?.playVideo();
-    //     }
-    //   }, 500);
   };
-
-  useEffect(() => {
-    console.log('shouldAutoPlay:', shouldAutoPlayRef.current);
-    if (shouldAutoPlayRef.current && playerRef.current) {
-      console.log('Attempting to play video');
-      playerRef.current.playVideo();
-    }
-    // Always reset after acting
-    shouldAutoPlayRef.current = false;
-  }, [currentVideoIndex]);
 
   return (
     <div
@@ -179,7 +155,7 @@ function EventCard({ event }) {
                   videoId={getYoutubeVideoId(event.artist.youtubeUrls[currentVideoIndex])}
                   onReady={onReady}
                   onStateChange={onStateChange}
-                  opts={{ playerVars: { autoplay: 0 } }}
+                  opts={{ playerVars: { autoplay: 0, playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(',') } }}
                   className="w-full h-full"
                   iframeClassName="w-full h-full rounded-lg"
                 />
