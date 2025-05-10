@@ -97,7 +97,7 @@ export default function Page() {
           tempEvents.push(artistDateEvent);
         }
 
-        const events = [tempEvents[0]];
+        const events = tempEvents;
 
         // Group events by date
         const groupedEvents = events.reduce((acc: Record<string, Event[]>, event: Event) => {
