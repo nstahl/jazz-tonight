@@ -38,7 +38,6 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [columnsCount, setColumnsCount] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
-  const [playingVideo, setPlayingVideo] = useState<{ videoId: string; eventId: string } | null>(null);
 
   useEffect(() => {
     const calculateColumns = () => {
@@ -197,8 +196,6 @@ export default function Page() {
                     <EventCard
                       key={event.id}
                       event={event}
-                      playingVideo={playingVideo}
-                      setPlayingVideo={setPlayingVideo}
                     />
                 ))}
             </div>

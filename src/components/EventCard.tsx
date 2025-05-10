@@ -1,8 +1,10 @@
 // @ts-nocheck
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Fugaz_One } from 'next/font/google';
+import YouTube from 'react-youtube';
+
 // Helper function to extract video ID from YouTube URL
 const getYoutubeVideoId = (url: string) => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -15,14 +17,45 @@ const fugazOne = Fugaz_One({
     subsets: ['latin'],
   });
 
-function EventCard({ event, playingVideo, setPlayingVideo }) {
-  const [previewIndex, setPreviewIndex] = useState(0);
-  const isPlaying = playingVideo?.eventId === event.id;
-  const currentIndex = isPlaying ? playingVideo.videoIndex : previewIndex;
+function EventCard({ event }) {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const playerRef = useRef(null);
 
   const { ref, inView } = useInView({
     threshold: 0.9,
   });
+
+  const onReady = (event) => {
+    playerRef.current = event.target;
+  };
+
+  const handleNext = (direction) => {
+    const nextIndex = (currentVideoIndex + direction) % event.artist.youtubeUrls.length;
+    setCurrentVideoIndex(nextIndex);
+    // Wait for the new video to load and then play
+    setTimeout(() => {
+      playerRef.current?.playVideo();
+    }, 200); // adjust this if needed
+  };
+
+  const opts = {
+    playerVars: {
+      playsinline: 1,
+      enablejsapi: 1,
+      origin: window.location.origin,
+    },
+  };
+
+  const onPlayerReady = (event) => {
+    setPlayer(event.target);
+  };
+
+  const onPlayerPlay = (event) => {
+    console.log('Player is playing');
+    // setPlayingVideo({ eventId: event.id, videoIndex: currentIndex })
+  };
+
+
 
   return (
     <div
@@ -82,34 +115,26 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
             {/* Always show navigation arrows if multiple videos */}
             {event.artist.youtubeUrls.length > 1 && (
               <>
-                {currentIndex > 0 && (
+                {currentVideoIndex > 0 && (
                   <button
                     className="absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white/90 hover:bg-blue-500/70 text-white rounded-full p-2 transition-colors"
                     style={{ backdropFilter: 'blur(2px)' }}
                     onClick={e => {
                       e.preventDefault();
-                      if (isPlaying) {
-                        setPlayingVideo({ eventId: event.id, videoIndex: currentIndex - 1 });
-                      } else {
-                        setPreviewIndex(currentIndex - 1);
-                      }
+                      handleNext(-1);
                     }}
                     title="Previous video"
                   >
                     <svg className="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
                   </button>
                 )}
-                {currentIndex < event.artist.youtubeUrls.length - 1 && (
+                {currentVideoIndex < event.artist.youtubeUrls.length - 1 && (
                   <button
                     className="absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white/90 hover:bg-blue-500/70 text-white rounded-full p-2 transition-colors"
                     style={{ backdropFilter: 'blur(2px)' }}
                     onClick={e => {
                       e.preventDefault();
-                      if (isPlaying) {
-                        setPlayingVideo({ eventId: event.id, videoIndex: currentIndex + 1 });
-                      } else {
-                        setPreviewIndex(currentIndex + 1);
-                      }
+                      handleNext(1);
                     }}
                     title="Next video"
                   >
@@ -119,41 +144,29 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
               </>
             )}
             {/* Video or thumbnail */}
-            {isPlaying || inView ? (
-              <iframe
-                className="absolute top-0 left-0 w-full h-full rounded-lg grayscale"
-                src={`https://www.youtube.com/embed/${getYoutubeVideoId(event.artist.youtubeUrls[currentIndex])}?playsinline=1&enablejsapi=1&start=${60 + Math.floor(Math.random() * 31)}`}
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+            {inView ? (
+              <div className="absolute top-0 left-0 w-full h-full rounded-lg grayscale">
+                <YouTube
+                  key={event.id}
+                  videoId={getYoutubeVideoId(event.artist.youtubeUrls[currentVideoIndex])}
+                  onReady={onReady}
+                  opts={opts}
+                  className="w-full h-full"
+                  iframeClassName="w-full h-full rounded-lg"
+                />
+              </div>
             ) : (
               <div
                 className="absolute top-0 left-0 w-full h-full rounded-lg cursor-pointer"
                 onClick={e => {
                   e.preventDefault();
-                  setPlayingVideo({ eventId: event.id, videoIndex: currentIndex });
+                  setCurrentVideoIndex(currentVideoIndex);
                 }}
               >
                 <img
-                  src={`https://img.youtube.com/vi/${getYoutubeVideoId(event.artist.youtubeUrls[currentIndex])}/maxresdefault.jpg`}
+                  src={`./charcoal_vibes_455x260.png`}
                   alt={`${event.artist.name} preview`}
                   className="w-full h-full object-cover rounded-lg grayscale"
-                  onLoad={e => {
-                    const img = e.currentTarget;
-                    // YouTube fallback is usually 120x90 or 480x360
-                    if (img.naturalWidth === 120 && img.naturalHeight === 90) {
-                      img.src = [ './placeholder-charcoal-455x260.png',
-                                  './charcoal_vibes_455x260.png',
-                                  './charcoal_guitar_bass_drums_455x260.png',
-                                  'charcoal_snare_accordion_bass_violin_455x260.png'
-                                ][Math.floor(Math.random() * 3)];
-                    }
-                  }}
-                  onError={e => {
-                    // This will only fire for true network errors
-                    const img = e.currentTarget;
-                    console.log('Error loading image:', img.src);
-                  }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
@@ -171,7 +184,7 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
               {event.artist.youtubeUrls.map((_, idx) => (
                 <span
                   key={`${idx}-${event.id}`}
-                  className={`inline-block w-2 h-2 rounded-full ${currentIndex === idx ? 'bg-white' : 'bg-white/40'}`}
+                  className={`inline-block w-2 h-2 rounded-full ${currentVideoIndex === idx ? 'bg-white' : 'bg-white/40'}`}
                   style={{ transition: 'background 0.2s' }}
                 />
               ))}
