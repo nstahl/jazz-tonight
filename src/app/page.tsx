@@ -94,7 +94,7 @@ export default function Page() {
             venue: disaggregatedEventsForArtistDate[0].venue,
             artist: disaggregatedEventsForArtistDate[0].artist,
           }
-          events.push(artistDateEvent);
+          tempEvents.push(artistDateEvent);
         }
 
         const events = [tempEvents[0]];
