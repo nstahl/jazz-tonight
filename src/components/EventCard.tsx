@@ -1,6 +1,7 @@
 // @ts-nocheck
 
 import React, { useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { Fugaz_One } from 'next/font/google';
 // Helper function to extract video ID from YouTube URL
 const getYoutubeVideoId = (url: string) => {
@@ -19,8 +20,13 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
   const isPlaying = playingVideo?.eventId === event.id;
   const currentIndex = isPlaying ? playingVideo.videoIndex : previewIndex;
 
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+  });
+
   return (
     <div
+      ref={ref}
       className={`
         block p-4 
         bg-white/10
@@ -31,6 +37,7 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
         mx-auto
       `}
     >
+        {inView ? 'Component is on screen' : 'Component is off screen'}
       <a 
         className="block hover:bg-gray-300/60 -m-4 p-4 rounded-lg transition-all"
         href={`/events/${event.id}`}
