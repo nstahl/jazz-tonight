@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Fugaz_One } from 'next/font/google';
 import YouTube from 'react-youtube';
@@ -20,42 +20,71 @@ const fugazOne = Fugaz_One({
 function EventCard({ event }) {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const playerRef = useRef(null);
+  const wasPlayingRef = useRef(false);
+  const shouldAutoPlayRef = useRef(false);
+
+  console.log("Mounting EventCard");
+
 
   const { ref, inView } = useInView({
     threshold: 0.9,
   });
 
   const onReady = (event) => {
+    console.log('YouTube player ready');
     playerRef.current = event.target;
+
+    if (shouldAutoPlayRef.current) {
+        playerRef.current.playVideo();
+        shouldAutoPlayRef.current = false;
+      }
+  };
+
+  const onStateChange = (event) => {
+    const state = event.data;
+    console.log('YouTube player state changed:', state);
+    console.log('playerRef.current:', playerRef.current);
+
+    if (state === window.YT.PlayerState.CUED && wasPlayingRef.current) {
+        console.log('Video is cued');
+        playerRef.current.playVideo();
+    }
+
+    if (state === window.YT.PlayerState.PLAYING) {
+        console.log('Video is playing');
+        wasPlayingRef.current = true;
+    } 
+
+    if (state === window.YT.PlayerState.PAUSED) {
+        console.log('Video is paused or ended');
+        wasPlayingRef.current = false;
+    }
   };
 
   const handleNext = (direction) => {
+    shouldAutoPlayRef.current = wasPlayingRef.current;
     const nextIndex = (currentVideoIndex + direction) % event.artist.youtubeUrls.length;
     setCurrentVideoIndex(nextIndex);
-    // Wait for the new video to load and then play
-    setTimeout(() => {
-      playerRef.current?.playVideo();
-    }, 200); // adjust this if needed
+    
+    // // Try autoplaying only if it was playing before
+    // setTimeout(() => {
+    //     console.log('Checking if i should play video, player ref:', playerRef.current);
+    //     if (wasPlayingRef.current) {
+    //       console.log('Attempting to play video');
+    //       playerRef.current?.playVideo();
+    //     }
+    //   }, 500);
   };
 
-  const opts = {
-    playerVars: {
-      playsinline: 1,
-      enablejsapi: 1,
-      origin: window.location.origin,
-    },
-  };
-
-  const onPlayerReady = (event) => {
-    setPlayer(event.target);
-  };
-
-  const onPlayerPlay = (event) => {
-    console.log('Player is playing');
-    // setPlayingVideo({ eventId: event.id, videoIndex: currentIndex })
-  };
-
-
+  useEffect(() => {
+    console.log('shouldAutoPlay:', shouldAutoPlayRef.current);
+    if (shouldAutoPlayRef.current && playerRef.current) {
+      console.log('Attempting to play video');
+      playerRef.current.playVideo();
+    }
+    // Always reset after acting
+    shouldAutoPlayRef.current = false;
+  }, [currentVideoIndex]);
 
   return (
     <div
@@ -147,10 +176,10 @@ function EventCard({ event }) {
             {inView ? (
               <div className="absolute top-0 left-0 w-full h-full rounded-lg grayscale">
                 <YouTube
-                  key={event.id}
                   videoId={getYoutubeVideoId(event.artist.youtubeUrls[currentVideoIndex])}
                   onReady={onReady}
-                  opts={opts}
+                  onStateChange={onStateChange}
+                  opts={{ playerVars: { autoplay: 0 } }}
                   className="w-full h-full"
                   iframeClassName="w-full h-full rounded-lg"
                 />
