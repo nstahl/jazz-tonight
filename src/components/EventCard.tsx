@@ -40,13 +40,18 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
               day: 'numeric',
               timeZone: 'UTC'
             })} • {' '}
-            {event.timeString ? (
+            {event.timeStrings && event.timeStrings.length > 0 ? (
               <>
-                {new Date(`2000-01-01T${event.timeString}`).toLocaleTimeString('en-US', {
-                  hour: 'numeric',
-                  minute: '2-digit',
-                  hour12: true
-                })}
+                {event.timeStrings.map((timeString, index) => (
+                  <React.Fragment key={timeString}>
+                    {new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      hour12: true
+                    })}
+                    {index < event.timeStrings.length - 1 && ' & '}
+                  </React.Fragment>
+                ))}
                 {' '}
                 <span className="text-gray-100">ET</span>
               </>

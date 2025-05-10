@@ -26,7 +26,8 @@ interface Event {
   name: string;
   url: string;
   dateString: string;
-  timeString: string | null;
+  timeString: string;
+  timeStrings: string[];
   venueId: string;
   venue: {
     name: string;
@@ -39,8 +40,6 @@ interface Event {
 }
 
 export default function Page() {
-  console.log('Page component rendering');
-  
   const [dateGroups, setDateGroups] = useState<[string, Event[]][]>([]);
   const [loading, setLoading] = useState(true);
   const [columnsCount, setColumnsCount] = useState(1);
@@ -76,8 +75,41 @@ export default function Page() {
     const fetchEvents = async () => {
       try {
         const response = await fetch('/api/events');
-        const events = await response.json();
-        
+        const eventsDisagreggated = await response.json();
+        // Create a dictionary to track unique artist-date combinations
+        const artistDateDict: Record<string, Event[]> = {};
+
+        // Process each event and only add if artist-date combination is unique
+        for (const event of eventsDisagreggated) {
+          if (event.artist && event.dateString) {
+            const key = `${event.artist.id}-${event.dateString}`;
+            // Initialize set for this artist if not exists
+            if (!artistDateDict[key]) {
+              artistDateDict[key] = [event];
+            } else {
+              artistDateDict[key].push(event);
+            }
+          } else {
+            // If no artist, just add the event
+            console.log('No artist or date for for event:', event);
+          }
+        }
+        const events = [];
+        for (const key in artistDateDict) {
+          const disaggregatedEventsForArtistDate = artistDateDict[key];
+          const timeStrings = disaggregatedEventsForArtistDate.map(event => event.timeString);
+          const artistDateEvent = {
+            id: disaggregatedEventsForArtistDate[0].id,
+            url: disaggregatedEventsForArtistDate[0].url,
+            name: disaggregatedEventsForArtistDate[0].name,
+            dateString: disaggregatedEventsForArtistDate[0].dateString,
+            timeStrings: timeStrings,
+            venueId: disaggregatedEventsForArtistDate[0].venueId,
+            venue: disaggregatedEventsForArtistDate[0].venue,
+            artist: disaggregatedEventsForArtistDate[0].artist,
+          }
+          events.push(artistDateEvent);
+        }
         // Group events by date
         const groupedEvents = events.reduce((acc: Record<string, Event[]>, event: Event) => {
           if (!acc[event.dateString]) {
@@ -170,9 +202,9 @@ export default function Page() {
             <div className="grid gap-4">
               {dateEvents
                 .sort((a, b) => {
-                  if (!a.timeString) return 1;
-                  if (!b.timeString) return -1;
-                  return a.timeString.localeCompare(b.timeString);
+                  if (!a.timeStrings) return 1;
+                  if (!b.timeStrings) return -1;
+                  return (a.timeStrings[0] || '').localeCompare(b.timeStrings[0] || '');
                 })
                 .map((event) => (
                     <EventCard
