@@ -58,34 +58,6 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
         </div>
       </a>
 
-      {/* Play/Stop button in top right corner */}
-      {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            if (playingVideo?.eventId === event.id) {
-              setPlayingVideo(null);
-            } else {
-              setPlayingVideo({ eventId: event.id, videoIndex: 0 });
-            }
-          }}
-          className="absolute top-2 right-2 p-2 bg-gray-600/80 hover:bg-gray-500/80 text-white rounded-full shadow-lg transition-colors"
-          title={playingVideo?.eventId === event.id ? 'Stop' : `Play ${event.artist.name}`}
-        >
-          {playingVideo?.eventId === event.id ? (
-            // Stop icon
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 6h12v12H6z" />
-            </svg>
-          ) : (
-            // Play icon
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          )}
-        </button>
-      )}
-
       {/* YouTube player embedded in card */}
       {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
         <div className="mt-4">
