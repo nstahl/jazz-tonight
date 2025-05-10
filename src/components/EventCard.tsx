@@ -21,7 +21,7 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
   const currentIndex = isPlaying ? playingVideo.videoIndex : previewIndex;
 
   const { ref, inView } = useInView({
-    threshold: 0.1,
+    threshold: 0.9,
   });
 
   return (
@@ -119,11 +119,11 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
               </>
             )}
             {/* Video or thumbnail */}
-            {isPlaying ? (
+            {isPlaying || inView ? (
               <iframe
                 className="absolute top-0 left-0 w-full h-full rounded-lg grayscale"
-                src={`https://www.youtube.com/embed/${getYoutubeVideoId(event.artist.youtubeUrls[currentIndex])}?autoplay=1&playsinline=1&enablejsapi=1&start=${60 + Math.floor(Math.random() * 31)}`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                src={`https://www.youtube.com/embed/${getYoutubeVideoId(event.artist.youtubeUrls[currentIndex])}?playsinline=1&enablejsapi=1&start=${60 + Math.floor(Math.random() * 31)}`}
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
             ) : (
