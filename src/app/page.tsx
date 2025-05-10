@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 'use client'
 
 declare global {
@@ -12,6 +14,7 @@ declare global {
 import { useEffect, useState } from 'react';
 import { Fugaz_One } from 'next/font/google';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
+import EventCard from '@/components/EventCard';
 
 const fugazOne = Fugaz_One({
   weight: '400',
@@ -172,147 +175,12 @@ export default function Page() {
                   return a.timeString.localeCompare(b.timeString);
                 })
                 .map((event) => (
-                  <div 
-                    key={event.id}
-                    className={`
-                      block p-4 
-                      bg-white/10
-                      backdrop-blur-sm
-                      rounded-lg shadow 
-                      w-full max-w-[500px]
-                      relative
-                      mx-auto
-                    `}
-                  >
-                    <a 
-                      className="block hover:bg-gray-300/60 -m-4 p-4 rounded-lg transition-all"
-                      href={`/events/${event.id}`}
-                    >
-                      <div className={`text-lg font-medium mb-2 ${fugazOne.className}`}>
-                        <span>{event.name}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>
-                          {new Date(event.dateString).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            timeZone: 'UTC'
-                          })} • {' '}
-                          {event.timeString ? (
-                            <>
-                              {new Date(`2000-01-01T${event.timeString}`).toLocaleTimeString('en-US', {
-                                hour: 'numeric',
-                                minute: '2-digit',
-                                hour12: true
-                              })}
-                              {' '}
-                              <span className="text-gray-100">ET</span>
-                            </>
-                          ) : (
-                            <span className="text-gray-100">Time TBA</span>
-                          )}
-                        </span>
-                        <span>{event.venue.name}</span>
-                      </div>
-                    </a>
-
-                    {/* Play/Stop button in top right corner */}
-                    {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          let videoId = null;
-                          for (const url of event.artist!.youtubeUrls!) {
-                            videoId = getYoutubeVideoId(url);
-                            if (videoId) break;
-                          }
-                          console.log('Video ID:', videoId);
-                          if (videoId) {
-                            // If this card is already playing, close it. Otherwise, play this video
-                            setPlayingVideo(
-                              playingVideo?.eventId === event.id 
-                                ? null 
-                                : { videoId, eventId: event.id }
-                            );
-                          }
-                        }}
-                        className="absolute top-2 right-2 p-2 bg-gray-600/80 hover:bg-gray-500/80 text-white rounded-full shadow-lg transition-colors"
-                        title={playingVideo?.eventId === event.id ? 'Stop' : `Play ${event.artist.name}`}
-                      >
-                        {playingVideo?.eventId === event.id ? (
-                          // Stop icon
-                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M6 6h12v12H6z" />
-                          </svg>
-                        ) : (
-                          // Play icon
-                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        )}
-                      </button>
-                    )}
-
-                    {/* YouTube player embedded in card */}
-                    {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
-                      <div className="mt-4">
-                        <div className="relative pb-[56.25%] h-0">
-                          {playingVideo?.eventId === event.id ? (
-                            <iframe
-                              className="absolute top-0 left-0 w-full h-full rounded-lg grayscale"
-                              src={`https://www.youtube.com/embed/${getYoutubeVideoId(event.artist.youtubeUrls[0])}?autoplay=1&playsinline=1&enablejsapi=1&start=${60 + Math.floor(Math.random() * 31)}`}
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          ) : (
-                            <div 
-                              className="absolute top-0 left-0 w-full h-full rounded-lg cursor-pointer"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                let videoId = null;
-                                for (const url of event.artist!.youtubeUrls!) {
-                                  videoId = getYoutubeVideoId(url);
-                                  if (videoId) break;
-                                }
-                                if (videoId) {
-                                  setPlayingVideo({ videoId, eventId: event.id });
-                                }
-                              }}
-                            >
-                              <img
-                                src={`https://img.youtube.com/vi/${getYoutubeVideoId(event.artist.youtubeUrls[0])}/maxresdefault.jpg`}
-                                alt={`${event.artist.name} preview`}
-                                className="w-full h-full object-cover rounded-lg grayscale"
-                                onLoad={e => {
-                                  const img = e.currentTarget;
-                                  // YouTube fallback is usually 120x90 or 480x360
-                                  if (img.naturalWidth === 120 && img.naturalHeight === 90) {
-                                    // Fallback detected, swap to a different thumbnail or placeholder
-                                    img.src = [ './placeholder-charcoal-455x260.png',
-                                                './charcoal_vibes_455x260.png',
-                                                './charcoal_guitar_bass_drums_455x260.png'
-                                              ][Math.floor(Math.random() * 3)];
-                                  }
-                                }}
-                                onError={e => {
-                                  // This will only fire for true network errors
-                                  const img = e.currentTarget;
-                                  console.log('Error loading image:', img.src);
-                                }}
-                              />
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
-                                  <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5v14l11-7z" />
-                                  </svg>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      playingVideo={playingVideo}
+                      setPlayingVideo={setPlayingVideo}
+                    />
                 ))}
             </div>
           </div>

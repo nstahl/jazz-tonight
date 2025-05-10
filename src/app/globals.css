@@ -28,3 +28,7 @@ body {
 .grayscale:hover {
   filter: grayscale(0%);
 }
+
+.font-fugaz {
+  font-family: 'Fugaz One', cursive;
+}
