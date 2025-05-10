@@ -67,7 +67,7 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
               <>
                 {currentIndex > 0 && (
                   <button
-                    className="absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white rounded-full p-2 transition-colors"
+                    className="absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white/90 hover:bg-blue-500/70 text-white rounded-full p-2 transition-colors"
                     style={{ backdropFilter: 'blur(2px)' }}
                     onClick={e => {
                       e.preventDefault();
@@ -79,12 +79,12 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
                     }}
                     title="Previous video"
                   >
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
+                    <svg className="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
                   </button>
                 )}
                 {currentIndex < event.artist.youtubeUrls.length - 1 && (
                   <button
-                    className="absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white rounded-full p-2 transition-colors"
+                    className="absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white/90 hover:bg-blue-500/70 text-white rounded-full p-2 transition-colors"
                     style={{ backdropFilter: 'blur(2px)' }}
                     onClick={e => {
                       e.preventDefault();
@@ -96,7 +96,7 @@ function EventCard({ event, playingVideo, setPlayingVideo }) {
                     }}
                     title="Next video"
                   >
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                    <svg className="w-6 h-6 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                   </button>
                 )}
               </>
