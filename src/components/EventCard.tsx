@@ -18,6 +18,8 @@ const fugazOne = Fugaz_One({
   });
 
 function EventCard({ event, id }) {
+  const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false);
+  const viewTimerRef = React.useRef(null);
 
   const { ref, inView } = useInView({
     threshold: 0.05,
@@ -53,6 +55,28 @@ function EventCard({ event, id }) {
 
   // Add state for toast visibility
   const [showToast, setShowToast] = React.useState(false);
+
+  // Handle view state changes
+  React.useEffect(() => {
+    if (inView) {
+      // Start a timer when the card comes into view
+      viewTimerRef.current = setTimeout(() => {
+        setShouldLoadVideo(true);
+      }, 500); // Wait 1 second before loading the video
+    } else {
+      // Clear the timer if the card goes out of view
+      if (viewTimerRef.current) {
+        clearTimeout(viewTimerRef.current);
+      }
+      setShouldLoadVideo(false);
+    }
+
+    return () => {
+      if (viewTimerRef.current) {
+        clearTimeout(viewTimerRef.current);
+      }
+    };
+  }, [inView]);
 
   // Modify share handler to include the card ID in the URL
   const handleShareClick = () => {
@@ -124,7 +148,7 @@ function EventCard({ event, id }) {
       {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
         <div className="mt-4">
           <div className="relative pb-[56.25%] h-0">
-            {(inView || isPlayerInitialized) ? (
+            {(shouldLoadVideo || isPlayerInitialized) ? (
               <div className="absolute top-0 left-0 w-full h-full rounded-lg grayscale">
                 <YouTube
                   videoId={getYoutubeVideoId(event.artist.youtubeUrls[0])}
