@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import EventCard from '@/components/EventCard';
 
 interface Event {
@@ -36,6 +36,7 @@ interface Event {
 export default function Page() {
   const [dateGroups, setDateGroups] = useState<[string, Event[]][]>([]);
   const [loading, setLoading] = useState(true);
+  const hasScrolledRef = useRef(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -102,14 +103,15 @@ export default function Page() {
     fetchEvents();
   }, []);
 
-  // Add useEffect for handling hash-based scrolling
+  // Modified useEffect for hash-based scrolling
   useEffect(() => {
-    if (!loading) {
+    if (!loading && !hasScrolledRef.current) {
       const hash = window.location.hash;
       if (hash) {
         const element = document.getElementById(hash.slice(1));
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          hasScrolledRef.current = true;
         }
       }
     }
