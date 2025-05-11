@@ -27,22 +27,29 @@ console.log("event", event);
 
   // Add a ref to store the player instance
   const playerRef = React.useRef(null);
-  const hasSeekedRef = React.useRef(false);  // Add this flag
+  const hasSeekedRef = React.useRef(false);
   
   // Add onReady handler to store the player instance
   const onReady = (event) => {
     console.log('onReady');
-    console.log("playerRef.current", playerRef.current);
-    console.log(event.data);
-    playerRef.current = event.target;
-    hasSeekedRef.current = false;  // Reset the flag when player is ready
+    if (event && event.target) {
+      playerRef.current = event.target;
+      hasSeekedRef.current = false;  // Reset the flag when player is ready
+    }
   };
 
   const onPlayerStateChange = (event) => {
     console.log('onPlayerStateChange');
-    console.log("playerRef.current", playerRef.current);
-    console.log(event.data);
+    if (event && event.target) {
+      console.log("playerRef.current", playerRef.current);
+      console.log(event.data);
+    }
   }
+
+  // Add error handler
+  const onError = (error) => {
+    console.error('YouTube player error:', error);
+  };
 
   // Add state for toast visibility
   const [showToast, setShowToast] = React.useState(false);
@@ -119,11 +126,19 @@ console.log("event", event);
               <div className="absolute top-0 left-0 w-full h-full rounded-lg grayscale">
                 <YouTube
                   videoId={getYoutubeVideoId(event.artist.youtubeUrls[0])}
-                  opts={{ playerVars: { autoplay: 0, playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(',') } }}
+                  opts={{ 
+                    playerVars: { 
+                      autoplay: 0, 
+                      playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(','),
+                      modestbranding: 1,
+                      rel: 0
+                    } 
+                  }}
                   className="w-full h-full"
                   iframeClassName="w-full h-full rounded-lg"
                   onReady={onReady}
                   onStateChange={onPlayerStateChange}
+                  onError={onError}
                 />
               </div>
             ) : (
