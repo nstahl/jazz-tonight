@@ -20,9 +20,27 @@ const fugazOne = Fugaz_One({
 function EventCard({ event }) {
 
   const { ref, inView } = useInView({
-    threshold: 0.9,
+    threshold: 0.05,
   });
 
+  // Add a ref to store the player instance
+  const playerRef = React.useRef(null);
+  const hasSeekedRef = React.useRef(false);  // Add this flag
+  
+  // Add onReady handler to store the player instance
+  const onReady = (event) => {
+    console.log('onReady');
+    console.log("playerRef.current", playerRef.current);
+    console.log(event.data);
+    playerRef.current = event.target;
+    hasSeekedRef.current = false;  // Reset the flag when player is ready
+  };
+
+  const onPlayerStateChange = (event) => {
+    console.log('onPlayerStateChange');
+    console.log("playerRef.current", playerRef.current);
+    console.log(event.data);
+  }
 
   return (
     <div
@@ -37,11 +55,7 @@ function EventCard({ event }) {
         mx-auto
       `}
     >
-        {inView ? 'Component is on screen' : 'Component is off screen'}
-      <a 
-        className="block hover:bg-gray-300/60 -m-4 p-4 rounded-lg transition-all"
-        href={`/events/${event.id}`}
-      >
+
         <div className={`text-lg font-medium mb-2 ${fugazOne.className}`}>
           <span>{event.name}</span>
         </div>
@@ -73,7 +87,6 @@ function EventCard({ event }) {
           </span>
           <span>{event.venue.name}</span>
         </div>
-      </a>
 
       {/* YouTube player embedded in card */}
       {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
@@ -88,6 +101,8 @@ function EventCard({ event }) {
                   opts={{ playerVars: { autoplay: 0, playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(',') } }}
                   className="w-full h-full"
                   iframeClassName="w-full h-full rounded-lg"
+                  onReady={onReady}
+                  onStateChange={onPlayerStateChange}
                 />
               </div>
             ) : (
