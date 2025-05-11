@@ -11,7 +11,12 @@ export async function GET() {
     },
     include: {
       venue: true,
-      artist: true
+      artist: true,
+      performers: {
+        include: {
+          performer: true
+        }
+      }
     },
     orderBy: [
       { dateString: 'asc' },

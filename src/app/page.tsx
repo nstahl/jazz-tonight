@@ -18,6 +18,7 @@ import EventCard from '@/components/EventCard';
 interface Event {
   id: string;
   name: string;
+  logline: string;
   url: string;
   dateString: string;
   timeString: string;
@@ -62,6 +63,7 @@ export default function Page() {
       try {
         const response = await fetch('/api/events');
         const eventsDisagreggated = await response.json();
+        console.log("eventsDisagreggated", eventsDisagreggated);
         // Create a dictionary to track unique artist-date combinations
         const artistDateDict: Record<string, Event[]> = {};
 
@@ -90,6 +92,8 @@ export default function Page() {
             name: disaggregatedEventsForArtistDate[0].name,
             dateString: disaggregatedEventsForArtistDate[0].dateString,
             timeStrings: timeStrings,
+            performers: disaggregatedEventsForArtistDate[0].performers,
+            logline: disaggregatedEventsForArtistDate[0].logline,
             venueId: disaggregatedEventsForArtistDate[0].venueId,
             venue: disaggregatedEventsForArtistDate[0].venue,
             artist: disaggregatedEventsForArtistDate[0].artist,
@@ -97,7 +101,7 @@ export default function Page() {
           tempEvents.push(artistDateEvent);
         }
 
-        const events = tempEvents;
+        const events = [tempEvents[0], tempEvents[1], tempEvents[2]];
 
         // Group events by date
         const groupedEvents = events.reduce((acc: Record<string, Event[]>, event: Event) => {
