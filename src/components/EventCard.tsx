@@ -44,19 +44,19 @@ console.log("event", event);
     console.log(event.data);
   }
 
+  // Add state for toast visibility
+  const [showToast, setShowToast] = React.useState(false);
+
   // Share handler using Web Share API or fallback
   const handleShareClick = () => {
     const shareData = {
       title: event.name,
       text: `${event.name} at ${event.venue.name} on ${new Date(event.dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}.`,
-      url: window.location.href, // or a specific event URL if available
+      url: window.location.href,
     };
-    if (navigator.share) {
-      navigator.share(shareData).catch(() => {});
-    } else {
-      navigator.clipboard.writeText(shareData.url);
-      alert('Event link copied to clipboard!');
-    }
+    navigator.clipboard.writeText(shareData.url);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000); // Hide toast after 2 seconds
   };
 
   return (
@@ -104,7 +104,6 @@ console.log("event", event);
             <span className="text-gray-100">Time TBA</span>
           )}
         </span>
-        <span className="font-semibold">{event.venue.name}</span>
       </div>
 
       {/* Venue Logline */}
@@ -152,36 +151,78 @@ console.log("event", event);
       )}
 
     {/* Event Logline */}
-            {event.logline && (
+    {event.logline && (
+            
         <div className="text-sm mt-2 mb-2">
-          <span className="font-semibold">What to expect: </span>
+                    <h3 className="font-semibold py-2 flex items-center">
+          <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+          </svg>
+          Live at {event.venue.name}
+        </h3>
           {event.logline}
         </div>
       )}
 
+
       {/* Musicians List */}
       {event.performers && event.performers.length > 0 && (
         <div className="text-sm mt-2 mb-2">
-          <span className="font-semibold">Musicians: </span>
-          {event.performers.map((m, i) => (
-            <span key={m.performer.id}>
-              {m.performer.name} <span className="text-gray-400">({m.performer.instrument})</span>
-              {i < event.performers.length - 1 && ', '}
-            </span>
-          ))}
+
+          <div className="px-4 grid grid-cols-2 gap-2">
+            {event.performers.map((m) => (
+              <div key={m.performer.id} className="flex">
+                <span className="text-blue-300">{m.performer.instrument}&nbsp;</span>
+                <span>{m.performer.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {event.venue && event.venue.name && (
+        <div className="text-sm mt-2 mb-2">
+        <h3 className="font-semibold py-2 flex items-center">
+          <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+          </svg>
+          About {event.venue.name}
+        </h3>
+        <div className="px-4 text-sm mt-2 mb-2">
+          Some info about the venue...
+        </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {showToast && (
+        <div className="absolute bottom-15 right-4 bg-black/80 text-white px-1 py-1 rounded-lg shadow-lg animate-fade-in-out">
+          <div className="flex items-center">
+            <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+            </svg>
+            <span className="text-sm">Copied to clipboard</span>
+          </div>
         </div>
       )}
 
       {/* Share Button */}
       <div className="flex justify-end mt-4">
         <button
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-          onClick={handleShareClick}
+          onClick={() => window.open(event.url, '_blank')}
+          className={'flex-1 flex items-center justify-center px-4 py-2 bg-white text-black rounded-lg shadow hover:bg-gray-100 transition cursor-pointer mr-2 ' + fugazOne.className}
         >
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path d="M4 12v-2a4 4 0 014-4h8a4 4 0 014 4v2m-4 4l4-4m0 0l-4-4m4 4H8" />
-          </svg>
-          Share
+          Attend
+        </button>
+      
+        <button
+          className={'flex items-center px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-400 transition cursor-pointer ' + fugazOne.className}
+          onClick={handleShareClick}
+            >
+            <svg className="w-6 h-6 mr-1 -rotate-45 -mt-0.5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+            </svg>
+            Share
         </button>
       </div>
     </div>
