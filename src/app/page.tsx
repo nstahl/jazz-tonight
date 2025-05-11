@@ -103,6 +103,19 @@ export default function Page() {
     fetchEvents();
   }, []);
 
+  // Add useEffect for handling hash-based scrolling
+  useEffect(() => {
+    if (!loading) {
+      const hash = window.location.hash;
+      if (hash) {
+        const element = document.getElementById(hash.slice(1));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    }
+  }, [loading]);
+
   if (loading) {
     return (
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 pb-24">
@@ -164,6 +177,7 @@ export default function Page() {
                     <EventCard
                       key={event.id}
                       event={event}
+                      id={`event-${event.id}`}
                     />
                 ))}
             </div>
