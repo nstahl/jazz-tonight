@@ -45,7 +45,7 @@ export default function Page() {
       const columnWidth = 400 + 24; // max width of each column
       const screenWidth = Math.min(window.innerWidth, 1536) - 32; // max width of container is 1536px; 16px padding on each side; 
       const columns = Math.max(1, Math.floor(screenWidth / columnWidth));
-      setColumnsCount(columns);
+      setColumnsCount(1);
     };
 
     // Calculate initially
@@ -126,7 +126,7 @@ export default function Page() {
   if (loading) {
     return (
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 pb-24">
-        <div className="grid grid-cols-1 md:grid-flow-col md:auto-cols-[minmax(300px,1fr)] gap-6 overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-flow-col md:auto-cols-[minmax(700px,1fr)] gap-6 overflow-hidden">
           {[1, 2, 3].map((column) => (
             <div key={column}>
               <div className="h-8 bg-white/10 rounded-lg mb-6 animate-pulse" />
@@ -134,7 +134,7 @@ export default function Page() {
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((card) => (
                   <div 
                     key={card}
-                    className="block p-4 bg-white/10 backdrop-blur-sm rounded-lg shadow w-full max-w-[500px] relative mx-auto"
+                    className="block p-4 bg-white/10 backdrop-blur-sm rounded-lg shadow w-full max-w-[700px] relative mx-auto"
                   >
                     <div className="space-y-3">
                       <div className="h-6 bg-white/20 rounded animate-pulse" />

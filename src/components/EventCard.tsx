@@ -62,7 +62,7 @@ console.log("event", event);
         bg-white/10
         backdrop-blur-sm
         rounded-lg shadow 
-        w-full max-w-[500px]
+        w-full max-w-[700px]
         relative
         mx-auto
       `}
@@ -191,7 +191,7 @@ console.log("event", event);
             </svg>
             <div className="text-sm">
               <h3 className="font-semibold mb-1">About {event.venue.name}</h3>
-              <p>{event.logline}</p>
+              <p>More info on the venue coming soon...</p>
             </div>
           </>
         )}
