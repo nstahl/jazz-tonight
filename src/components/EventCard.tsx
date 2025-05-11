@@ -49,12 +49,7 @@ console.log("event", event);
 
   // Share handler using Web Share API or fallback
   const handleShareClick = () => {
-    const shareData = {
-      title: event.name,
-      text: `${event.name} at ${event.venue.name} on ${new Date(event.dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}.`,
-      url: window.location.href,
-    };
-    navigator.clipboard.writeText(shareData.url);
+    navigator.clipboard.writeText(window.location.href);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2000); // Hide toast after 2 seconds
   };
@@ -81,7 +76,8 @@ console.log("event", event);
       <div className="flex justify-between text-sm">
         <span>
           {new Date(event.dateString).toLocaleDateString('en-US', {
-            month: 'short',
+            weekday: 'long',
+            month: 'short', 
             day: 'numeric',
             timeZone: 'UTC'
           })} • {' '}
@@ -160,7 +156,7 @@ console.log("event", event);
           </svg>
           Live at {event.venue.name}
         </h3>
-          {event.logline}
+          <p className="px-4">{event.logline}</p>
         </div>
       )}
 
@@ -172,7 +168,7 @@ console.log("event", event);
           <div className="px-4 grid grid-cols-2 gap-2">
             {event.performers.map((m) => (
               <div key={m.performer.id} className="flex">
-                <span className="text-blue-300">{m.performer.instrument}&nbsp;</span>
+                <span className="text-green-500">{m.performer.instrument}&nbsp;</span>
                 <span>{m.performer.name}</span>
               </div>
             ))}
