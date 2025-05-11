@@ -37,26 +37,6 @@ interface Event {
 export default function Page() {
   const [dateGroups, setDateGroups] = useState<[string, Event[]][]>([]);
   const [loading, setLoading] = useState(true);
-  const [columnsCount, setColumnsCount] = useState(1);
-  const [startIndex, setStartIndex] = useState(0);
-
-  useEffect(() => {
-    const calculateColumns = () => {
-      const columnWidth = 400 + 24; // max width of each column
-      const screenWidth = Math.min(window.innerWidth, 1536) - 32; // max width of container is 1536px; 16px padding on each side; 
-      const columns = Math.max(1, Math.floor(screenWidth / columnWidth));
-      setColumnsCount(1);
-    };
-
-    // Calculate initially
-    calculateColumns();
-
-    // Add resize listener
-    window.addEventListener('resize', calculateColumns);
-
-    // Cleanup
-    return () => window.removeEventListener('resize', calculateColumns);
-  }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -126,7 +106,7 @@ export default function Page() {
   if (loading) {
     return (
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 pb-24">
-        <div className="grid grid-cols-1 md:grid-flow-col md:auto-cols-[minmax(700px,1fr)] gap-6 overflow-hidden">
+        <div className="grid gap-8">
           {[1, 2, 3].map((column) => (
             <div key={column}>
               <div className="h-8 bg-white/10 rounded-lg mb-6 animate-pulse" />
@@ -155,41 +135,22 @@ export default function Page() {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 pb-24">
-      <div className="grid grid-flow-col auto-cols-[minmax(300px,1fr)] gap-6 overflow-hidden">
-        {dateGroups.slice(startIndex, startIndex + columnsCount).map(([dateString, dateEvents]) => (
+      <div className="grid gap-8">
+        {dateGroups.map(([dateString, dateEvents]) => (
           <div key={dateString}>
-            <h2 className="text-xl font-semibold mb-6 relative">
-              
-                  {dateGroups.findIndex(([date]) => date === dateString) === startIndex && (
-                    <button 
-                      onClick={() => setStartIndex(prev => Math.max(prev - 1, 0))}
-                      className="absolute left-0 top-1/2 -translate-y-1/2 p-1 hover:text-gray-300 transition-colors cursor-pointer"
-                    >
-                      <ChevronLeftIcon className="w-5 h-5" />
-                    </button>
-                  )}
-
-                <div className="text-center">
-                  {new Date(dateEvents[0].dateString).toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    timeZone: 'UTC'
-                  })}
-                  {', '}
-                  {new Date(dateString).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    timeZone: 'UTC'
-                  })}
-                </div>
-                
-                {dateGroups.findIndex(([date]) => date === dateString) === startIndex + columnsCount - 1 && (
-                  <button 
-                    onClick={() => setStartIndex(prev => Math.min(prev + 1, dateGroups.length - columnsCount))}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 p-1 hover:text-gray-300 transition-colors cursor-pointer"
-                  >
-                    <ChevronRightIcon className="w-5 h-5" />
-                  </button>
-                )}
+            <h2 className="text-xl font-semibold mb-6">
+              <div className="text-center">
+                {new Date(dateEvents[0].dateString).toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  timeZone: 'UTC'
+                })}
+                {', '}
+                {new Date(dateString).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  timeZone: 'UTC'
+                })}
+              </div>
             </h2>
 
             <div className="grid gap-4">

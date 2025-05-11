@@ -19,8 +19,6 @@ const fugazOne = Fugaz_One({
 
 function EventCard({ event }) {
 
-console.log("event", event);
-
   const { ref, inView } = useInView({
     threshold: 0.05,
   });
