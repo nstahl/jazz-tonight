@@ -72,6 +72,8 @@ function EventCard({ event }) {
         w-full max-w-[700px]
         relative
         mx-auto
+        border border-green-500/30
+        shadow-[0_0_15px_rgba(34,197,94,0.2)]
       `}
     >
       {/* Event Name */}
