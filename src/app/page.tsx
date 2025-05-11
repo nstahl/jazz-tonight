@@ -12,7 +12,6 @@ declare global {
 }
 
 import { useEffect, useState } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import EventCard from '@/components/EventCard';
 
 interface Event {

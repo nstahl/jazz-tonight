@@ -62,7 +62,7 @@ function EventCard({ event, id }) {
       // Start a timer when the card comes into view
       viewTimerRef.current = setTimeout(() => {
         setShouldLoadVideo(true);
-      }, 500); // Wait 1 second before loading the video
+      }, 300); // Wait before loading the video
     } else {
       // Clear the timer if the card goes out of view
       if (viewTimerRef.current) {
@@ -134,6 +134,9 @@ function EventCard({ event, id }) {
           ) : (
             <span className="text-gray-100">Time TBA</span>
           )}
+          {event.venue?.name && (
+            <> • Live at {event.venue.name}</>
+          )}
         </span>
       </div>
 
@@ -195,7 +198,7 @@ function EventCard({ event, id }) {
               <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
             </svg>
             <div className="text-sm">
-              <h3 className="font-semibold mb-1">Live at {event.venue.name}</h3>
+              <h3 className="font-semibold mb-1">What to expect</h3>
               <p>{event.logline}</p>
             </div>
           </>
