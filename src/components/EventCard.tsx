@@ -28,13 +28,15 @@ console.log("event", event);
   // Add a ref to store the player instance
   const playerRef = React.useRef(null);
   const hasSeekedRef = React.useRef(false);
+  const [isPlayerInitialized, setIsPlayerInitialized] = React.useState(false);
   
   // Add onReady handler to store the player instance
   const onReady = (event) => {
     console.log('onReady');
     if (event && event.target) {
       playerRef.current = event.target;
-      hasSeekedRef.current = false;  // Reset the flag when player is ready
+      hasSeekedRef.current = false;
+      setIsPlayerInitialized(true);  // Set to true when player is ready
     }
   };
 
@@ -116,13 +118,11 @@ console.log("event", event);
         </div>
       )}
 
-
-
       {/* YouTube player embedded in card */}
       {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
         <div className="mt-4">
           <div className="relative pb-[56.25%] h-0">
-            {inView ? (
+            {(inView || isPlayerInitialized) ? (
               <div className="absolute top-0 left-0 w-full h-full rounded-lg grayscale">
                 <YouTube
                   videoId={getYoutubeVideoId(event.artist.youtubeUrls[0])}
@@ -131,7 +131,8 @@ console.log("event", event);
                       autoplay: 0, 
                       playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(','),
                       modestbranding: 1,
-                      rel: 0
+                      rel: 0,
+                      start: 30
                     } 
                   }}
                   className="w-full h-full"
