@@ -20,6 +20,7 @@ const fugazOne = Fugaz_One({
 function EventCard({ event, id }) {
   const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false);
   const viewTimerRef = React.useRef(null);
+  const isInitialMount = React.useRef(true);
 
   const { ref, inView } = useInView({
     threshold: 0.05,
@@ -58,17 +59,27 @@ function EventCard({ event, id }) {
 
   // Handle view state changes
   React.useEffect(() => {
+    // If this is the initial mount and we have a hash match, load the video immediately
+    if (isInitialMount.current && window.location.hash === `#${id}`) {
+      setShouldLoadVideo(true);
+      isInitialMount.current = false;
+      return;
+    }
+
     if (inView) {
       // Start a timer when the card comes into view
       viewTimerRef.current = setTimeout(() => {
         setShouldLoadVideo(true);
-      }, 300); // Wait before loading the video
+      }, 300);
     } else {
       // Clear the timer if the card goes out of view
       if (viewTimerRef.current) {
         clearTimeout(viewTimerRef.current);
       }
-      setShouldLoadVideo(false);
+      // Only reset shouldLoadVideo if we're not the target of the hash
+      if (window.location.hash !== `#${id}`) {
+        setShouldLoadVideo(false);
+      }
     }
 
     return () => {
@@ -76,7 +87,20 @@ function EventCard({ event, id }) {
         clearTimeout(viewTimerRef.current);
       }
     };
-  }, [inView]);
+  }, [inView, id]);
+
+  // Add cleanup effect
+  React.useEffect(() => {
+    return () => {
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy();
+        } catch (error) {
+          console.error('Error destroying player:', error);
+        }
+      }
+    };
+  }, []);
 
   // Modify share handler to include the card ID in the URL
   const handleShareClick = () => {
@@ -161,7 +185,9 @@ function EventCard({ event, id }) {
                       playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(','),
                       modestbranding: 1,
                       rel: 0,
-                      start: 30
+                      start: 30,
+                      playsinline: 1, // Add this for better mobile support
+                      enablejsapi: 1, // Ensure JS API is enabled
                     } 
                   }}
                   className="w-full h-full"
