@@ -153,6 +153,13 @@ export default async function Page({ params }: PageProps) {
           </div>
         )}
 
+        <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 mb-8">
+          <p className="text-sm text-gray-300">
+            This profile page was generated using AI and publicly available information. If you're the artist and would like to edit or update it,{' '}
+            <a href="mailto:hello@jazzfinder.com" className="text-blue-300 hover:underline"> please get in touch</a>.
+          </p>
+        </div>
+
         {/* Upcoming Shows */}
         {artist.events && artist.events.length > 0 && (
           <div className="border-t pt-8 mt-8">
