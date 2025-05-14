@@ -242,6 +242,17 @@ function EventCard({ event, id }) {
               </div>
             )}
           </div>
+          {event.artist && (
+            <div className="mt-1 text-sm text-gray-300 text-center">
+            More about&nbsp;
+              <a 
+                href={`/artist/${event.artist.id}`}
+                className="text-blue-300 hover:underline"
+              >
+                {event.artist.name}
+              </a>
+            </div>
+          )}
         </div>
       )}
       <div className="grid grid-cols-[24px_1fr] gap-x-2 gap-y-4 mt-4">
