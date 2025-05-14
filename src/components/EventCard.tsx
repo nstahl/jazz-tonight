@@ -182,7 +182,7 @@ function EventCard({ event, id }) {
         <div className="mt-4">
           <div className="relative pb-[56.25%] h-0">
             {(shouldLoadVideo || isPlayerInitialized) ? (
-              <div className="absolute top-0 left-0 w-full h-full rounded-lg grayscale">
+              <div className="absolute top-0 left-0 w-full h-full rounded-lg">
                 <YouTube
                   videoId={getYoutubeVideoId(event.artist.youtubeUrls[0])}
                   opts={{ 
