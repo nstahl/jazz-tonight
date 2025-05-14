@@ -20,23 +20,6 @@ type YouTubeVideo = {
   videoId: string;
 }
 
-// Extend the artist type to include youtubeVideos
-type ArtistWithVideos = {
-  youtubeUrls: string[];
-  youtubeVideos?: YouTubeVideo[];
-  [key: string]: any;
-}
-
-// Define the event type
-type Event = {
-  id: string;
-  name: string;
-  dateString: string;
-  timeString: string | null;
-  url: string;
-  venue: { name: string };
-};
-
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
 
@@ -136,7 +119,7 @@ export default async function Page({ params }: PageProps) {
 
         <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 mb-8">
           <p className="text-sm text-gray-300">
-            This profile page was generated using AI and publicly available information. If you're the artist and would like to edit or update it,{' '}
+            This profile page was generated using AI and publicly available information. If you&apos;re the artist and would like to edit or update it,{' '}
             <a href="mailto:artists@atriumjazz.com" className="text-blue-300 hover:underline"> please get in touch</a>.
           </p>
         </div>
