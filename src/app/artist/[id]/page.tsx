@@ -20,6 +20,27 @@ type YouTubeVideo = {
   videoId: string;
 }
 
+// Define the Artist type that includes youtubeVideos
+type Artist = {
+  id: string;
+  name: string;
+  youtubeUrls: string[];
+  biography: string | null;
+  website: string | null;
+  instagram: string | null;
+  events: {
+    id: string;
+    name: string;
+    dateString: string;
+    timeString: string | null;
+    url: string;
+    venue: {
+      name: string;
+    };
+  }[];
+  youtubeVideos?: YouTubeVideo[];
+}
+
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
 
@@ -55,7 +76,7 @@ export default async function Page({ params }: PageProps) {
         }
       }
     }
-  });
+  }) as Artist;
 
   if (!artist) {
     notFound();
@@ -63,15 +84,13 @@ export default async function Page({ params }: PageProps) {
 
   // Filter YouTube URLs to only include valid ones and store both URL and videoId
   if (artist.youtubeUrls) {
-    const validYoutubeVideos = artist.youtubeUrls
+    artist.youtubeVideos = artist.youtubeUrls
       .map(url => {
         const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/live\/)([^"&?\/\s]{11})/)?.[1];
         return videoId ? { url, videoId } : null;
       })
       .filter((item): item is YouTubeVideo => item !== null)
       .slice(0, 6);
-    
-    artist.youtubeVideos = validYoutubeVideos;
   }
 
   return (
@@ -88,8 +107,6 @@ export default async function Page({ params }: PageProps) {
           <Biography text={artist.biography} />
 
         )}
-
-
 
         {/* Links */}
         {(artist.website || artist.instagram) && (
