@@ -112,6 +112,8 @@ export default function Page() {
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
           hasScrolledRef.current = true;
+        } else {
+          console.error(`Event with ID "${hash.slice(1)}" not found in the page`);
         }
       }
     }

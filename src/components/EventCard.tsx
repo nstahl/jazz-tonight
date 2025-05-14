@@ -128,7 +128,13 @@ function EventCard({ event, id }) {
     >
       {/* Event Name */}
       <div className={`text-lg font-medium mb-2 ${fugazOne.className}`}>
-        <span>{event.name}</span>
+        {event.artist ? (
+          <a href={`/artist/${event.artist.id}`} className="hover:underline">
+            {event.name}
+          </a>
+        ) : (
+          <span>{event.name}</span>
+        )}
       </div>
 
       {/* Date, Times, Venue */}
