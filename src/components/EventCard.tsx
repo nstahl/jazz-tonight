@@ -19,11 +19,13 @@ const fugazOne = Fugaz_One({
 
 function EventCard({ event, id }) {
   const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false);
+  const [shouldPreload, setShouldPreload] = React.useState(false);
   const viewTimerRef = React.useRef(null);
   const isInitialMount = React.useRef(true);
 
   const { ref, inView } = useInView({
-    threshold: 0.05,
+    threshold: 0,
+    rootMargin: '1800px 0px', // Triggers when the card is X px away from entering the viewport
   });
 
   // Add a ref to store the player instance
@@ -62,11 +64,15 @@ function EventCard({ event, id }) {
     // If this is the initial mount and we have a hash match, load the video immediately
     if (isInitialMount.current && window.location.hash === `#${id}`) {
       setShouldLoadVideo(true);
+      setShouldPreload(true);
       isInitialMount.current = false;
       return;
     }
 
     if (inView) {
+      // Start preloading immediately when the element comes into the extended viewport
+      setShouldPreload(true);
+      
       // Start a timer when the card comes into view
       viewTimerRef.current = setTimeout(() => {
         setShouldLoadVideo(true);
@@ -76,9 +82,10 @@ function EventCard({ event, id }) {
       if (viewTimerRef.current) {
         clearTimeout(viewTimerRef.current);
       }
-      // Only reset shouldLoadVideo if we're not the target of the hash
+      // Only reset states if we're not the target of the hash
       if (window.location.hash !== `#${id}`) {
         setShouldLoadVideo(false);
+        setShouldPreload(false);
       }
     }
 
@@ -192,8 +199,8 @@ function EventCard({ event, id }) {
                       modestbranding: 1,
                       rel: 0,
                       start: 30,
-                      playsinline: 1, // Add this for better mobile support
-                      enablejsapi: 1, // Ensure JS API is enabled
+                      playsinline: 1,
+                      enablejsapi: 1,
                     } 
                   }}
                   className="w-full h-full"
@@ -202,6 +209,21 @@ function EventCard({ event, id }) {
                   onStateChange={onPlayerStateChange}
                   onError={onError}
                 />
+              </div>
+            ) : shouldPreload ? (
+              <div className="absolute top-0 left-0 w-full h-full rounded-lg">
+                <img
+                  src={`https://img.youtube.com/vi/${getYoutubeVideoId(event.artist.youtubeUrls[0])}/maxresdefault.jpg`}
+                  alt={`${event.artist.name} preview`}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
+                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="absolute top-0 left-0 w-full h-full rounded-lg cursor-pointer">
@@ -281,7 +303,7 @@ function EventCard({ event, id }) {
             <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="currentColor">
               <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
             </svg>
-            <span className="text-sm">Copied to clipboard</span>
+            <span className="text-sm">Link copied to clipboard</span>
           </div>
         </div>
       )}
