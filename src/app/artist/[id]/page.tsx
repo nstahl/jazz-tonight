@@ -7,6 +7,7 @@ import ShowsList from './ShowsList';
 import { EVENT_CONFIG } from '@/config/constants';
 import Biography from './Biography';
 import { Metadata } from 'next';
+import ShareButton from '@/components/ShareButton';
 
 const fugazOne = Fugaz_One({
   weight: '400',
@@ -99,8 +100,9 @@ export default async function Page({ params }: PageProps) {
   return (
     <div className="max-w-4xl mx-auto p-6">
       {/* Artist Header Section */}
-      <div className="rounded-lg mb-8">
-        <h1 className={`text-3xl font-bold mb-2 ${fugazOne.className}`}>{artist.name}</h1>
+      <div className="rounded-lg mb-8 flex justify-between items-center">
+        <h1 className={`text-3xl font-bold ${fugazOne.className}`}>{artist.name}</h1>
+        <ShareButton url={`https://nycjazz.vercel.app/artist/${artist.id}`} className="text-xl font-bold flex items-center justify-center" showText={true} />
       </div>
 
       {/* Artist Content */}

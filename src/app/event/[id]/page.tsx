@@ -5,6 +5,7 @@ import ShowsList from '../../artist/[id]/ShowsList';
 import Biography from '../../artist/[id]/Biography';
 import { EVENT_CONFIG } from '@/config/constants';
 import { Metadata } from 'next';
+import ShareButton from '@/components/ShareButton';
 
 const fugazOne = Fugaz_One({
   weight: '400',
@@ -108,6 +109,7 @@ export default async function Page({ params }: PageProps) {
       logline: true,
       artist: {
         select: {
+          id: true,
           youtubeUrls: true,
           biography: true,
           website: true,
@@ -179,7 +181,15 @@ export default async function Page({ params }: PageProps) {
       {/* Event Header Section */}
       <div className="rounded-lg mb-8 flex justify-between items-start">
         <div>
-          <h1 className={`text-3xl font-bold mb-2 ${fugazOne.className}`}>{event.name}</h1>
+          <h1 className={`text-3xl font-bold mb-2 ${fugazOne.className}`}>
+            {event.artist ? (
+              <a href={`/artist/${event.artist.id}`} className="hover:underline">
+                {event.name}
+              </a>
+            ) : (
+              event.name
+            )}
+          </h1>
 
           <p className="text-gray-100 mt-2">
             {new Date(event.dateString).toLocaleDateString('en-US', {
@@ -203,15 +213,17 @@ export default async function Page({ params }: PageProps) {
             )} • {event.venue.name}
           </p>
         </div>
-
-        <a 
-          href={event.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:block bg-white text-black px-8 py-4 rounded-lg text-xl font-bold hover:bg-gray-200 transition-colors"
-        >
-          Tickets
-        </a>
+        <div className="flex flex-row items-stretch gap-2 ml-4">
+          <ShareButton url={`https://nycjazz.vercel.app/event/${event.id}`} className="w-16 h-16 p-0 text-xl font-bold rounded-lg flex items-center justify-center" showText={false} />
+          <a 
+            href={event.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:block bg-white text-black px-8 py-4 rounded-lg text-xl font-bold hover:bg-gray-200 transition-colors"
+          >
+            Tickets
+          </a>
+        </div>
       </div>
 
       {/* Mobile CTA with background */}

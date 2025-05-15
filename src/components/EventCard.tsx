@@ -57,9 +57,6 @@ function EventCard({ event, id }) {
     console.error('YouTube player error:', error);
   };
 
-  // Add state for toast visibility
-  const [showToast, setShowToast] = React.useState(false);
-
   // Handle view state changes
   React.useEffect(() => {
     // If this is the initial mount and we have a hash match, load the video immediately
@@ -303,18 +300,6 @@ function EventCard({ event, id }) {
           </>
         )}
       </div>
-
-      {/* Toast Notification */}
-      {showToast && (
-        <div className="absolute bottom-15 right-4 bg-black/80 text-white px-1 py-1 rounded-lg shadow-lg animate-fade-in-out">
-          <div className="flex items-center">
-            <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
-            </svg>
-            <span className="text-sm">Link copied to clipboard</span>
-          </div>
-        </div>
-      )}
 
       {/* CTAs */}
       <div className="flex justify-end mt-4">
