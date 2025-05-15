@@ -4,6 +4,7 @@ import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Fugaz_One } from 'next/font/google';
 import YouTube from 'react-youtube';
+import ShareButton from './ShareButton';
 
 // Helper function to extract video ID from YouTube URL
 const getYoutubeVideoId = (url: string) => {
@@ -116,13 +117,17 @@ function EventCard({ event, id }) {
       className={`
         block p-4 
         bg-white/10
-        backdrop-blur-sm
-        rounded-lg shadow 
+        rounded-lg
         w-full max-w-[700px]
         relative
         mx-auto
-        border border-green-500/30
-        shadow-[0_0_15px_rgba(34,197,94,0.2)]
+        border border-blue-500/30
+        transition-all duration-400
+        shadow-[6px_6px_3px_0px_rgba(59,130,246,0.2)]
+        hover:translate-x-[-2px]
+        hover:translate-y-[-2px]
+        hover:shadow-[8px_8px_3px_2px_rgba(59,130,246,0.2)]
+        backdrop-blur-sm
       `}
     >
       {/* Event Name */}
@@ -239,7 +244,7 @@ function EventCard({ event, id }) {
             More about&nbsp;
               <a 
                 href={`/artist/${event.artist.id}`}
-                className="text-blue-300 hover:underline"
+                className="font-bold hover:underline"
               >
                 {event.artist.name}
               </a>
@@ -273,7 +278,7 @@ function EventCard({ event, id }) {
                 {event.performers.map((m) => (
                   <React.Fragment key={event.id + '-' + m.performer.id}>
                     <div className="flex">
-                      <span className="text-green-500">{m.performer.instrument}</span>
+                      <span className="text-gray-400">{m.performer.instrument}</span>
                     </div>
                     <div className="flex">
                       <span>{m.performer.name}</span>
@@ -320,19 +325,7 @@ function EventCard({ event, id }) {
           Tickets
         </button>
       
-        <button
-          className={'flex items-center px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-400 transition cursor-pointer ' + fugazOne.className}
-          onClick={() => {
-            navigator.clipboard.writeText(`${window.location.origin}/event/${event.id}`);
-            setShowToast(true);
-            setTimeout(() => setShowToast(false), 2000);
-          }}
-        >
-          <svg className="w-6 h-6 md:mr-1 -rotate-45 -mt-0.5" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
-          </svg>
-          <span className="hidden md:inline">Share</span>
-        </button>
+        <ShareButton url={`${window.location.origin}/event/${event.id}`} />
       </div>
     </div>
   );

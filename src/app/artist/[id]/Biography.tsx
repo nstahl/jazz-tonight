@@ -23,7 +23,7 @@ export default function Biography({ text }: BiographyProps) {
     <div className="mb-6">
       <h3 className="text-xl font-semibold mb-2">About</h3>
       <div className="relative">
-        <p className={`text-gray-100 ${!isExpanded ? 'line-clamp-4' : ''}`}>
+        <p className={`text-gray-100 ${!isExpanded ? 'line-clamp-6' : ''}`}>
           {text}
         </p>
         {!isExpanded && (
@@ -32,7 +32,7 @@ export default function Biography({ text }: BiographyProps) {
       </div>
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="text-blue-300 hover:underline mt-2"
+        className="text-blue-300 hover:underline mt-2 cursor-pointer"
       >
         {isExpanded ? 'Show less' : 'Show more'}
       </button>
