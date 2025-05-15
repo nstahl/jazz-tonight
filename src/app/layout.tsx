@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
 import { DM_Sans } from 'next/font/google'
 import Navbar from '@/components/Navbar'
@@ -10,8 +10,8 @@ const dmSans = DM_Sans({
 })
  
 export const metadata: Metadata = {
-  title: 'Atrium Jazz',
-  description: 'Nightly jazz events around NYC',
+  title: 'Atrium Jazz | Nightly Jazz Events',
+  description: 'Discover nightly jazz events, artists, and venues around New York City. Curated by Atrium Jazz.',
 }
  
 export default function RootLayout({
