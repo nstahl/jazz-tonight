@@ -109,14 +109,6 @@ function EventCard({ event, id }) {
     };
   }, []);
 
-  // Modify share handler to include the card ID in the URL
-  const handleShareClick = () => {
-    const shareUrl = `${window.location.origin}${window.location.pathname}#${id}`;
-    navigator.clipboard.writeText(shareUrl);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2000);
-  };
-
   return (
     <div
       id={id}
@@ -319,18 +311,22 @@ function EventCard({ event, id }) {
         </div>
       )}
 
-      {/* Share Button */}
+      {/* CTAs */}
       <div className="flex justify-end mt-4">
         <button
-          onClick={() => window.open(event.url, '_blank')}
+          onClick={() => window.open(`/event/${event.id}`, '_self')}
           className={'flex-1 flex items-center justify-center px-4 py-2 bg-white text-black rounded-lg shadow hover:bg-gray-100 transition cursor-pointer mr-2 ' + fugazOne.className}
         >
-          Attend
+          Tickets
         </button>
       
         <button
           className={'flex items-center px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-400 transition cursor-pointer ' + fugazOne.className}
-          onClick={handleShareClick}
+          onClick={() => {
+            navigator.clipboard.writeText(`${window.location.origin}/event/${event.id}`);
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 2000);
+          }}
         >
           <svg className="w-6 h-6 md:mr-1 -rotate-45 -mt-0.5" viewBox="0 0 24 24" fill="currentColor">
             <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
