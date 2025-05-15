@@ -79,16 +79,16 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
   if (!event) return {};
 
   return {
-    title: `${event.name} | Atrium Jazz`,
+    title: `${event.name} at ${event.venue.name} | Atrium Jazz`,
     description: event.logline || `Join ${event.artist?.name || 'us'} at ${event.venue.name} for an unforgettable jazz experience.`,
     openGraph: {
-      title: `${event.name} | Atrium Jazz`,
+      title: `${event.name} at ${event.venue.name} | Atrium Jazz`,
       description: event.logline || `Join ${event.artist?.name || 'us'} at ${event.venue.name} for an unforgettable jazz experience.`,
       url: `https://nycjazz.vercel.app/event/${id}`,
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${event.name} | Atrium Jazz`,
+      title: `${event.name} at ${event.venue.name} | Atrium Jazz`,
       description: event.logline || `Join ${event.artist?.name || 'us'} at ${event.venue.name} for an unforgettable jazz experience.`,
     }
   };
