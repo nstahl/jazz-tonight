@@ -24,10 +24,11 @@ function EventCard({ event, id }) {
   const viewTimerRef = React.useRef(null);
   const isInitialMount = React.useRef(true);
   const [infoHover, setInfoHover] = React.useState(false);
+  const [isThumbnailClicked, setIsThumbnailClicked] = React.useState(false);
 
   const { ref, inView } = useInView({
     threshold: 0,
-    rootMargin: '1800px 0px', // Triggers when the card is X px away from entering the viewport
+    rootMargin: '1800px 0px',
   });
 
   // Add a ref to store the player instance
@@ -41,7 +42,7 @@ function EventCard({ event, id }) {
     if (event && event.target) {
       playerRef.current = event.target;
       hasSeekedRef.current = false;
-      setIsPlayerInitialized(true);  // Set to true when player is ready
+      setIsPlayerInitialized(true);
     }
   };
 
@@ -60,30 +61,13 @@ function EventCard({ event, id }) {
 
   // Handle view state changes
   React.useEffect(() => {
-    // If this is the initial mount and we have a hash match, load the video immediately
-    if (isInitialMount.current && window.location.hash === `#${id}`) {
-      setShouldLoadVideo(true);
-      setShouldPreload(true);
-      isInitialMount.current = false;
-      return;
-    }
-
     if (inView) {
-      // Start preloading immediately when the element comes into the extended viewport
       setShouldPreload(true);
-      
-      // Start a timer when the card comes into view
-      viewTimerRef.current = setTimeout(() => {
-        setShouldLoadVideo(true);
-      }, 300);
     } else {
-      // Clear the timer if the card goes out of view
       if (viewTimerRef.current) {
         clearTimeout(viewTimerRef.current);
       }
-      // Only reset states if we're not the target of the hash
       if (window.location.hash !== `#${id}`) {
-        setShouldLoadVideo(false);
         setShouldPreload(false);
       }
     }
@@ -108,6 +92,12 @@ function EventCard({ event, id }) {
     };
   }, []);
 
+  const handleThumbnailClick = (e) => {
+    e.stopPropagation(); // Prevent the card click event from firing
+    setIsThumbnailClicked(true);
+    setShouldLoadVideo(true);
+  };
+
   return (
     <div
       id={id}
@@ -131,13 +121,13 @@ function EventCard({ event, id }) {
       {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
         <div className="mb-4 -mx-5 mt-[-20px]">
           <div className="relative pb-[56.25%] h-0 rounded-t-2xl overflow-hidden">
-            {(shouldLoadVideo || isPlayerInitialized) ? (
+            {(shouldLoadVideo && isThumbnailClicked) ? (
               <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
                 <YouTube
                   videoId={getYoutubeVideoId(event.artist.youtubeUrls[0])}
                   opts={{ 
                     playerVars: { 
-                      autoplay: 0, 
+                      autoplay: 1, 
                       playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(','),
                       modestbranding: 1,
                       rel: 0,
@@ -153,27 +143,15 @@ function EventCard({ event, id }) {
                   onError={onError}
                 />
               </div>
-            ) : shouldPreload ? (
-              <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
+            ) : (
+              <div 
+                className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden cursor-pointer"
+                onClick={handleThumbnailClick}
+              >
                 <img
-                  src={`https://img.youtube.com/vi/${getYoutubeVideoId(event.artist.youtubeUrls[0])}/maxresdefault.jpg`}
+                  src={`https://img.youtube.com/vi/${getYoutubeVideoId(event.artist.youtubeUrls[0])}/hqdefault.jpg`}
                   alt={`${event.artist.name} preview`}
                   className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden cursor-pointer">
-                <img
-                  src={`./charcoal_vibes_455x260.png`}
-                  alt={`${event.artist.name} preview`}
-                  className="w-full h-full object-cover grayscale"
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
