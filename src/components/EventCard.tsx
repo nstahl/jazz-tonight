@@ -1,10 +1,8 @@
 // @ts-nocheck
 
 import React from 'react';
-import { useInView } from 'react-intersection-observer';
 import { Fugaz_One } from 'next/font/google';
 import YouTube from 'react-youtube';
-import ShareButton from './ShareButton';
 
 // Helper function to extract video ID from YouTube URL
 const getYoutubeVideoId = (url: string) => {
@@ -20,21 +18,11 @@ const fugazOne = Fugaz_One({
 
 function EventCard({ event, id }) {
   const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false);
-  const [shouldPreload, setShouldPreload] = React.useState(false);
-  const viewTimerRef = React.useRef(null);
-  const isInitialMount = React.useRef(true);
-  const [infoHover, setInfoHover] = React.useState(false);
   const [isThumbnailClicked, setIsThumbnailClicked] = React.useState(false);
-
-  const { ref, inView } = useInView({
-    threshold: 0,
-    rootMargin: '1800px 0px',
-  });
 
   // Add a ref to store the player instance
   const playerRef = React.useRef(null);
   const hasSeekedRef = React.useRef(false);
-  const [isPlayerInitialized, setIsPlayerInitialized] = React.useState(false);
   
   // Add onReady handler to store the player instance
   const onReady = (event) => {
@@ -42,7 +30,6 @@ function EventCard({ event, id }) {
     if (event && event.target) {
       playerRef.current = event.target;
       hasSeekedRef.current = false;
-      setIsPlayerInitialized(true);
     }
   };
 
@@ -58,26 +45,6 @@ function EventCard({ event, id }) {
   const onError = (error) => {
     console.error('YouTube player error:', error);
   };
-
-  // Handle view state changes
-  React.useEffect(() => {
-    if (inView) {
-      setShouldPreload(true);
-    } else {
-      if (viewTimerRef.current) {
-        clearTimeout(viewTimerRef.current);
-      }
-      if (window.location.hash !== `#${id}`) {
-        setShouldPreload(false);
-      }
-    }
-
-    return () => {
-      if (viewTimerRef.current) {
-        clearTimeout(viewTimerRef.current);
-      }
-    };
-  }, [inView, id]);
 
   // Add cleanup effect
   React.useEffect(() => {
@@ -101,7 +68,6 @@ function EventCard({ event, id }) {
   return (
     <div
       id={id}
-      ref={ref}
       onClick={() => window.open(`/event/${event.id}`, '_self')}
       className={`
         block p-5
