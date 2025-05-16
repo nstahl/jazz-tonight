@@ -182,17 +182,6 @@ function EventCard({ event, id }) {
               </div>
             )}
           </div>
-          {event.artist && (
-            <div className="mt-2 text-xs text-zinc-400 text-center">
-              More about&nbsp;
-              <a 
-                href={`/artist/${event.artist.id}`}
-                className="font-bold hover:underline text-white"
-              >
-                {event.artist.name}
-              </a>
-            </div>
-          )}
         </div>
       )}
       {/* Event Name */}
@@ -227,10 +216,10 @@ function EventCard({ event, id }) {
                 </React.Fragment>
               ))}
               {' '}
-              <span className="text-zinc-500">ET</span>
+              <span className="text-zinc-400">ET</span>
             </>
           ) : (
-            <span className="text-zinc-500">Time TBA</span>
+            <span className="text-zinc-400">Time TBA</span>
           )}
           {event.venue?.name && (
             <> • Live at {event.venue.name}</>
@@ -291,16 +280,6 @@ function EventCard({ event, id }) {
             </div>
           </>
         )}
-      </div>
-      {/* CTAs */}
-      <div className="flex justify-end mt-6">
-        <button
-          onClick={() => window.open(`/event/${event.id}`, '_self')}
-          className={'flex-1 flex items-center justify-center px-4 py-2 bg-white text-black rounded-lg shadow hover:bg-gray-100 transition cursor-pointer mr-2 ' + fugazOne.className}
-        >
-          Tickets
-        </button>
-        <ShareButton url={`${window.location.origin}/event/${event.id}`} />
       </div>
     </div>
   );
