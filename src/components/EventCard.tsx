@@ -112,19 +112,91 @@ function EventCard({ event, id }) {
       id={id}
       ref={ref}
       className={`
-        bg-[#181818]
-        border border-gray-700
-        rounded-xl
-        shadow-lg
-        p-4
+        block p-5
+        bg-[#18181b]
+        rounded-2xl
         w-full max-w-[700px]
         relative
         mx-auto
+        border border-zinc-800
+        shadow-lg shadow-black/30
         transition-all duration-400
+        hover:shadow-xl
       `}
     >
+      {/* YouTube player or image at the top */}
+      {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
+        <div className="mb-4 -mx-5 mt-[-20px]">
+          <div className="relative pb-[56.25%] h-0 rounded-t-2xl overflow-hidden">
+            {(shouldLoadVideo || isPlayerInitialized) ? (
+              <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
+                <YouTube
+                  videoId={getYoutubeVideoId(event.artist.youtubeUrls[0])}
+                  opts={{ 
+                    playerVars: { 
+                      autoplay: 0, 
+                      playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(','),
+                      modestbranding: 1,
+                      rel: 0,
+                      start: 30,
+                      playsinline: 1,
+                      enablejsapi: 1,
+                    } 
+                  }}
+                  className="w-full h-full"
+                  iframeClassName="w-full h-full"
+                  onReady={onReady}
+                  onStateChange={onPlayerStateChange}
+                  onError={onError}
+                />
+              </div>
+            ) : shouldPreload ? (
+              <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
+                <img
+                  src={`https://img.youtube.com/vi/${getYoutubeVideoId(event.artist.youtubeUrls[0])}/maxresdefault.jpg`}
+                  alt={`${event.artist.name} preview`}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
+                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden cursor-pointer">
+                <img
+                  src={`./charcoal_vibes_455x260.png`}
+                  alt={`${event.artist.name} preview`}
+                  className="w-full h-full object-cover grayscale"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
+                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          {event.artist && (
+            <div className="mt-2 text-xs text-zinc-400 text-center">
+              More about&nbsp;
+              <a 
+                href={`/artist/${event.artist.id}`}
+                className="font-bold hover:underline text-white"
+              >
+                {event.artist.name}
+              </a>
+            </div>
+          )}
+        </div>
+      )}
       {/* Event Name */}
-      <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} text-left`}>
+      <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className}`}>
         {event.artist ? (
           <a href={`/artist/${event.artist.id}`} className="hover:underline">
             {event.name}
@@ -133,9 +205,8 @@ function EventCard({ event, id }) {
           <span>{event.name}</span>
         )}
       </div>
-
       {/* Date, Times, Venue */}
-      <div className="flex justify-between text-sm text-gray-400 mb-2">
+      <div className="flex justify-between text-sm text-zinc-400 mb-2">
         <span>
           {new Date(event.dateString).toLocaleDateString('en-US', {
             weekday: 'long',
@@ -156,122 +227,48 @@ function EventCard({ event, id }) {
                 </React.Fragment>
               ))}
               {' '}
-              <span className="text-gray-400">ET</span>
+              <span className="text-zinc-500">ET</span>
             </>
           ) : (
-            <span className="text-gray-400">Time TBA</span>
+            <span className="text-zinc-500">Time TBA</span>
           )}
           {event.venue?.name && (
             <> • Live at {event.venue.name}</>
           )}
         </span>
       </div>
-
       {/* Venue Logline */}
       {event.venue?.logline && (
-        <div className="text-xs italic text-gray-500 mt-1 mb-2">
+        <div className="text-xs italic text-zinc-400 mt-1 mb-3">
           {event.venue.logline}
         </div>
       )}
-
-      {/* YouTube player embedded in card */}
-      {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
-        <div className="mt-2">
-          <div className="relative pb-[56.25%] h-0 rounded-t-lg overflow-hidden">
-            {(shouldLoadVideo || isPlayerInitialized) ? (
-              <div className="absolute top-0 left-0 w-full h-full">
-                <YouTube
-                  videoId={getYoutubeVideoId(event.artist.youtubeUrls[0])}
-                  opts={{ 
-                    playerVars: { 
-                      autoplay: 0, 
-                      playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(','),
-                      modestbranding: 1,
-                      rel: 0,
-                      start: 30,
-                      playsinline: 1,
-                      enablejsapi: 1,
-                    } 
-                  }}
-                  className="w-full h-full"
-                  iframeClassName="w-full h-full rounded-t-lg"
-                  onReady={onReady}
-                  onStateChange={onPlayerStateChange}
-                  onError={onError}
-                />
-              </div>
-            ) : shouldPreload ? (
-              <div className="absolute top-0 left-0 w-full h-full">
-                <img
-                  src={`https://img.youtube.com/vi/${getYoutubeVideoId(event.artist.youtubeUrls[0])}/maxresdefault.jpg`}
-                  alt={`${event.artist.name} preview`}
-                  className="w-full h-full object-cover rounded-t-lg"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="absolute top-0 left-0 w-full h-full cursor-pointer">
-                <img
-                  src={`./charcoal_vibes_455x260.png`}
-                  alt={`${event.artist.name} preview`}
-                  className="w-full h-full object-cover rounded-t-lg grayscale"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-          {event.artist && (
-            <div className="mt-1 text-xs text-gray-400 text-center">
-              More about&nbsp;
-              <a 
-                href={`/artist/${event.artist.id}`}
-                className="font-bold hover:underline"
-              >
-                {event.artist.name}
-              </a>
-            </div>
-          )}
-        </div>
-      )}
-      <div className="grid grid-cols-[24px_1fr] gap-x-2 gap-y-4 mt-4">
+      <div className="grid grid-cols-[24px_1fr] gap-x-2 gap-y-4 mt-2">
         {/* Event Logline */}
         {event.logline && (
           <>
-            <svg className="w-4 h-4 mt-1 text-gray-500" viewBox="0 0 24 24" fill="currentColor">
+            <svg className="w-4 h-4 mt-1 text-zinc-400" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
             </svg>
-            <div className="text-sm text-gray-300">
+            <div className="text-sm text-zinc-200">
               <h3 className="font-semibold mb-1">What to expect</h3>
               <p>{event.logline}</p>
             </div>
           </>
         )}
-
         {/* Musicians List */}
         {event.performers && event.performers.length > 0 && (
           <>
-            <svg className="w-4 h-4 mt-1 text-gray-500" viewBox="0 0 24 24" fill="currentColor">
+            <svg className="w-4 h-4 mt-1 text-zinc-400" viewBox="0 0 24 24" fill="currentColor">
               <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
             </svg>
-            <div className="text-sm text-gray-300">
+            <div className="text-sm text-zinc-200">
               <h3 className="font-semibold mb-1">The Band</h3>
               <div className="inline-grid grid-cols-2 gap-x-1 gap-y-1">
                 {event.performers.map((m) => (
                   <React.Fragment key={event.id + '-' + m.performer.id}>
                     <div className="flex">
-                      <span className="text-gray-400">{m.performer.instrument}</span>
+                      <span className="text-zinc-400">{m.performer.instrument}</span>
                     </div>
                     <div className="flex">
                       <span>{m.performer.name}</span>
@@ -282,26 +279,24 @@ function EventCard({ event, id }) {
             </div>
           </>
         )}
-
         {/* Venue Info */}
         {event.venue && event.venue.name && (
           <>
-            <svg className="w-4 h-4 mt-1 text-gray-500" viewBox="0 0 24 24" fill="currentColor">
+            <svg className="w-4 h-4 mt-1 text-zinc-400" viewBox="0 0 24 24" fill="currentColor">
               <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
             </svg>
-            <div className="text-sm text-gray-300">
+            <div className="text-sm text-zinc-200">
               <h3 className="font-semibold mb-1">About {event.venue.name}</h3>
               <p>More info on the venue coming soon...</p>
             </div>
           </>
         )}
       </div>
-
       {/* CTAs */}
-      <div className="flex justify-end mt-4 gap-2">
+      <div className="flex justify-end mt-6">
         <button
           onClick={() => window.open(`/event/${event.id}`, '_self')}
-          className={'px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 text-sm ' + fugazOne.className}
+          className={'flex-1 flex items-center justify-center px-4 py-2 bg-white text-black rounded-lg shadow hover:bg-gray-100 transition cursor-pointer mr-2 ' + fugazOne.className}
         >
           Tickets
         </button>
