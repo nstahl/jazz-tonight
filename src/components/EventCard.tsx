@@ -23,6 +23,7 @@ function EventCard({ event, id }) {
   const [shouldPreload, setShouldPreload] = React.useState(false);
   const viewTimerRef = React.useRef(null);
   const isInitialMount = React.useRef(true);
+  const [infoHover, setInfoHover] = React.useState(false);
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -111,6 +112,7 @@ function EventCard({ event, id }) {
     <div
       id={id}
       ref={ref}
+      onClick={() => window.open(`/event/${event.id}`, '_self')}
       className={`
         block p-5
         bg-[#18181b]
@@ -119,9 +121,10 @@ function EventCard({ event, id }) {
         relative
         mx-auto
         border border-zinc-800
-        shadow-lg shadow-black/30
-        transition-all duration-400
-        hover:shadow-xl
+        shadow-xl shadow-black/40 transition-all duration-200
+        cursor-pointer
+        hover:bg-[#23232a]
+        hover:border-zinc-400
       `}
     >
       {/* YouTube player or image at the top */}
@@ -184,58 +187,61 @@ function EventCard({ event, id }) {
           </div>
         </div>
       )}
-      {/* Event Name */}
-      <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className}`}>
+      {/* Main info section below video */}
+      <div
+        className="cursor-pointer rounded-b-2xl transition-colors duration-200 p-0 mt-0"
+        onClick={() => window.open(`/event/${event.id}`, '_self')}
+      >
+        <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0 px-1.5 pt-3`}>
           <span>{event.name}</span>
-      </div>
-      {/* Date, Times, Venue */}
-      <div className="flex justify-between text-sm text-zinc-400 mb-2">
-        <span>
-          {new Date(event.dateString).toLocaleDateString('en-US', {
-            weekday: 'long',
-            month: 'short', 
-            day: 'numeric',
-            timeZone: 'UTC'
-          })} • {' '}
-          {event.timeStrings && event.timeStrings.length > 0 ? (
-            <>
-              {event.timeStrings.map((timeString, index) => (
-                <React.Fragment key={timeString}>
-                  {new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    hour12: true
-                  })}
-                  {index < event.timeStrings.length - 1 && ' & '}
-                </React.Fragment>
-              ))}
-              {' '}
-              <span className="text-zinc-400">ET</span>
-            </>
-          ) : (
-            <span className="text-zinc-400">Time TBA</span>
-          )}
-          {event.venue?.name && (
-            <> • Live at {event.venue.name}</>
-          )}
-        </span>
-      </div>
-      {/* Venue Logline */}
-      {event.venue?.logline && (
-        <div className="text-xs italic text-zinc-400 mt-1 mb-3">
-          {event.venue.logline}
         </div>
-      )}
-      <div className="flex flex-col gap-y-4 mt-2">
-        {/* Event Logline */}
-        {event.logline && (
-          <>
-            <div className="text-md text-zinc-200">
-              <p>{event.logline}</p>
-            </div>
-          </>
+        <div className="flex justify-between text-sm text-zinc-400 mb-2 px-1.5">
+          <span>
+            {new Date(event.dateString).toLocaleDateString('en-US', {
+              weekday: 'long',
+              month: 'short', 
+              day: 'numeric',
+              timeZone: 'UTC'
+            })} • {' '}
+            {event.timeStrings && event.timeStrings.length > 0 ? (
+              <>
+                {event.timeStrings.map((timeString, index) => (
+                  <React.Fragment key={timeString}>
+                    {new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      hour12: true
+                    })}
+                    {index < event.timeStrings.length - 1 && ' & '}
+                  </React.Fragment>
+                ))}
+                {' '}
+                <span className="text-zinc-400">ET</span>
+              </>
+            ) : (
+              <span className="text-zinc-400">Time TBA</span>
+            )}
+            {event.venue?.name && (
+              <> • Live at {event.venue.name}</>
+            )}
+          </span>
+        </div>
+        {event.venue?.logline && (
+          <div className="text-xs italic text-zinc-400 mt-1 mb-3 px-1.5">
+            {event.venue.logline}
+          </div>
         )}
-
+        <div className="flex flex-col gap-y-4 mt-2 px-1.5 pb-3"
+        >
+          {/* Event Logline */}
+          {event.logline && (
+            <>
+              <div className="text-md text-zinc-200">
+                <p>{event.logline}</p>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
