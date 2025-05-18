@@ -4,10 +4,10 @@ import path from 'path'
 
 const prisma = new PrismaClient()
 
-async function loadData() {
+async function loadEventData() {
   try {
     // Read the new line-delimited JSON file
-    const rawData = fs.readFileSync(path.join(process.cwd(), 'data/data.json'), 'utf-8')
+    const rawData = fs.readFileSync(path.join(process.cwd(), 'data/event-details.json'), 'utf-8')
     const events = rawData
       .split('\n')
       .filter(line => line.trim())
@@ -29,20 +29,6 @@ async function loadData() {
     console.log('Date range of events:');
     console.log(`Min date: ${minDate}`);
     console.log(`Max date: ${maxDate}`);
-
-    // Update all dates to 2025
-    events.forEach(event => {
-      event.dates_and_times = event.dates_and_times.map(dt => {
-        if (dt.date) {
-          // Parse the date and set year to 2025 while preserving month and day
-          const [year, month, day] = dt.date.split('-');
-          dt.date = `2025-${month}-${day}`;
-        }
-        return dt;
-      });
-    });
-
-    console.log('Updated all event dates to 2025');
 
     // Group events by venue
     const venueGroups = events.reduce((acc, event) => {
@@ -221,7 +207,7 @@ async function loadArtistProfiles() {
 
 // Execute both functions in sequence
 async function main() {
-  await loadData()
+  await loadEventData()
   await loadArtistProfiles()
 }
 
