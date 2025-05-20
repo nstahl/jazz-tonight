@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 async function loadEventData() {
   try {
     // Read the new line-delimited JSON file
-    const rawData = fs.readFileSync(path.join(process.cwd(), 'data/event-details.json'), 'utf-8')
+    const rawData = fs.readFileSync(path.join(process.cwd(), 'data/event_details.json'), 'utf-8')
     const events = rawData
       .split('\n')
       .filter(line => line.trim())
@@ -29,6 +29,20 @@ async function loadEventData() {
     console.log('Date range of events:');
     console.log(`Min date: ${minDate}`);
     console.log(`Max date: ${maxDate}`);
+
+    // Update all dates to 2025
+    events.forEach(event => {
+        event.dates_and_times = event.dates_and_times.map(dt => {
+          if (dt.date) {
+            // Parse the date and set year to 2025 while preserving month and day
+            const [year, month, day] = dt.date.split('-');
+            dt.date = `2025-${month}-${day}`;
+          }
+          return dt;
+        });
+      });
+  
+    console.log('Updated all event dates to 2025');
 
     // Group events by venue
     const venueGroups = events.reduce((acc, event) => {
@@ -57,6 +71,21 @@ async function loadEventData() {
           url: venueData.url,
         },
       })
+
+      // Sort venue events by date and time
+      venueData.events.sort((a, b) => {
+        // Compare dates first
+        const aDate = a.dates_and_times[0]?.date || '';
+        const bDate = b.dates_and_times[0]?.date || '';
+        if (aDate !== bDate) {
+          return aDate.localeCompare(bDate);
+        }
+        
+        // If dates are equal, compare times
+        const aTime = a.dates_and_times[0]?.time || '';
+        const bTime = b.dates_and_times[0]?.time || '';
+        return aTime.localeCompare(bTime);
+      });
 
       // Process each event for the venue
       for (const eventData of venueData.events) {
@@ -100,8 +129,8 @@ async function loadEventData() {
           // Process performers if they exist
           if (eventData.performers && eventData.performers.length > 0) {
             for (const performerData of eventData.performers) {
-              // Convert instrument to lowercase
-              performerData.instrument = performerData.instrument.toLowerCase();
+              // Convert instrument to lowercase, defaulting to 'unknown' if null
+              performerData.instrument = (performerData.instrument || 'unknown').toLowerCase();
               // Create or update the performer
               const performer = await prisma.performer.upsert({
                 where: {
@@ -149,66 +178,9 @@ async function loadEventData() {
   }
 }
 
-async function loadArtistProfiles() {
-  try {
-    // Read the artist profiles file
-    const rawData = fs.readFileSync(path.join(process.cwd(), 'data/artist_profiles.json'), 'utf-8')
-    const profiles = rawData.split('\n')
-      .filter(line => line.trim()) // Remove empty lines
-      .map(line => JSON.parse(line))
-
-    console.log(`Found ${profiles.length} artist profiles to process`);
-
-    for (const profile of profiles) {
-      console.log(`Processing artist profile: ${profile.artist_name}`);
-
-      // Create or update artist profile
-      const artist = await prisma.artistProfile.upsert({
-        where: { name: profile.artist_name },
-        update: {
-          website: profile.website,
-          instagram: profile.instagram,
-          youtubeUrls: profile.youtube_urls,
-          biography: profile.biography,
-        },
-        create: {
-          name: profile.artist_name,
-          website: profile.website,
-          instagram: profile.instagram,
-          youtubeUrls: profile.youtube_urls,
-          biography: profile.biography,
-        },
-      })
-
-      console.log(`Linking events for artist: ${profile.artist_name}`);
-
-      // Find and link events that match the artist name
-      const updateResult = await prisma.event.updateMany({
-        where: {
-          name: {
-            contains: profile.artist_name,
-            mode: 'insensitive' // Case-insensitive matching
-          }
-        },
-        data: {
-          artistId: artist.id
-        }
-      })
-
-      console.log(`Linked ${updateResult.count} events to ${profile.artist_name}`);
-    }
-
-    console.log('Artist profiles import completed successfully')
-  } catch (error) {
-    console.error('Error importing artist profiles:', error)
-    throw error
-  }
-}
-
 // Execute both functions in sequence
 async function main() {
   await loadEventData()
-  await loadArtistProfiles()
 }
 
 main()
