@@ -8,5 +8,3 @@ npx prisma generate
 
 echo "Seeding database..."
 npx prisma db seed
-
-echo "Database reset and seeded successfully!" 

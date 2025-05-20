@@ -36,7 +36,7 @@ type Artist = {
     id: string;
     name: string;
     dateString: string;
-    timeString: string | null;
+    setTimes: string[];
     url: string;
     venue: {
       name: string;
@@ -62,7 +62,7 @@ export default async function Page({ params }: PageProps) {
           id: true,
           name: true,
           dateString: true,
-          timeString: true,
+          setTimes: true,
           url: true,
           venue: {
             select: {

@@ -59,7 +59,7 @@ model Event {
   url           String
   logline       String?      @db.Text        // Brief description of the event
   dateString    String       // Required "2025-03-16"
-  timeString    String?      // Optional "00:00"
+  setTimes      String[]     // Optional ["21:00", "00:00"]
   venue         Venue        @relation(fields: [venueId], references: [id])
   venueId       String
   artist        ArtistProfile?  @relation(fields: [artistId], references: [id])
@@ -67,6 +67,6 @@ model Event {
   performers    EventPerformer[]
   updatedAt     DateTime     @updatedAt @map(name: "updated_at")
   
-  @@unique([name, dateString, timeString, venueId])
+  @@unique([name, dateString, venueId])
   @@map(name: "events")
 }

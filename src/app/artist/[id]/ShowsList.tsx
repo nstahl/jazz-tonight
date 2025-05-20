@@ -1,6 +1,7 @@
 'use client';
 
 import { Fugaz_One } from 'next/font/google';
+import React from 'react';
 
 const fugazOne = Fugaz_One({
   weight: '400',
@@ -14,6 +15,7 @@ type Event = {
   timeString: string | null;
   url: string;
   venue: { name: string };
+  setTimes: string[];
 };
 
 type ShowsListProps = {
@@ -29,7 +31,7 @@ export default function ShowsList({ events }: ShowsListProps) {
             <div className="block p-4 bg-white/10 backdrop-blur-sm rounded-lg shadow w-full relative">
               <a 
                 className="block hover:bg-gray-300/60 -m-4 p-4 rounded-lg transition-all"
-                href={`/#${event.id}`}
+                href={`/event/${event.id}`}
               >
                 <div className={`text-lg font-medium mb-2 ${fugazOne.className}`}>
                   <span>{event.name}</span>
@@ -41,13 +43,18 @@ export default function ShowsList({ events }: ShowsListProps) {
                       day: 'numeric',
                       timeZone: 'UTC'
                     })} • {' '}
-                    {event.timeString ? (
+                    {event.setTimes && event.setTimes.length > 0 ? (
                       <>
-                        {new Date(`2000-01-01T${event.timeString}`).toLocaleTimeString('en-US', {
-                          hour: 'numeric',
-                          minute: '2-digit',
-                          hour12: true
-                        })}
+                        {event.setTimes.map((timeString, index) => (
+                          <React.Fragment key={timeString}>
+                            {new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              hour12: true
+                            })}
+                            {index < event.setTimes.length - 1 && ' & '}
+                          </React.Fragment>
+                        ))}
                         {' '}
                         <span className="text-gray-100">ET</span>
                       </>

@@ -147,16 +147,16 @@ function EventCard({ event, id }) {
               day: 'numeric',
               timeZone: 'UTC'
             })} • {' '}
-            {event.timeStrings && event.timeStrings.length > 0 ? (
+            {event.setTimes && event.setTimes.length > 0 ? (
               <>
-                {event.timeStrings.map((timeString, index) => (
+                {event.setTimes.map((timeString, index) => (
                   <React.Fragment key={timeString}>
                     {new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
                       hour: 'numeric',
                       minute: '2-digit',
                       hour12: true
                     })}
-                    {index < event.timeStrings.length - 1 && ' & '}
+                    {index < event.setTimes.length - 1 && ' & '}
                   </React.Fragment>
                 ))}
                 {' '}

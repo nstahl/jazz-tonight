@@ -60,9 +60,4 @@ async function loadArtistProfiles() {
   }
 }
 
-// Execute both functions in sequence
-async function main() {
-  await loadArtistProfiles()
-}
-
-main()
+export { loadArtistProfiles }

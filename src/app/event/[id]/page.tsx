@@ -6,6 +6,7 @@ import Biography from '../../artist/[id]/Biography';
 import { EVENT_CONFIG } from '@/config/constants';
 import { Metadata } from 'next';
 import ShareButton from '@/components/ShareButton';
+import React from 'react';
 
 const fugazOne = Fugaz_One({
   weight: '400',
@@ -34,12 +35,12 @@ type EventWithArtist = {
   id: string;
   name: string;
   dateString: string;
-  timeString: string | null;
   url: string;
   logline?: string;
   artist: ArtistWithVideos | null;
   venue: { name: string };
   performers?: { performer: { name: string; instrument: string } }[];
+  setTimes?: string[];
 };
 
 // Define the other event type
@@ -47,7 +48,6 @@ type OtherEvent = {
   id: string;
   name: string;
   dateString: string;
-  timeString: string | null;
   venue: {
     name: string;
   };
@@ -104,7 +104,6 @@ export default async function Page({ params }: PageProps) {
       id: true,
       name: true,
       dateString: true,
-      timeString: true,
       url: true,
       logline: true,
       artist: {
@@ -119,7 +118,7 @@ export default async function Page({ params }: PageProps) {
               id: true,
               name: true,
               dateString: true,
-              timeString: true,
+              setTimes: true,
               venue: {
                 select: {
                   name: true
@@ -154,7 +153,8 @@ export default async function Page({ params }: PageProps) {
             }
           }
         }
-      }
+      },
+      setTimes: true
     }
   }) as EventWithArtist | null;
 
@@ -198,13 +198,18 @@ export default async function Page({ params }: PageProps) {
               day: 'numeric',
               timeZone: 'UTC'
             })} • {' '}
-            {event.timeString ? (
+            {event.setTimes && event.setTimes.length > 0 ? (
               <>
-                {new Date(`2000-01-01T${event.timeString}`).toLocaleTimeString('en-US', {
-                  hour: 'numeric',
-                  minute: '2-digit',
-                  hour12: true
-                })}
+                {event.setTimes.map((timeString, index) => (
+                  <React.Fragment key={timeString}>
+                    {new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      hour12: true
+                    })}
+                    {index < event.setTimes.length - 1 && ' & '}
+                  </React.Fragment>
+                ))}
                 {' '}
                 <span className="text-gray-100">ET</span>
               </>
@@ -322,8 +327,9 @@ export default async function Page({ params }: PageProps) {
       {/* Upcoming Events Section */}
       {event.artist?.events && event.artist.events.length > 0 && (
         <div className="border-t pt-8 mt-8">
-          <h2 className="text-2xl font-bold mb-6">More Sets</h2>
+          <h2 className="text-2xl font-bold mb-6">More Dates</h2>
           <ShowsList events={event.artist.events.filter((event: OtherEvent) => {
+            console.log(event);
             const eventDate = new Date(event.dateString);
             const cutoffDate = new Date(Date.now() + EVENT_CONFIG.DAYS_AHEAD * 24 * 60 * 60 * 1000);
             return eventDate <= cutoffDate;
