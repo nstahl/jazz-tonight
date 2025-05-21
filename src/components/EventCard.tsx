@@ -96,7 +96,6 @@ function EventCard({ event, id }) {
                   opts={{ 
                     playerVars: { 
                       autoplay: 1, 
-                      playlist: event.artist.youtubeUrls.map(getYoutubeVideoId).join(','),
                       modestbranding: 1,
                       rel: 0,
                       start: 30,
