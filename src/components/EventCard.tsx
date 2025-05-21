@@ -70,10 +70,11 @@ function EventCard({ event, id }) {
       id={id}
       onClick={() => window.open(`/event/${event.id}`, '_self')}
       className={`
-        block p-5
+        flex flex-col lg:flex-row
+        block p-0
         bg-[#18181b]
         rounded-2xl
-        w-full max-w-[700px]
+        w-full max-w-[900px]
         relative
         mx-auto
         border border-zinc-800
@@ -81,12 +82,13 @@ function EventCard({ event, id }) {
         cursor-pointer
         hover:bg-[#23232a]
         hover:border-zinc-400
+        overflow-hidden
       `}
     >
-      {/* YouTube player or image at the top */}
+      {/* Left: YouTube player or image */}
       {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
-        <div className="mb-4 -mx-5 mt-[-20px]">
-          <div className="relative pb-[56.25%] h-0 rounded-t-2xl overflow-hidden">
+        <div className="lg:w-[45%] w-full lg:min-w-[280px] lg:max-w-[320px] mb-0 lg:mb-0 lg:mr-0">
+          <div className="relative pb-[56.25%] lg:pb-0 lg:h-[220px] h-0 rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none overflow-hidden">
             {(shouldLoadVideo && isThumbnailClicked) ? (
               <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
                 <YouTube
@@ -131,9 +133,9 @@ function EventCard({ event, id }) {
           </div>
         </div>
       )}
-      {/* Main info section below video */}
+      {/* Right: Main info section */}
       <div
-        className="cursor-pointer rounded-b-2xl transition-colors duration-200 p-0 mt-0"
+        className="flex-1 cursor-pointer rounded-b-2xl lg:rounded-b-none lg:rounded-r-2xl transition-colors duration-200 p-5 lg:p-6 mt-0"
         onClick={() => window.open(`/event/${event.id}`, '_self')}
       >
         <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0 px-1.5 pt-3`}>
