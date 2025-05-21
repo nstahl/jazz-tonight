@@ -170,7 +170,7 @@ export default async function Page({ params }: PageProps) {
         return videoId ? { url, videoId } : null;
       })
       .filter((item): item is YouTubeVideo => item !== null)
-      .slice(0, 6);
+      .slice(0, 4);
     
     // Store the filtered videos in the event object
     event.artist.youtubeVideos = validYoutubeVideos;
