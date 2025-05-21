@@ -16,14 +16,38 @@ const fugazOne = Fugaz_One({
     subsets: ['latin'],
   });
 
-function EventCard({ event, id }) {
+// Add this at the top level of the file, outside the component
+let activePlayerId: string | null = null;
+
+function EventCard({ event }) {
   const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false);
   const [isThumbnailClicked, setIsThumbnailClicked] = React.useState(false);
+  const cardId = React.useId(); // Generate a unique ID for this card instance
 
   // Add a ref to store the player instance
   const playerRef = React.useRef(null);
   const hasSeekedRef = React.useRef(false);
   
+  // Update onPlayerStateChange handler
+  const onPlayerStateChange = (event) => {
+    if (event && event.target) {
+      // YouTube.PlayerState.PLAYING = 1
+      if (event.data === 1) {
+        // If there's an active player that's not this one, pause it
+        if (activePlayerId && activePlayerId !== cardId && window[`player_${activePlayerId}`]) {
+          try {
+            window[`player_${activePlayerId}`].pauseVideo();
+          } catch (error) {
+            console.error('Error pausing video:', error);
+          }
+        }
+        // Set this as the active player
+        activePlayerId = cardId;
+        window[`player_${cardId}`] = event.target;
+      }
+    }
+  };
+
   // Add onReady handler to store the player instance
   const onReady = (event) => {
     console.log('onReady');
@@ -32,14 +56,6 @@ function EventCard({ event, id }) {
       hasSeekedRef.current = false;
     }
   };
-
-  const onPlayerStateChange = (event) => {
-    console.log('onPlayerStateChange');
-    if (event && event.target) {
-      console.log("playerRef.current", playerRef.current);
-      console.log(event.data);
-    }
-  }
 
   // Add error handler
   const onError = (error) => {
@@ -67,7 +83,7 @@ function EventCard({ event, id }) {
 
   return (
     <div
-      id={id}
+      id={cardId}
       onClick={() => window.open(`/event/${event.id}`, '_self')}
       className={`
         flex flex-col lg:flex-row
