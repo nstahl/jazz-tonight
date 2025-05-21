@@ -200,14 +200,14 @@ export default async function Page({ params }: PageProps) {
             })} • {' '}
             {event.setTimes && event.setTimes.length > 0 ? (
               <>
-                {event.setTimes.map((timeString, index) => (
+                {event.setTimes!.map((timeString, index) => (
                   <React.Fragment key={timeString}>
                     {new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
                       hour: 'numeric',
                       minute: '2-digit',
                       hour12: true
                     })}
-                    {index < event.setTimes.length - 1 && ' & '}
+                    {index < event.setTimes!.length - 1 && ' & '}
                   </React.Fragment>
                 ))}
                 {' '}

@@ -3,14 +3,14 @@ import { notFound } from 'next/navigation';
 import ArtistEditForm from './ArtistEditForm';
 
 interface PageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 export default async function EditArtistPage({ params }: PageProps) {
+  const { id } = await params;
+  
   const artist = await prisma.artistProfile.findUnique({
-    where: { id: params.id },
+    where: { id },
   });
 
   if (!artist) {

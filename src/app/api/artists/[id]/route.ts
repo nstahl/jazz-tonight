@@ -1,16 +1,16 @@
 import { prisma } from '@/lib/prisma';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: any
 ) {
   try {
     const data = await request.json();
     const { name, website, instagram, biography, youtubeUrls } = data;
 
     const updatedArtist = await prisma.artistProfile.update({
-      where: { id: params.id },
+      where: { id: context.params.id },
       data: {
         name,
         website,
@@ -31,12 +31,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: any
 ) {
   try {
     await prisma.artistProfile.delete({
-      where: { id: params.id },
+      where: { id: context.params.id },
     });
 
     return new NextResponse(null, { status: 204 });

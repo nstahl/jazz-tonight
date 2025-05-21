@@ -1,13 +1,13 @@
 import { prisma } from '@/lib/prisma';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: any
 ) {
   try {
     await prisma.event.delete({
-      where: { id: params.id },
+      where: { id: context.params.id },
     });
 
     return new NextResponse(null, { status: 204 });
