@@ -150,7 +150,6 @@ export default function HomeClient() {
                   <EventCard
                     key={event.id}
                     event={event}
-                    id={`event-${event.id}`}
                   />
                 ))}
             </div>
