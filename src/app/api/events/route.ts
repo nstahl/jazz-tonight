@@ -8,6 +8,9 @@ export async function GET() {
       dateString: {
         gte: new Date().toISOString().split('T')[0],
         lte: new Date(Date.now() + EVENT_CONFIG.DAYS_AHEAD * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      }, 
+      artist: {
+        isNot: null
       }
     },
     include: {

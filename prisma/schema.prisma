@@ -1,72 +1,71 @@
-// schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Venue {
-  id            String       @default(cuid()) @id
-  name          String       @unique
-  url           String
-  events        Event[]
-  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
-  @@map(name: "venues")
+  id        String   @id @default(cuid())
+  name      String   @unique
+  url       String
+  updatedAt DateTime @updatedAt @map("updated_at")
+  events    Event[]
+
+  @@map("venues")
 }
 
 model ArtistProfile {
-  id            String       @default(cuid()) @id
-  name          String       @unique
-  website       String?
-  instagram     String?
-  youtubeUrls   String[]    // Array of YouTube URLs
-  biography     String?      @db.Text        // Using Text type for longer content
-  events        Event[]      // One-to-many relationship with events
-  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+  id          String   @id @default(cuid())
+  name        String   @unique
+  website     String?
+  instagram   String?
+  youtubeUrls String[]
+  biography   String?
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  events      Event[]
 
-  @@map(name: "artist_profiles")
+  @@map("artist_profiles")
 }
 
 model Performer {
-  id            String       @default(cuid()) @id
-  name          String
-  instrument    String
-  events        EventPerformer[]
-  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+  id         String           @id @default(cuid())
+  name       String
+  instrument String
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+  events     EventPerformer[]
 
   @@unique([name, instrument])
-  @@map(name: "performers")
+  @@map("performers")
 }
 
 model EventPerformer {
-  event         Event        @relation(fields: [eventId], references: [id])
-  eventId       String
-  performer     Performer    @relation(fields: [performerId], references: [id])
-  performerId   String
-  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+  eventId     String
+  performerId String
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  event       Event     @relation(fields: [eventId], references: [id])
+  performer   Performer @relation(fields: [performerId], references: [id])
 
   @@id([eventId, performerId])
-  @@map(name: "event_performers")
+  @@map("event_performers")
 }
 
 model Event {
-  id            String       @default(cuid()) @id
-  name          String
-  url           String
-  logline       String?      @db.Text        // Brief description of the event
-  dateString    String       // Required "2025-03-16"
-  setTimes      String[]     // Optional ["21:00", "00:00"]
-  venue         Venue        @relation(fields: [venueId], references: [id])
-  venueId       String
-  artist        ArtistProfile?  @relation(fields: [artistId], references: [id])
-  artistId      String?
-  performers    EventPerformer[]
-  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
-  
+  id         String           @id @default(cuid())
+  name       String
+  url        String
+  logline    String?
+  dateString String
+  setTimes   String[]
+  venueId    String
+  artistId   String?
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+  performers EventPerformer[]
+  artist     ArtistProfile?   @relation(fields: [artistId], references: [id])
+  venue      Venue            @relation(fields: [venueId], references: [id])
+
   @@unique([name, dateString, venueId])
-  @@map(name: "events")
+  @@map("events")
 }

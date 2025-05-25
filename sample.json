@@ -1,0 +1,22 @@
+{
+    "id": "cmaw0faoh000sn1t8wenlzeuh",
+    "name": "Valtinho Anastácio",
+    "url": "https://www.zincbar.com/event/valtinho-anastacio-4/",
+    "logline": "Acclaimed Brazilian percussionist Valtinho Anastácio brings the sounds of Brazil to the Zinc every Sunday evening.",
+    "dateString": "2025-05-25",
+    "setTimes": [
+        "19:30",
+        "21:00"
+    ],
+    "venueId": "cmaw0f9m70000n1t8j3go1vma",
+    "artistId": null,
+    "updatedAt": "2025-05-20T04:24:24.786Z",
+    "venue": {
+        "id": "cmaw0f9m70000n1t8j3go1vma",
+        "name": "Zinc Bar",
+        "url": "https://www.zincbar.com/event/arcoiris-sandoval/",
+        "updatedAt": "2025-05-20T04:24:23.407Z"
+    },
+    "artist": null,
+    "performers": []
+}

@@ -9,17 +9,15 @@ interface Event {
   logline: string;
   url: string;
   dateString: string;
-  timeString: string;
   timeStrings: string[];
   venueId: string;
   venue: {
     name: string;
   };
-  artist: {
-    id: string;
-    name: string;
-    youtubeUrls?: string[];
-  } | null;
+  artist: string;
+  performers: {
+    performer: string;
+  }[];
 }
 
 export default function HomeClient() {
@@ -33,31 +31,10 @@ export default function HomeClient() {
         const response = await fetch('/api/events');
         const eventsDisagreggated = await response.json();
 
-        // Group events by unique artist-date combination
-        const artistDateDict: Record<string, Event[]> = {};
-        for (const event of eventsDisagreggated) {
-          if (event.artist && event.dateString) {
-            const key = `${event.artist.id}-${event.dateString}`;
-            if (!artistDateDict[key]) {
-              artistDateDict[key] = [event];
-            } else {
-              artistDateDict[key].push(event);
-            }
-          }
-        }
-        const tempEvents = [];
-        for (const key in artistDateDict) {
-          const disaggregatedEventsForArtistDate = artistDateDict[key];
-          const timeStrings = disaggregatedEventsForArtistDate.map(event => event.timeString);
-          const artistDateEvent = {
-            ...disaggregatedEventsForArtistDate[0],
-            timeStrings,
-          };
-          tempEvents.push(artistDateEvent);
-        }
+        console.log("eventsDisagreggated", eventsDisagreggated);
 
         // Group events by date
-        const groupedEvents = tempEvents.reduce((acc: Record<string, Event[]>, event: Event) => {
+        const groupedEvents = eventsDisagreggated.reduce((acc: Record<string, Event[]>, event: Event) => {
           if (!acc[event.dateString]) {
             acc[event.dateString] = [];
           }
@@ -65,6 +42,7 @@ export default function HomeClient() {
           return acc;
         }, {});
 
+        console.log("groupedEvents", groupedEvents);
         setDateGroups(Object.entries(groupedEvents));
       } catch (error) {
         console.error('Error fetching events:', error);
