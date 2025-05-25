@@ -13,6 +13,8 @@ interface Event {
   venueId: string;
   venue: {
     name: string;
+    url: string;
+    gMapsUrl: string;
   };
   artist: string;
   performers: {

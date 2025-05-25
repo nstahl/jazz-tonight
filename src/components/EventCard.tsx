@@ -183,7 +183,19 @@ function EventCard({ event }) {
               <span className="text-zinc-400">Time TBA</span>
             )}
             {event.venue?.name && (
-              <> • Live at {event.venue.name}</>
+              <> • Live at {event.venue.gMapsUrl ? (
+                <a 
+                  href={event.venue.gMapsUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-blue-300 hover:underline transition-colors"
+                >
+                  {event.venue.name}
+                </a>
+              ) : (
+                event.venue.name
+              )}</>
             )}
           </span>
         </div>

@@ -14,7 +14,14 @@ export async function GET() {
       }
     },
     include: {
-      venue: true,
+      venue: {
+        select: {
+          id: true,
+          name: true,
+          url: true,
+          gMapsUrl: true
+        }
+      },
       artist: true,
       performers: {
         include: {
