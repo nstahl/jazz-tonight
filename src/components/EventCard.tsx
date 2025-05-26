@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { Fugaz_One } from 'next/font/google';
+import YouTube from 'react-youtube';
 
 // Helper function to extract video ID from YouTube URL
 const getYoutubeVideoId = (url: string) => {
