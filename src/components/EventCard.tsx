@@ -1,8 +1,8 @@
 // @ts-nocheck
+"use client"
 
 import React from 'react';
 import { Fugaz_One } from 'next/font/google';
-import YouTube from 'react-youtube';
 
 // Helper function to extract video ID from YouTube URL
 const getYoutubeVideoId = (url: string) => {
@@ -19,7 +19,7 @@ const fugazOne = Fugaz_One({
 // Add this at the top level of the file, outside the component
 let activePlayerId: string | null = null;
 
-function EventCard({ event }) {
+function EventCard({ event, linkToVenue = true }) {
   const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false);
   const [isThumbnailClicked, setIsThumbnailClicked] = React.useState(false);
   const cardId = React.useId(); // Generate a unique ID for this card instance
@@ -183,13 +183,13 @@ function EventCard({ event }) {
               <span className="text-zinc-400">Time TBA</span>
             )}
             {event.venue?.name && (
-              <> • Live at {event.venue.gMapsUrl ? (
-                <a 
-                  href={event.venue.gMapsUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-blue-300 hover:underline transition-colors"
+              <> • Live at {
+                linkToVenue ? (
+                  <a 
+                    href={`/venue/${event.venue.id}`} 
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-blue-300 hover:underline transition-colors"
                 >
                   {event.venue.name}
                 </a>
