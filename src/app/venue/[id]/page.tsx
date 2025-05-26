@@ -24,6 +24,7 @@ type VenueWithEvents = {
   name: string;
   url: string;
   gMapsUrl: string | null;
+  description: string | null;
   events: {
     id: string;
     name: string;
@@ -81,6 +82,7 @@ export default async function Page({ params }: PageProps) {
       name: true,
       url: true,
       gMapsUrl: true,
+      description: true,
       events: {
         where: {
           dateString: {
@@ -160,7 +162,12 @@ export default async function Page({ params }: PageProps) {
           )}
         </div>
       </div>
-
+      {venue.description && (
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold mb-2">Description</h2>
+          <p className="text-gray-300">{venue.description}</p>
+        </div>
+      )}
       {/* Upcoming Events Section */}
       {venue.events.length > 0 ? (
         <div className="space-y-6">
