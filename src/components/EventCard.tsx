@@ -105,7 +105,7 @@ function EventCard({ event, linkToVenue = true }) {
       {/* Left: YouTube player or image */}
       {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
         <div className="lg:w-[45%] w-full lg:min-w-[280px] lg:max-w-[320px] mb-0 lg:mb-0 lg:mr-0">
-          <div className="relative pb-[56.25%] lg:pb-0 lg:h-[220px] h-0 rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none overflow-hidden">
+          <div className="relative pb-[56.25%] lg:pb-0 lg:h-[225px] h-0 rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none overflow-hidden">
             {(shouldLoadVideo && isThumbnailClicked) ? (
               <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
                 <YouTube
@@ -151,13 +151,13 @@ function EventCard({ event, linkToVenue = true }) {
       )}
       {/* Right: Main info section */}
       <div
-        className="flex-1 cursor-pointer rounded-b-2xl lg:rounded-b-none lg:rounded-r-2xl transition-colors duration-200 p-5 lg:p-6 mt-0"
+        className="flex-1 cursor-pointer rounded-b-2xl lg:rounded-b-none lg:rounded-r-2xl transition-colors duration-200 p-4 lg:p-5 mt-0"
         onClick={() => window.open(`/event/${event.id}`, '_self')}
       >
-        <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0 px-1.5 pt-3`}>
+        <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0 px-1.5`}>
           <span>{event.name}</span>
         </div>
-        <div className="flex justify-between text-sm text-zinc-400 mb-2 px-1.5">
+        <div className="flex justify-between text-sm text-zinc-400 px-1.5">
           <span>
             {new Date(event.dateString).toLocaleDateString('en-US', {
               weekday: 'long',
@@ -201,11 +201,11 @@ function EventCard({ event, linkToVenue = true }) {
           </span>
         </div>
         {event.venue?.logline && (
-          <div className="text-xs italic text-zinc-400 mt-1 mb-3 px-1.5">
+          <div className="text-xs italic text-zinc-400 mt-1 px-1.5">
             {event.venue.logline}
           </div>
         )}
-        <div className="flex flex-col gap-y-4 mt-2 px-1.5 pb-3"
+        <div className="flex flex-col gap-y-4 mt-2 px-1.5"
         >
           {/* Event Logline */}
           {event.logline && (
