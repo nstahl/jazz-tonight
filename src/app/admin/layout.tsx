@@ -28,6 +28,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           >
             Artists
           </Link>
+          <Link 
+            href="/admin/venues" 
+            className="block px-4 py-2 text-gray-600 hover:bg-gray-100"
+          >
+            Venues
+          </Link>
         </nav>
       </div>
 
