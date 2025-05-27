@@ -10,7 +10,7 @@ export async function GET() {
         lte: new Date(Date.now() + EVENT_CONFIG.DAYS_AHEAD * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
       }, 
       artist: {
-        isNot: null
+        // isNot: null
       }
     },
     include: {
