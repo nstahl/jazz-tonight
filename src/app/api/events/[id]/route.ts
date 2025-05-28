@@ -6,6 +6,12 @@ export async function DELETE(
   context: any
 ) {
   try {
+    // First delete all related event_performers records
+    await prisma.eventPerformer.deleteMany({
+      where: { eventId: context.params.id }
+    });
+
+    // Then delete the event
     await prisma.event.delete({
       where: { id: context.params.id },
     });
