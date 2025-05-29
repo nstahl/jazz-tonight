@@ -1,14 +1,14 @@
 import { prisma } from '@/lib/prisma';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: any
 ) {
   try {
     // Find all event IDs for this venue
     const events = await prisma.event.findMany({
-      where: { venueId: params.id },
+      where: { venueId: context.params.id },
       select: { id: true },
     });
     const eventIds = events.map((e: { id: string }) => e.id);
@@ -22,12 +22,12 @@ export async function DELETE(
 
     // Delete all events for this venue
     await prisma.event.deleteMany({
-      where: { venueId: params.id }
+      where: { venueId: context.params.id }
     });
 
     // Delete the venue
     await prisma.venue.delete({
-      where: { id: params.id }
+      where: { id: context.params.id }
     });
 
     return NextResponse.json({ success: true });
