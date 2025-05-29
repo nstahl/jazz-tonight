@@ -43,6 +43,9 @@ export default function ArtistsTable({ artists }: ArtistsTableProps) {
               Name
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Website
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Events
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -58,6 +61,22 @@ export default function ArtistsTable({ artists }: ArtistsTableProps) {
             <tr key={artist.id}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">{artist.name}</div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-900">
+                  {artist.website ? (
+                    <a
+                      href={artist.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 hover:underline"
+                    >
+                      {new URL(artist.website).hostname}
+                    </a>
+                  ) : (
+                    <span className="text-gray-500">No website</span>
+                  )}
+                </div>
               </td>
               <td className="px-6 py-4">
                 <div className="text-sm text-gray-900">

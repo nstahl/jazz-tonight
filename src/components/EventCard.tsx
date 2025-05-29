@@ -103,10 +103,10 @@ function EventCard({ event, linkToVenue = true }) {
       `}
     >
       {/* Left: YouTube player or image */}
-      {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 && (
-        <div className="lg:w-[45%] w-full lg:min-w-[280px] lg:max-w-[320px] mb-0 lg:mb-0 lg:mr-0">
-          <div className="relative pb-[56.25%] lg:pb-0 lg:h-[225px] h-0 rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none overflow-hidden">
-            {(shouldLoadVideo && isThumbnailClicked) ? (
+      <div className="lg:w-[45%] w-full lg:min-w-[280px] lg:max-w-[320px] mb-0 lg:mb-0 lg:mr-0">
+        <div className="relative pb-[56.25%] lg:pb-0 lg:h-[225px] h-0 rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none overflow-hidden">
+          {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 ? (
+            (shouldLoadVideo && isThumbnailClicked) ? (
               <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
                 <YouTube
                   videoId={getYoutubeVideoId(event.artist.youtubeUrls[0])}
@@ -145,10 +145,18 @@ function EventCard({ event, linkToVenue = true }) {
                   </div>
                 </div>
               </div>
-            )}
-          </div>
+            )
+          ) : (
+            <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
+              <img
+                src="/thumb_smoke.jpg"
+                alt="Event preview"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
         </div>
-      )}
+      </div>
       {/* Right: Main info section */}
       <div
         className="flex-1 cursor-pointer rounded-b-2xl lg:rounded-b-none lg:rounded-r-2xl transition-colors duration-200 p-4 lg:p-5 mt-0"
