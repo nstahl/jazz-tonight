@@ -149,7 +149,7 @@ function EventCard({ event, linkToVenue = true }) {
           ) : (
             <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
               <img
-                src="/thumb_smoke.jpg"
+                src={event.venue?.thumbnail ? `/${event.venue.thumbnail}` : "/thumb_generic.jpg"}
                 alt="Event preview"
                 className="w-full h-full object-cover"
               />

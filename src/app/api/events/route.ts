@@ -11,6 +11,9 @@ export async function GET() {
       }, 
       artist: {
         // isNot: null
+      },
+      venue: {
+        hide: false
       }
     },
     include: {
@@ -19,7 +22,8 @@ export async function GET() {
           id: true,
           name: true,
           url: true,
-          gMapsUrl: true
+          gMapsUrl: true,
+          thumbnail: true
         }
       },
       artist: true,
