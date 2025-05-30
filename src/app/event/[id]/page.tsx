@@ -233,7 +233,7 @@ export default async function Page({ params }: PageProps) {
       </div>
 
       {/* Mobile CTA with background */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black p-6">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black p-6 z-50">
         <a 
           href={event.url}
           target="_blank"

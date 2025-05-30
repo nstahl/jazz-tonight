@@ -28,7 +28,7 @@ export default function ShowsList({ events }: ShowsListProps) {
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {events.map((event: Event, index: number) => (
           <li key={event.id} className={index >= 4 ? "hidden additional-show" : ""}>
-            <div className="block p-4 bg-white/10 backdrop-blur-sm rounded-lg shadow w-full relative">
+            <div className="block p-4 bg-white/10 rounded-lg shadow w-full relative">
               <a 
                 className="block hover:bg-gray-300/60 -m-4 p-4 rounded-lg transition-all"
                 href={`/event/${event.id}`}
