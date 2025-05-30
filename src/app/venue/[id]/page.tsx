@@ -108,7 +108,8 @@ export default async function Page({ params }: PageProps) {
             select: {
               name: true,
               url: true,
-              gMapsUrl: true
+              gMapsUrl: true,
+              thumbnail: true
             }
           }
         },

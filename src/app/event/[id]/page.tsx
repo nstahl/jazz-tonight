@@ -38,7 +38,7 @@ type EventWithArtist = {
   url: string;
   logline?: string;
   artist: ArtistWithVideos | null;
-  venue: { name: string };
+  venue: { name: string; id: string; };
   performers?: { performer: { name: string; instrument: string } }[];
   setTimes?: string[];
 };
@@ -141,7 +141,8 @@ export default async function Page({ params }: PageProps) {
       },
       venue: {
         select: {
-          name: true
+          name: true,
+          id: true,
         }
       },
       performers: {
@@ -215,7 +216,7 @@ export default async function Page({ params }: PageProps) {
               </>
             ) : (
               <span className="text-gray-100">Time TBA</span>
-            )} • {event.venue.name}
+            )} • <a href={`/venue/${event.venue.id}`} className="text-blue-300 hover:underline transition-colors">{event.venue.name}</a>
           </p>
         </div>
         <div className="flex flex-row items-stretch gap-2 ml-4">

@@ -218,7 +218,7 @@ function EventCard({ event, linkToVenue = true }) {
           {/* Event Logline */}
           {event.logline && (
             <>
-              <div className="text-md text-zinc-200">
+              <div className="text-sm text-zinc-200">
                 <p>{event.logline}</p>
               </div>
             </>
