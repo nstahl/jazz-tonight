@@ -192,7 +192,13 @@ function EventCard({ event, linkToVenue = true }) {
               <span className="text-zinc-400">Time TBA</span>
             )}
             {event.venue?.name && (
-              <> • Live at {
+              <>
+                <span className="hidden md:inline"> • </span>
+                <span className="block md:inline mt-2 md:mt-0">
+                  <svg className="inline-block w-4 h-4 mr-1 md:hidden" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
+                  Live at {
                 linkToVenue ? (
                   <a 
                     href={`/venue/${event.venue.id}`} 
@@ -204,17 +210,17 @@ function EventCard({ event, linkToVenue = true }) {
                 </a>
               ) : (
                 event.venue.name
-              )}</>
+              )}</span>
+              </>
             )}
           </span>
         </div>
 
-        <div className="flex flex-col gap-y-4 mt-2"
-        >
+        <div className="flex flex-col gap-y-4 mt-2">
           {/* Event Logline */}
           {event.logline && (
             <>
-              <div className="text-sm text-zinc-200">
+              <div className="hidden md:block text-sm text-zinc-200">
                 <p>{event.logline}</p>
               </div>
             </>
