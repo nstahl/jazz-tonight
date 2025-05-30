@@ -37,6 +37,19 @@ function EventCard({ event, linkToVenue = true }) {
     return (hash % 360);
   }, [cardId]);
 
+  // Define a set of gradients
+  const gradients = [
+    `linear-gradient(120deg, rgba(10, 23, 253, 0.1) 0%, rgba(120, 138, 255, 0.1) 50%, rgba(168, 144, 254, 0.2) 100%)`,
+    `linear-gradient(120deg, rgba(23, 10, 253, 0.1) 0%, rgba(138, 120, 255, 0.1) 50%, rgba(203, 190, 250, 0.2) 100%)`,
+    `linear-gradient(120deg, rgba(123, 10, 253, 0.1) 0%, rgba(138, 120, 255, 0.1) 50%, rgba(210, 201, 246, 0.2) 100%)`,
+  ];
+
+  // Choose a gradient based on the angle
+  const selectedGradient = React.useMemo(() => {
+    const index = Math.floor((gradientAngle / 360) * gradients.length);
+    return gradients[index];
+  }, [gradientAngle]);
+
   // Add a ref to store the player instance
   const playerRef = React.useRef(null);
   const hasSeekedRef = React.useRef(false);
@@ -114,7 +127,7 @@ function EventCard({ event, linkToVenue = true }) {
         overflow-hidden
       `}
       style={{
-        background: `linear-gradient(${gradientAngle}deg, rgba(10, 23, 253, 0.1) 0%, rgba(120, 138, 255, 0.1) 50%, rgba(168, 144, 254, 0.2) 100%)`
+        background: selectedGradient
       }}
     >
       {/* Left: YouTube player or image */}
