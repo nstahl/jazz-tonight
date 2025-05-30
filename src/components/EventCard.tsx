@@ -87,6 +87,7 @@ function EventCard({ event, linkToVenue = true }) {
       id={cardId}
       onClick={() => window.open(`/event/${event.id}`, '_self')}
       className={`
+        gradient-card-bg
         flex flex-col md:flex-row
         block p-0
         bg-[#18181b]
