@@ -25,6 +25,18 @@ function EventCard({ event, linkToVenue = true }) {
   const [isThumbnailClicked, setIsThumbnailClicked] = React.useState(false);
   const cardId = React.useId(); // Generate a unique ID for this card instance
 
+  // Generate a unique gradient angle based on the card ID
+  const gradientAngle = React.useMemo(() => {
+    // Convert the card ID to a number and use it to generate an angle between 0 and 360
+    const hash = cardId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    // If event.id exists, use it to generate a more stable hash
+    if (event.id) {
+      const idHash = event.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      return (idHash % 360);
+    }
+    return (hash % 360);
+  }, [cardId]);
+
   // Add a ref to store the player instance
   const playerRef = React.useRef(null);
   const hasSeekedRef = React.useRef(false);
@@ -87,7 +99,6 @@ function EventCard({ event, linkToVenue = true }) {
       id={cardId}
       onClick={() => window.open(`/event/${event.id}`, '_self')}
       className={`
-        gradient-card-bg
         flex flex-col md:flex-row
         block p-0
         bg-[#18181b]
@@ -102,6 +113,9 @@ function EventCard({ event, linkToVenue = true }) {
         hover:border-zinc-400
         overflow-hidden
       `}
+      style={{
+        background: `linear-gradient(${gradientAngle}deg, rgba(10, 23, 253, 0.1) 0%, rgba(120, 138, 255, 0.1) 50%, rgba(168, 144, 254, 0.2) 100%)`
+      }}
     >
       {/* Left: YouTube player or image */}
       <div className="md:w-[45%] w-full md:min-w-[280px] md:max-w-[320px] mb-0 md:mb-0 md:mr-0">
