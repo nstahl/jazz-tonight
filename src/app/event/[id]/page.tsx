@@ -216,7 +216,7 @@ export default async function Page({ params }: PageProps) {
           </p>
         </div>
         <div className="flex flex-row items-stretch gap-2 ml-4">
-          <ShareButton url={`https://nycjazz.vercel.app/event/${event.id}`} className="w-16 h-16 p-0 text-xl font-bold rounded-lg flex items-center justify-center" showText={false} />
+          <ShareButton url={`https://nycjazz.vercel.app/event/${event.id}`} className="w-16 h-16 p-0 text-xl font-bold rounded-lg flex items-center justify-center hidden md:flex" showText={false} />
           <a 
             href={event.url}
             target="_blank"
@@ -229,15 +229,16 @@ export default async function Page({ params }: PageProps) {
       </div>
 
       {/* Mobile CTA with background */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black p-6 z-50">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black p-6 z-50 flex flex-row gap-2">
         <a 
           href={event.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="block bg-white text-black py-3 text-lg font-bold hover:bg-gray-200 transition-colors text-center rounded-lg"
+          className="flex-1 bg-white text-black py-3 text-lg font-bold hover:bg-gray-200 transition-colors text-center rounded-lg"
         >
           Tickets
         </a>
+        <ShareButton url={`https://nycjazz.vercel.app/event/${event.id}`} className="w-14 h-14 p-0 text-xl font-bold rounded-lg flex items-center justify-center bg-blue-300 text-black" showText={false} />
       </div>
 
       {event.logline && (
