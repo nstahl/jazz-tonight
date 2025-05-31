@@ -38,7 +38,7 @@ type EventWithArtist = {
   url: string;
   logline?: string;
   artist: ArtistWithVideos | null;
-  venue: { name: string; id: string; };
+  venue: { name: string; id: string; description: string };
   performers?: { performer: { name: string; instrument: string } }[];
   setTimes?: string[];
 };
@@ -71,7 +71,8 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
       },
       venue: {
         select: {
-          name: true
+          name: true,
+          description: true
         }
       }
     }
@@ -143,6 +144,7 @@ export default async function Page({ params }: PageProps) {
         select: {
           name: true,
           id: true,
+          description: true,
         }
       },
       performers: {
@@ -238,7 +240,7 @@ export default async function Page({ params }: PageProps) {
         </a>
       </div>
 
-      {event.artist && (
+      {event.logline && (
         <div className="border-t pt-8">
           
           {event.logline && (
@@ -247,8 +249,12 @@ export default async function Page({ params }: PageProps) {
             </div>
           )}
 
-          {event.artist.biography && (
-            <Biography text={event.artist.biography} />
+          {event.artist && (
+            <>
+              {event.artist.biography && (
+                <Biography text={event.artist.biography} />
+              )}
+            </>
           )}
 
           <div className="border-t mb-6"></div>
@@ -269,11 +275,11 @@ export default async function Page({ params }: PageProps) {
                 </ul>
               </div>
             )}
-            
-            {(event.artist.website || event.artist.instagram) && (
+              
+            {(event.artist?.website || event.artist?.instagram) && (
               <div>
                 <h3 className="text-xl font-semibold mb-2">Learn more</h3>
-                {event.artist.website && (
+                {event.artist?.website && (
                   <a href={event.artist.website} target="_blank" rel="noopener noreferrer" 
                      className="text-blue-300 hover:underline block mb-2 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -295,6 +301,13 @@ export default async function Page({ params }: PageProps) {
               </div>
             )}
           </div>
+
+          {!event.artist && event.venue && (
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold mb-2">About {event.venue.name}</h3>
+                <p>{event.venue.description}</p>
+              </div>
+            )}
 
           {event.artist?.youtubeVideos && event.artist.youtubeVideos.length > 0 && (
             <div className="mb-6">
