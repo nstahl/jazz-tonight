@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { DM_Sans } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 // These styles apply to every route in the application
@@ -29,6 +30,7 @@ export default function RootLayout({
           {children}
         </main>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
