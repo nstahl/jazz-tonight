@@ -1,13 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-
 type BiographyProps = {
   text: string;
 };
 
 export default function Biography({ text }: BiographyProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
   
   // If text is short enough, don't show the expand/collapse functionality
   if (text.length <= 300) {
