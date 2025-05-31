@@ -189,10 +189,11 @@ export default async function Page({ params }: PageProps) {
           {event.name}
           </h1>
 
-          <p className="text-gray-100 mt-2">
+          <div className="flex justify-between text-sm text-zinc-400">
+          <span>
             {new Date(event.dateString).toLocaleDateString('en-US', {
               weekday: 'long',
-              month: 'short',
+              month: 'short', 
               day: 'numeric',
               timeZone: 'UTC'
             })} • {' '}
@@ -209,12 +210,34 @@ export default async function Page({ params }: PageProps) {
                   </React.Fragment>
                 ))}
                 {' '}
-                <span className="text-gray-100">ET</span>
+                <span className="text-zinc-400">ET</span>
               </>
             ) : (
-              <span className="text-gray-100">Time TBA</span>
-            )} • <a href={`/venue/${event.venue.id}`} className="text-blue-300 hover:underline transition-colors">{event.venue.name}</a>
-          </p>
+              <span className="text-zinc-400">Time TBA</span>
+            )}
+            {event.venue?.name && (
+              <>
+                <span className="hidden md:inline"> • </span>
+                <span className="block md:inline mt-2 md:mt-0">
+                  <svg className="inline-block w-4 h-4 mr-1 md:hidden" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
+                  Live at {
+                  <a 
+                    href={`/venue/${event.venue.id}`} 
+                    rel="noopener noreferrer"
+                    className="text-blue-300 hover:underline transition-colors"
+                >
+                  {event.venue.name}
+                </a>
+              }</span>
+              </>
+            )}
+          </span>
+        </div>
+
+
+
         </div>
         <div className="flex flex-row items-stretch gap-2 ml-4">
           <ShareButton url={`https://nycjazz.vercel.app/event/${event.id}`} className="w-16 h-16 p-0 text-xl font-bold rounded-lg flex items-center justify-center hidden md:flex" showText={false} />
