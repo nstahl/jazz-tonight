@@ -128,7 +128,8 @@ export default async function Page({ params }: PageProps) {
             },
             where: {
               dateString: {
-                gte: new Date().toISOString().split('T')[0]
+                gte: new Date().toISOString().split('T')[0],
+                lt: new Date(Date.now() + EVENT_CONFIG.DAYS_AHEAD * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
               },
               NOT: {
                 id: id
