@@ -245,7 +245,7 @@ export default async function Page({ params }: PageProps) {
           
           {event.logline && (
             <div className="mb-6">
-              <p className="italic text-xl">{event.logline}</p>
+              <p className="italic text-lg">{event.logline}</p>
             </div>
           )}
 
