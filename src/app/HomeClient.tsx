@@ -75,11 +75,10 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
     return (
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 pb-24">
         <div className="grid gap-8">
-          {[1, 2, 3].map((column) => (
+          {[1].map((column) => (
             <div key={column}>
-              <div className="h-8 bg-white/10 rounded-lg mb-6 animate-pulse" />
               <div className="grid gap-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((card) => (
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((card) => (
                   <div 
                     key={card}
                     className="block p-4 bg-white/10 backdrop-blur-sm rounded-lg shadow w-full max-w-[700px] relative mx-auto"
