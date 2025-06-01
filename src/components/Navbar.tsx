@@ -108,7 +108,7 @@ const Navbar = () => {
           bg-zinc-900 border border-zinc-700 rounded-2xl px-4 shadow-lg gap-1 mx-2 max-w-[340px] w-auto">
             <div className="flex items-center gap-0 cursor-pointer select-none">
               <div 
-                className="flex flex-col items-start px-1 py-2"
+                className="flex flex-col items-start px-1 py-2 w-[60px]"
                 onClick={() => {
                   setSelectedField('start');
                   setShowCalendar(true);
@@ -119,7 +119,7 @@ const Navbar = () => {
               </div>
               <div className="h-7 border-l border-zinc-700 mx-1" />
               <div 
-                className="flex flex-col items-start px-1 py-2"
+                className="flex flex-col items-start px-1 py-2 w-[60px]"
                 onClick={() => {
                   setSelectedField('end');
                   setShowCalendar(true);
