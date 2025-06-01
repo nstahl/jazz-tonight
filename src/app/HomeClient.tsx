@@ -58,6 +58,19 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
     fetchEvents();
   }, [startDate, endDate]);
 
+  // Save scroll position before leaving the page
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem('homeScrollPosition', window.scrollY.toString());
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  // Restore scroll position when returning to the page
   useEffect(() => {
     if (!loading && !hasScrolledRef.current) {
       const hash = window.location.hash;
@@ -65,6 +78,12 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
         const element = document.getElementById(hash.slice(1));
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          hasScrolledRef.current = true;
+        }
+      } else {
+        const savedPosition = sessionStorage.getItem('homeScrollPosition');
+        if (savedPosition) {
+          window.scrollTo(0, parseInt(savedPosition));
           hasScrolledRef.current = true;
         }
       }
