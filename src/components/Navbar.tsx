@@ -73,6 +73,16 @@ const Navbar = () => {
     }
   };
 
+  const [logoSrc, setLogoSrc] = useState('/atrium-min.svg');
+
+  useEffect(() => {
+    if (window.innerWidth < 1024 && pathname === '/') {
+      setLogoSrc('/atrium-min.svg');
+    } else {
+      setLogoSrc('/atrium.svg');
+    }
+  }, [pathname]);
+
   return (
     <nav className="
     bg-black 
@@ -88,15 +98,15 @@ const Navbar = () => {
       }}
     >
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 container mx-auto flex justify-center items-center h-full">
-        <Link href="/" className="absolute left-4 sm:left-4 lg:left-4 flex items-center space-x-2 cursor-pointer">
+        <Link href="/" className="absolute left-4 sm:left-4 lg:left-4 flex items-center space-x-2 cursor-pointer lg:px-5">
           <div>
             <Image
-              src="/atrium.svg"
+              src={logoSrc}
               alt="Atrium Jazz Logo"
-              width={500}
-              height={100}
+              width={550}
+              height={110}
               priority
-              className="h-8 w-auto hover:opacity-80 px-15"
+              className="h-8 w-auto hover:opacity-80"
             />
           </div>
         </Link>
@@ -146,7 +156,7 @@ const Navbar = () => {
           </div>
         )}
         <div className="absolute right-4 sm:right-4 lg:right-4 space-x-8 flex items-center">
-          <Link href="/about" className="hover:text-gray-300 px-5">
+          <Link href="/about" className="hover:text-gray-300 lg:px-5">
             About
           </Link>
         </div>
