@@ -26,7 +26,7 @@ export default function RootLayout({
       <body>
         <DateRangeProvider>
           <Navbar />
-          <main>
+          <main className="mt-20">
             {children}
           </main>
         </DateRangeProvider>

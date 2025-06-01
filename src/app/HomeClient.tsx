@@ -108,7 +108,7 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 pb-24">
       <div className="grid gap-2">
         {dateGroups.map(([dateString, dateEvents]) => (
-            <div key={dateString} className="grid gap-4">
+            <div key={dateString} className="grid gap-2 mt-2">
               {dateEvents
                 .sort((a, b) => {
                   if (!a.timeStrings) return 1;
