@@ -104,10 +104,13 @@ const Navbar = () => {
         </Link>
         {pathname === '/' && (
           <div className="md:flex md:relative absolute right-2 flex flex-col md:flex-row items-center justify-center 
-          bg-zinc-900 border border-zinc-700 rounded-2xl px-4 shadow-lg gap-1 mx-2 max-w-[340px] w-auto">
+          border border-zinc-700 rounded-2xl px-4 shadow-lg gap-1 mx-2 max-w-[340px] w-auto"
+          style={{
+            background: 'linear-gradient(120deg, rgba(123, 10, 253, 0.1) 0%, rgba(138, 120, 255, 0.1) 50%, rgba(210, 201, 246, 0.2) 100%)'
+          }}>
             <div className="flex items-center gap-0 cursor-pointer select-none">
               <div 
-                className="flex flex-col items-start px-1 py-2 w-[60px]"
+                className="flex flex-col items-start px-1 py-2 w-[65px]"
                 onClick={() => {
                   setShowCalendar(true);
                 }}
@@ -117,7 +120,7 @@ const Navbar = () => {
               </div>
               <div className="h-7 border-l border-zinc-700 mx-1" />
               <div 
-                className="flex flex-col items-start px-1 py-2 w-[60px]"
+                className="flex flex-col items-start px-1 py-2 w-[65px]"
                 onClick={() => {
                   setShowCalendar(true);
                 }}
