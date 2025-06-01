@@ -15,7 +15,6 @@ const Navbar = () => {
   const pathname = usePathname();
   const { setDateRange } = useDateRange();
 
-  // Calculate default and max date range
   const today = new Date();
   const minDate = today;
   const maxDate = addDays(today, EVENT_CONFIG.DAYS_AHEAD);
@@ -28,13 +27,10 @@ const Navbar = () => {
     key: 'selection',
   });
 
-  // Click outside to close calendar
   const pickerRef = useRef<HTMLDivElement>(null);
 
-  // Format for display (e.g., Jun 4)
   const formatDisplay = (date: Date) => format(date, 'MMM d');
 
-  // Update context when dates change
   useEffect(() => {
     if (!showCalendar) {
       console.log("Calendar closed, updating date range");
@@ -43,7 +39,6 @@ const Navbar = () => {
     }
   }, [showCalendar, range.startDate, range.endDate, setDateRange]);
 
-  // Click outside to close calendar
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (pickerRef.current && !pickerRef.current.contains(event.target as Node)) {
@@ -57,20 +52,11 @@ const Navbar = () => {
   }, []);
 
   const handleSelect = (ranges: any) => {
-    console.log("handleSelect");
-    console.log("ranges", ranges);
-    if (selectedField === 'end') {
-      setRange({
-        ...range,
-        endDate: ranges.selection.endDate,
-        key: 'selection',
-      });
-    } else {
-      setRange({
-        ...ranges.selection,
-        key: 'selection',
-      });
-    }
+    console.log("handleSelect", ranges);
+    setRange({
+      ...ranges.selection,
+      key: 'selection',
+    });
   };
 
   const [logoSrc, setLogoSrc] = useState('/atrium-min.svg');
@@ -110,7 +96,6 @@ const Navbar = () => {
             />
           </div>
         </Link>
-        {/* Center filter only on home page */}
         {pathname === '/' && (
           <div className="relative flex flex-col md:flex-row items-center justify-center 
           bg-zinc-900 border border-zinc-700 rounded-2xl px-4 shadow-lg gap-1 mx-8 max-w-[340px] w-auto">
@@ -138,19 +123,42 @@ const Navbar = () => {
               </div>
             </div>
             {showCalendar && (
-              <div ref={pickerRef} className="absolute top-12 left-1/2 -translate-x-1/2 z-50 shadow-2xl">
-                  <DateRange
-                    ranges={[range]}
-                    onChange={handleSelect}
-                    minDate={minDate}
-                    maxDate={maxDate}
-                    rangeColors={["#2563eb"]}
-                    showDateDisplay={false}
-                    direction="horizontal"
-                    className="!p-2 !pt-1 !pb-1"
-                    months={1}
-                    moveRangeOnFirstSelection={false}
-                  />
+              <div
+                ref={pickerRef}
+                className="absolute top-12 left-1/2 -translate-x-1/2 z-50 bg-white rounded-md w-[90vw] max-w-sm shadow-2xl transition-all duration-300 ease-out transform scale-95 opacity-0 animate-fadeIn"
+                style={{
+                  animation: 'fadeIn 0.3s forwards'
+                }}
+              >
+                <DateRange
+                  ranges={[range]}
+                  onChange={handleSelect}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                  rangeColors={["#2563eb"]}
+                  showDateDisplay={false}
+                  direction="vertical"
+                  className="!p-2 !pt-1 !pb-1"
+                  months={1}
+                  moveRangeOnFirstSelection={false}
+                />
+                <div className="flex justify-between items-center p-2 border-t border-gray-200">
+                  <button
+                    onClick={() => setShowCalendar(false)}
+                    className="flex items-center gap-1 text-gray-800 px-3 py-1 rounded hover:bg-gray-200"
+                  >
+                    <span>✖</span> Close
+                  </button>
+                  <button
+                    onClick={() => {
+                      setDateRange(format(range.startDate, 'yyyy-MM-dd'), format(range.endDate, 'yyyy-MM-dd'));
+                      setShowCalendar(false);
+                    }}
+                    className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                  >
+                    <span>✔</span> Apply
+                  </button>
+                </div>
               </div>
             )}
           </div>
