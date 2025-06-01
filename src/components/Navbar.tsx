@@ -20,7 +20,6 @@ const Navbar = () => {
   const maxDate = addDays(today, EVENT_CONFIG.DAYS_AHEAD);
 
   const [showCalendar, setShowCalendar] = useState(false);
-  const [selectedField, setSelectedField] = useState<'start' | 'end' | null>(null);
   const [range, setRange] = useState({
     startDate: today,
     endDate: maxDate,
@@ -110,7 +109,6 @@ const Navbar = () => {
               <div 
                 className="flex flex-col items-start px-1 py-2 w-[60px]"
                 onClick={() => {
-                  setSelectedField('start');
                   setShowCalendar(true);
                 }}
               >
@@ -121,7 +119,6 @@ const Navbar = () => {
               <div 
                 className="flex flex-col items-start px-1 py-2 w-[60px]"
                 onClick={() => {
-                  setSelectedField('end');
                   setShowCalendar(true);
                 }}
               >
