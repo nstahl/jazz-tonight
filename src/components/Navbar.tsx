@@ -59,11 +59,11 @@ const Navbar = () => {
     });
   };
 
-  const [logoSrc, setLogoSrc] = useState('/atrium-min.svg');
+  const [logoSrc, setLogoSrc] = useState('/atrium.svg');
 
   useEffect(() => {
     if (window.innerWidth < 1024 && pathname === '/') {
-      setLogoSrc('/atrium-min.svg');
+      setLogoSrc('/atrium.svg');
     } else {
       setLogoSrc('/atrium.svg');
     }
@@ -83,8 +83,15 @@ const Navbar = () => {
         borderBottom: '1px solid rgba(255, 255, 255, 0.5)'
       }}
     >
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 container mx-auto flex justify-center items-center h-full">
-        <Link href="/" className="absolute left-4 sm:left-4 lg:left-4 flex items-center space-x-2 cursor-pointer lg:px-5">
+      <div className="
+      container
+      px-4 
+      mx-auto 
+      flex 
+      md:justify-center 
+      items-center 
+      h-full">
+        <Link href="/" className="absolute left-4 flex items-center space-x-2 cursor-pointer lg:px-5">
           <div>
             <Image
               src={logoSrc}
@@ -97,8 +104,8 @@ const Navbar = () => {
           </div>
         </Link>
         {pathname === '/' && (
-          <div className="relative flex flex-col md:flex-row items-center justify-center 
-          bg-zinc-900 border border-zinc-700 rounded-2xl px-4 shadow-lg gap-1 mx-8 max-w-[340px] w-auto">
+          <div className="md:flex md:relative absolute right-2 flex flex-col md:flex-row items-center justify-center 
+          bg-zinc-900 border border-zinc-700 rounded-2xl px-4 shadow-lg gap-1 mx-2 max-w-[340px] w-auto">
             <div className="flex items-center gap-0 cursor-pointer select-none">
               <div 
                 className="flex flex-col items-start px-1 py-2"
@@ -125,7 +132,7 @@ const Navbar = () => {
             {showCalendar && (
               <div
                 ref={pickerRef}
-                className="absolute top-12 left-1/2 -translate-x-1/2 z-50 bg-white rounded-md w-[90vw] max-w-sm shadow-2xl transition-all duration-300 ease-out transform scale-95 opacity-0 animate-fadeIn"
+                className="fixed md:absolute top-20 md:top-12 left-1/2 -translate-x-1/2 z-40 bg-white rounded-md w-[90vw] max-w-sm shadow-2xl transition-all duration-300 ease-out transform scale-95 opacity-0 animate-fadeIn"
                 style={{
                   animation: 'fadeIn 0.3s forwards'
                 }}
@@ -163,7 +170,7 @@ const Navbar = () => {
             )}
           </div>
         )}
-        <div className="absolute right-4 sm:right-4 lg:right-4 space-x-8 flex items-center">
+        <div className="absolute right-4 hidden md:block lg:right-4 space-x-8 flex items-center">
           <Link href="/about" className="hover:text-gray-300 lg:px-5">
             About
           </Link>
