@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { DM_Sans } from 'next/font/google'
 import Navbar from '@/components/Navbar'
+import { DateRangeProvider } from '@/context/DateRangeContext'
 // These styles apply to every route in the application
 import './globals.css'
 
@@ -23,12 +24,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={dmSans.className}>
       <body>
-        <div className="sticky top-0 z-50">
+        <DateRangeProvider>
           <Navbar />
-        </div>
-        <main>
-          {children}
-        </main>
+          <main>
+            {children}
+          </main>
+        </DateRangeProvider>
         <Analytics />
         <SpeedInsights />
       </body>

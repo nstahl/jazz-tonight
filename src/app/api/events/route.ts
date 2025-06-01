@@ -4,17 +4,21 @@ import { EVENT_CONFIG } from '@/config/constants';
 import { toZonedTime } from 'date-fns-tz';
 import { addDays, format } from 'date-fns';
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+
+  // Use provided dates or fall back to default range
   const nycTime = toZonedTime(new Date(), 'America/New_York');
-  const today = format(nycTime, 'yyyy-MM-dd');
-  const endDate = format(addDays(nycTime, EVENT_CONFIG.DAYS_AHEAD), 'yyyy-MM-dd');
-  console.log(today);
-  console.log(endDate);
+  const defaultStartDate = format(nycTime, 'yyyy-MM-dd');
+  const defaultEndDate = format(addDays(nycTime, EVENT_CONFIG.DAYS_AHEAD), 'yyyy-MM-dd');
+
   const events = await prisma.event.findMany({
     where: {
       dateString: {
-        gte: today,
-        lte: endDate
+        gte: startDate || defaultStartDate,
+        lte: endDate || defaultEndDate
       }, 
       artist: {
         // isNot: null

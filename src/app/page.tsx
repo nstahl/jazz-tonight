@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import HomeClient from './HomeClient';
+import HomePageClient from './HomePageClient';
 
 export const metadata: Metadata = {
   title: 'Atrium Jazz | Nightly Jazz Events',
@@ -25,6 +25,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <HomeClient />;
+export default function Home() {
+  return <HomePageClient />;
 }

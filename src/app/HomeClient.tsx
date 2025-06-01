@@ -22,7 +22,12 @@ interface Event {
   }[];
 }
 
-export default function HomeClient() {
+interface HomeClientProps {
+  startDate: string;
+  endDate: string;
+}
+
+export default function HomeClient({ startDate, endDate }: HomeClientProps) {
   const [dateGroups, setDateGroups] = useState<[string, Event[]][]>([]);
   const [loading, setLoading] = useState(true);
   const hasScrolledRef = useRef(false);
@@ -30,7 +35,7 @@ export default function HomeClient() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('/api/events');
+        const response = await fetch(`/api/events?startDate=${startDate}&endDate=${endDate}`);
         const eventsDisagreggated = await response.json();
 
         console.log("eventsDisagreggated", eventsDisagreggated);
@@ -54,7 +59,7 @@ export default function HomeClient() {
     };
 
     fetchEvents();
-  }, []);
+  }, [startDate, endDate]);
 
   useEffect(() => {
     if (!loading && !hasScrolledRef.current) {
