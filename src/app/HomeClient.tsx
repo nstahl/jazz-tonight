@@ -101,25 +101,9 @@ export default function HomeClient() {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 pb-24">
-      <div className="grid gap-8">
+      <div className="grid gap-2">
         {dateGroups.map(([dateString, dateEvents]) => (
-          <div key={dateString}>
-            <h2 className="text-xl font-semibold mb-6">
-              <div className="text-center">
-                {new Date(dateEvents[0].dateString).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  timeZone: 'UTC'
-                })}
-                {', '}
-                {new Date(dateString).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  timeZone: 'UTC'
-                })}
-              </div>
-            </h2>
-
-            <div className="grid gap-4">
+            <div key={dateString} className="grid gap-4">
               {dateEvents
                 .sort((a, b) => {
                   if (!a.timeStrings) return 1;
@@ -133,7 +117,6 @@ export default function HomeClient() {
                   />
                 ))}
             </div>
-          </div>
         ))}
       </div>
     </div>
