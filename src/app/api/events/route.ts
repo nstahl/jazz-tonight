@@ -14,6 +14,11 @@ export async function GET(request: Request) {
   const defaultStartDate = format(nycTime, 'yyyy-MM-dd');
   const defaultEndDate = format(addDays(nycTime, EVENT_CONFIG.DAYS_AHEAD), 'yyyy-MM-dd');
 
+  console.log("startDate", startDate);
+  console.log("endDate", endDate);  
+  console.log("defaultStartDate", defaultStartDate);
+  console.log("defaultEndDate", defaultEndDate);
+
   const events = await prisma.event.findMany({
     where: {
       dateString: {
@@ -49,6 +54,8 @@ export async function GET(request: Request) {
       { setTimes: 'asc' }
     ]
   });
+
+  console.log(events);
 
   return NextResponse.json(events);
 } 
