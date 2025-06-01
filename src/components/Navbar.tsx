@@ -14,47 +14,64 @@ import 'react-date-range/dist/theme/default.css';
 const Navbar = () => {
   const pathname = usePathname();
   const { setDateRange } = useDateRange();
-  
+
   // Calculate default and max date range
   const today = new Date();
   const minDate = today;
   const maxDate = addDays(today, EVENT_CONFIG.DAYS_AHEAD);
 
-  // Convert context date strings to Date objects for picker
   const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedField, setSelectedField] = useState<'start' | 'end' | null>(null);
   const [range, setRange] = useState({
     startDate: today,
     endDate: maxDate,
     key: 'selection',
   });
 
-  // Update context and local state on date selection
-  const handleSelect = (ranges: any) => {
-    const { startDate, endDate } = ranges.selection;
-    setRange({ ...range, startDate, endDate });
-    setDateRange(format(startDate, 'yyyy-MM-dd'), format(endDate, 'yyyy-MM-dd'));
-  };
+  // Click outside to close calendar
+  const pickerRef = useRef<HTMLDivElement>(null);
 
   // Format for display (e.g., Jun 4)
   const formatDisplay = (date: Date) => format(date, 'MMM d');
 
+  // Update context when dates change
+  useEffect(() => {
+    if (!showCalendar) {
+      console.log("Calendar closed, updating date range");
+      console.log("range", range);
+      setDateRange(format(range.startDate, 'yyyy-MM-dd'), format(range.endDate, 'yyyy-MM-dd'));
+    }
+  }, [showCalendar, range.startDate, range.endDate, setDateRange]);
+
   // Click outside to close calendar
-  const pickerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (pickerRef.current && !pickerRef.current.contains(event.target as Node)) {
         setShowCalendar(false);
       }
     }
-    if (showCalendar) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showCalendar]);
+  }, []);
+
+  const handleSelect = (ranges: any) => {
+    console.log("handleSelect");
+    console.log("ranges", ranges);
+    if (selectedField === 'end') {
+      setRange({
+        ...range,
+        endDate: ranges.selection.endDate,
+        key: 'selection',
+      });
+    } else {
+      setRange({
+        ...ranges.selection,
+        key: 'selection',
+      });
+    }
+  };
 
   return (
     <nav className="
@@ -85,34 +102,45 @@ const Navbar = () => {
         </Link>
         {/* Center filter only on home page */}
         {pathname === '/' && (
-          <div className="relative flex flex-col md:flex-row items-center justify-center bg-zinc-900 border border-zinc-700 rounded-2xl px-4 shadow-lg gap-1 mx-8 max-w-[340px] w-auto">
-            <div
-              className="flex items-center gap-0 cursor-pointer select-none"
-              onClick={() => setShowCalendar((v) => !v)}
-            >
-              <div className="flex flex-col items-start px-1 py-2">
+          <div className="relative flex flex-col md:flex-row items-center justify-center 
+          bg-zinc-900 border border-zinc-700 rounded-2xl px-4 shadow-lg gap-1 mx-8 max-w-[340px] w-auto">
+            <div className="flex items-center gap-0 cursor-pointer select-none">
+              <div 
+                className="flex flex-col items-start px-1 py-2"
+                onClick={() => {
+                  setSelectedField('start');
+                  setShowCalendar(true);
+                }}
+              >
                 <span className="text-zinc-400 text-xs font-semibold">From</span>
                 <span className="text-white text-base font-medium leading-tight">{formatDisplay(range.startDate)}</span>
               </div>
               <div className="h-7 border-l border-zinc-700 mx-1" />
-              <div className="flex flex-col items-start px-1 py-2">
+              <div 
+                className="flex flex-col items-start px-1 py-2"
+                onClick={() => {
+                  setSelectedField('end');
+                  setShowCalendar(true);
+                }}
+              >
                 <span className="text-zinc-400 text-xs font-semibold">To</span>
                 <span className="text-white text-base font-medium leading-tight">{formatDisplay(range.endDate)}</span>
               </div>
             </div>
             {showCalendar && (
               <div ref={pickerRef} className="absolute top-12 left-1/2 -translate-x-1/2 z-50 shadow-2xl">
-                <DateRange
-                  ranges={[range]}
-                  onChange={handleSelect}
-                  minDate={minDate}
-                  maxDate={maxDate}
-                  rangeColors={["#2563eb"]}
-                  showDateDisplay={false}
-                  moveRangeOnFirstSelection={false}
-                  direction="horizontal"
-                  className="!p-2 !pt-1 !pb-1"
-                />
+                  <DateRange
+                    ranges={[range]}
+                    onChange={handleSelect}
+                    minDate={minDate}
+                    maxDate={maxDate}
+                    rangeColors={["#2563eb"]}
+                    showDateDisplay={false}
+                    direction="horizontal"
+                    className="!p-2 !pt-1 !pb-1"
+                    months={1}
+                    moveRangeOnFirstSelection={false}
+                  />
               </div>
             )}
           </div>
@@ -127,4 +155,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;

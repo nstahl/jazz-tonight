@@ -38,8 +38,6 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
         const response = await fetch(`/api/events?startDate=${startDate}&endDate=${endDate}`);
         const eventsDisagreggated = await response.json();
 
-        console.log("eventsDisagreggated", eventsDisagreggated);
-
         // Group events by date
         const groupedEvents = eventsDisagreggated.reduce((acc: Record<string, Event[]>, event: Event) => {
           if (!acc[event.dateString]) {
@@ -49,7 +47,6 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
           return acc;
         }, {});
 
-        console.log("groupedEvents", groupedEvents);
         setDateGroups(Object.entries(groupedEvents));
       } catch (error) {
         console.error('Error fetching events:', error);
