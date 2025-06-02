@@ -105,12 +105,9 @@ const Navbar = () => {
         {pathname === '/' && (
           <>
             {/* Mobile Calendar Icon */}
-            <div className="md:hidden absolute right-4 flex items-center justify-center cursor-pointer select-none w-10 h-10 rounded-full border border-zinc-700" 
-              onClick={() => setShowCalendar(true)}
-              style={{
-                background: 'linear-gradient(120deg, rgba(123, 10, 253, 0.1) 0%, rgba(138, 120, 255, 0.1) 50%, rgba(210, 201, 246, 0.2) 100%)'
-              }}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="md:hidden absolute right-4 flex items-center cursor-pointer select-none" 
+              onClick={() => setShowCalendar(true)}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
