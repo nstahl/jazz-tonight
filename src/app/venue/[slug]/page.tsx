@@ -12,11 +12,11 @@ const fugazOne = Fugaz_One({
 });
 
 type PageProps = {
-  params: Promise<{ id: string }>
+  params: Promise<{ slug: string }>
 }
 
 type MetadataProps = {
-  params: Promise<{ id: string }>
+  params: Promise<{ slug: string }>
 }
 
 type VenueWithEvents = {
@@ -48,9 +48,9 @@ type VenueWithEvents = {
 }
 
 export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
   const venue = await prisma.venue.findUnique({
-    where: { id },
+    where: { slug },
     select: {
       name: true,
     }
@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
     openGraph: {
       title: `${venue.name} | Atrium Jazz`,
       description: `Upcoming jazz events at ${venue.name}`,
-      url: `https://nycjazz.vercel.app/venue/${id}`,
+      url: `https://nycjazz.vercel.app/venue/${slug}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -75,10 +75,10 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
 }
 
 export default async function Page({ params }: PageProps) {
-  const { id } = await params;
+  const { slug } = await params;
 
   const venue = await prisma.venue.findUnique({
-    where: { id },
+    where: { slug },
     select: {
       id: true,
       name: true,

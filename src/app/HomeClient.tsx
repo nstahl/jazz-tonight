@@ -13,6 +13,7 @@ interface Event {
   venueId: string;
   venue: {
     name: string;
+    slug: string;
     url: string;
     gMapsUrl: string;
   };

@@ -39,7 +39,7 @@ type EventWithArtist = {
   url: string;
   logline?: string;
   artist: ArtistWithVideos | null;
-  venue: { name: string; id: string; description: string };
+  venue: { name: string; slug: string; id: string; description: string };
   performers?: { performer: { name: string; instrument: string } }[];
   setTimes?: string[];
 };
@@ -52,6 +52,7 @@ type OtherEvent = {
   dateString: string;
   venue: {
     name: string;
+    slug: string;
   };
 }
 
@@ -74,7 +75,8 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
       venue: {
         select: {
           name: true,
-          description: true
+          description: true,
+          slug: true
         }
       }
     }
@@ -125,7 +127,8 @@ export default async function Page({ params }: PageProps) {
               setTimes: true,
               venue: {
                 select: {
-                  name: true
+                  name: true,
+                  slug: true
                 }
               }
             },
@@ -147,6 +150,7 @@ export default async function Page({ params }: PageProps) {
       venue: {
         select: {
           name: true,
+          slug: true,
           id: true,
           description: true,
         }
@@ -227,7 +231,7 @@ export default async function Page({ params }: PageProps) {
                   </svg>
                   Live at {
                   <a 
-                    href={`/venue/${event.venue.id}`} 
+                    href={`/venue/${event.venue.slug}`} 
                     rel="noopener noreferrer"
                     className="text-blue-300 hover:underline transition-colors"
                 >

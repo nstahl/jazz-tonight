@@ -229,7 +229,7 @@ function EventCard({ event, linkToVenue = true }) {
                   Live at {
                 linkToVenue ? (
                   <a 
-                    href={`/venue/${event.venue.id}`} 
+                    href={`/venue/${event.venue.slug}`} 
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
                     className="text-blue-300 hover:underline transition-colors"
