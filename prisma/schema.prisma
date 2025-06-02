@@ -17,7 +17,7 @@ model Venue {
   events    Event[]
   hide      Boolean   @default(false)
   thumbnail  String?
-  slug      String?   @unique
+  slug      String   @unique
 
   @@map("venues")
 }
@@ -70,7 +70,7 @@ model Event {
   performers EventPerformer[]
   artist     ArtistProfile?   @relation(fields: [artistId], references: [id])
   venue      Venue            @relation(fields: [venueId], references: [id])
-  slug      String?   @unique
+  slug      String   @unique
 
   @@unique([name, dateString, venueId])
   @@map("events")
