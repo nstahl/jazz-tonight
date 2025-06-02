@@ -14,7 +14,7 @@ const fugazOne = Fugaz_One({
 });
 
 type PageProps = {
-  params: Promise<{ id: string }>
+  params: Promise<{ slug: string }>
 }
 
 // Define the YouTube video type
@@ -33,6 +33,7 @@ type ArtistWithVideos = {
 // Define the event type with the extended artist type
 type EventWithArtist = {
   id: string;
+  slug: string;
   name: string;
   dateString: string;
   url: string;
@@ -47,6 +48,7 @@ type EventWithArtist = {
 type OtherEvent = {
   id: string;
   name: string;
+  slug: string;
   dateString: string;
   venue: {
     name: string;
@@ -54,13 +56,13 @@ type OtherEvent = {
 }
 
 type MetadataProps = {
-  params: Promise<{ id: string }>
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
   const event = await prisma.event.findUnique({
-    where: { id },
+    where: { slug },
     select: {
       name: true,
       logline: true,
@@ -86,7 +88,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
     openGraph: {
       title: `${event.name} at ${event.venue.name} | Atrium Jazz`,
       description: event.logline || `Join ${event.artist?.name || 'us'} at ${event.venue.name} for an unforgettable jazz experience.`,
-      url: `https://nycjazz.vercel.app/event/${id}`,
+      url: `https://nycjazz.vercel.app/event/${slug}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -97,10 +99,10 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
 }
 
 export default async function Page({ params }: PageProps) {
-  const { id } = await params;
+  const { slug } = await params;
 
   const event = await prisma.event.findUnique({
-    where: { id: id },
+    where: { slug },
     select: {
       id: true,
       name: true,
@@ -117,6 +119,7 @@ export default async function Page({ params }: PageProps) {
           events: {
             select: {
               id: true,
+              slug: true,
               name: true,
               dateString: true,
               setTimes: true,
@@ -132,7 +135,7 @@ export default async function Page({ params }: PageProps) {
                 lt: new Date(Date.now() + EVENT_CONFIG.DAYS_AHEAD * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
               },
               NOT: {
-                id: id
+                slug: slug
               }
             },
             orderBy: {
@@ -240,7 +243,7 @@ export default async function Page({ params }: PageProps) {
 
         </div>
         <div className="flex flex-row items-stretch gap-2 ml-4">
-          <ShareButton url={`https://nycjazz.vercel.app/event/${event.id}`} className="w-16 h-16 p-0 text-xl font-bold rounded-lg flex items-center justify-center hidden md:flex" showText={false} />
+          <ShareButton url={`https://nycjazz.vercel.app/event/${slug}`} className="w-16 h-16 p-0 text-xl font-bold rounded-lg flex items-center justify-center hidden md:flex" showText={false} />
           <a 
             href={event.url}
             target="_blank"
@@ -262,7 +265,7 @@ export default async function Page({ params }: PageProps) {
         >
           Tickets
         </a>
-        <ShareButton url={`https://nycjazz.vercel.app/event/${event.id}`} className="w-14 h-14 p-0 text-xl font-bold rounded-lg flex items-center justify-center bg-blue-300 text-black" showText={false} />
+        <ShareButton url={`https://nycjazz.vercel.app/event/${slug}`} className="w-14 h-14 p-0 text-xl font-bold rounded-lg flex items-center justify-center bg-blue-300 text-black" showText={false} />
       </div>
 
       {event.logline && (
@@ -362,7 +365,6 @@ export default async function Page({ params }: PageProps) {
         <div className="border-t pt-8 mt-8">
           <h2 className="text-2xl font-bold mb-6">More Dates</h2>
           <ShowsList events={event.artist.events.filter((event: OtherEvent) => {
-            console.log(event);
             const eventDate = new Date(event.dateString);
             const cutoffDate = new Date(Date.now() + EVENT_CONFIG.DAYS_AHEAD * 24 * 60 * 60 * 1000);
             return eventDate <= cutoffDate;

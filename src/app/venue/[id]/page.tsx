@@ -21,6 +21,7 @@ type MetadataProps = {
 
 type VenueWithEvents = {
   id: string;
+  slug: string;
   name: string;
   url: string;
   gMapsUrl: string | null;
@@ -28,6 +29,7 @@ type VenueWithEvents = {
   events: {
     id: string;
     name: string;
+    slug: string;
     dateString: string;
     url: string;
     logline: string | null;
@@ -93,6 +95,7 @@ export default async function Page({ params }: PageProps) {
         select: {
           id: true,
           name: true,
+          slug: true,
           dateString: true,
           url: true,
           logline: true,

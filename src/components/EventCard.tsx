@@ -110,7 +110,7 @@ function EventCard({ event, linkToVenue = true }) {
   return (
     <div
       id={cardId}
-      onClick={() => window.open(`/event/${event.id}`, '_self')}
+      onClick={() => window.open(`/event/${event.slug}`, '_self')}
       className={`
         flex flex-col md:flex-row
         block p-0
@@ -188,7 +188,7 @@ function EventCard({ event, linkToVenue = true }) {
       {/* Right: Main info section */}
       <div
         className="flex-1 cursor-pointer rounded-b-2xl md:rounded-b-none md:rounded-r-2xl transition-colors duration-200 p-3 md:p-5 mt-0"
-        onClick={() => window.open(`/event/${event.id}`, '_self')}
+        onClick={() => window.open(`/event/${event.slug}`, '_self')}
       >
         <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0`}>
           <span>{event.name}</span>

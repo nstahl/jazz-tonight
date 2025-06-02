@@ -10,6 +10,7 @@ const fugazOne = Fugaz_One({
 
 type Event = {
   id: string;
+  slug: string;
   name: string;
   dateString: string;
   timeString: string | null;
@@ -31,7 +32,7 @@ export default function ShowsList({ events }: ShowsListProps) {
             <div className="block p-4 bg-white/10 rounded-lg shadow w-full relative">
               <a 
                 className="block hover:bg-gray-300/60 -m-4 p-4 rounded-lg transition-all"
-                href={`/event/${event.id}`}
+                href={`/event/${event.slug}`}
               >
                 <div className={`text-lg font-medium mb-2 ${fugazOne.className}`}>
                   <span>{event.name}</span>
