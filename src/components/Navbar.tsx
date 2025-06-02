@@ -103,30 +103,44 @@ const Navbar = () => {
           </div>
         </Link>
         {pathname === '/' && (
-          <div className="md:flex md:relative absolute right-2 flex flex-col md:flex-row items-center justify-center 
-          border border-zinc-700 rounded-2xl px-4 shadow-lg gap-1 mx-2 max-w-[340px] w-auto"
-          style={{
-            background: 'linear-gradient(120deg, rgba(123, 10, 253, 0.1) 0%, rgba(138, 120, 255, 0.1) 50%, rgba(210, 201, 246, 0.2) 100%)'
-          }}>
-            <div className="flex items-center gap-0 cursor-pointer select-none">
-              <div 
-                className="flex flex-col items-start px-1 py-2 w-[65px]"
-                onClick={() => {
-                  setShowCalendar(true);
-                }}
-              >
-                <span className="text-zinc-400 text-xs font-semibold">From</span>
-                <span className="text-white text-base font-medium leading-tight">{formatDisplay(range.startDate)}</span>
-              </div>
-              <div className="h-7 border-l border-zinc-700 mx-1" />
-              <div 
-                className="flex flex-col items-start px-1 py-2 w-[65px]"
-                onClick={() => {
-                  setShowCalendar(true);
-                }}
-              >
-                <span className="text-zinc-400 text-xs font-semibold">To</span>
-                <span className="text-white text-base font-medium leading-tight">{formatDisplay(range.endDate)}</span>
+          <>
+            {/* Mobile Calendar Icon */}
+            <div className="md:hidden absolute right-4 flex items-center justify-center cursor-pointer select-none w-10 h-10 rounded-full border border-zinc-700" 
+              onClick={() => setShowCalendar(true)}
+              style={{
+                background: 'linear-gradient(120deg, rgba(123, 10, 253, 0.1) 0%, rgba(138, 120, 255, 0.1) 50%, rgba(210, 201, 246, 0.2) 100%)'
+              }}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            
+            {/* Desktop Date Range Display */}
+            <div className="hidden md:flex md:relative absolute right-2 flex flex-col md:flex-row items-center justify-center 
+            border border-zinc-700 rounded-2xl px-4 shadow-lg gap-1 mx-2 max-w-[340px] w-auto"
+            style={{
+              background: 'linear-gradient(120deg, rgba(123, 10, 253, 0.1) 0%, rgba(138, 120, 255, 0.1) 50%, rgba(210, 201, 246, 0.2) 100%)'
+            }}>
+              <div className="flex items-center gap-0 cursor-pointer select-none">
+                <div 
+                  className="flex flex-col items-start px-1 py-2 w-[65px]"
+                  onClick={() => {
+                    setShowCalendar(true);
+                  }}
+                >
+                  <span className="text-zinc-400 text-xs font-semibold">From</span>
+                  <span className="text-white text-base font-medium leading-tight">{formatDisplay(range.startDate)}</span>
+                </div>
+                <div className="h-7 border-l border-zinc-700 mx-1" />
+                <div 
+                  className="flex flex-col items-start px-1 py-2 w-[65px]"
+                  onClick={() => {
+                    setShowCalendar(true);
+                  }}
+                >
+                  <span className="text-zinc-400 text-xs font-semibold">To</span>
+                  <span className="text-white text-base font-medium leading-tight">{formatDisplay(range.endDate)}</span>
+                </div>
               </div>
             </div>
             {showCalendar && (
@@ -168,7 +182,7 @@ const Navbar = () => {
                 </div>
               </div>
             )}
-          </div>
+          </>
         )}
         <div className="absolute right-4 hidden md:block lg:right-4 space-x-8 flex items-center">
           <Link href="/about" className="hover:text-gray-300 lg:px-5">
