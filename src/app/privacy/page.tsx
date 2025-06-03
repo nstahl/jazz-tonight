@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
       
       <div className="prose prose-invert max-w-none">
         <p className="mb-6">
-          Atrium Jazz ("we", "us", "our") respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, and share information when you use our website, mobile app, or other services (collectively, "Our Platform").
+          Atrium Jazz (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, and share information when you use our website, mobile app, or other services (collectively, &quot;Our Platform&quot;).
         </p>
 
         <p className="mb-6">
@@ -27,7 +27,7 @@ export default function PrivacyPolicy() {
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Embedded Content</h3>
-              <p>Our Platform may include embedded YouTube videos. YouTube (a Google service) may collect data about you, including tracking your interaction with the videos, cookies, and device information. This data collection is governed by YouTube's own Privacy Policy.</p>
+              <p>Our Platform may include embedded YouTube videos. YouTube (a Google service) may collect data about you, including tracking your interaction with the videos, cookies, and device information. This data collection is governed by YouTube&apos;s own Privacy Policy.</p>
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Cookies and Tracking Technologies</h3>
@@ -45,7 +45,7 @@ export default function PrivacyPolicy() {
               <li>Analyze usage trends and performance through analytics tools (e.g., Vercel, Google Analytics).</li>
               <li>Respond to your inquiries and support requests.</li>
               <li>Communicate with you about updates, events, and marketing (if you opt in).</li>
-              <li>Enforce our Terms of Use and protect our rights and safety.</li>
+              <li>Enforce our <a href="/terms-of-use" className="text-blue-300 hover:underline">Terms of Use</a> and protect our rights and safety.</li>
             </ul>
           </div>
         </section>
@@ -56,7 +56,7 @@ export default function PrivacyPolicy() {
             <p>We do not sell your personal information. We may share your data with:</p>
             <div>
               <h3 className="text-xl font-semibold mb-2">Service Providers</h3>
-              <p>Companies like Vercel (which hosts and provides analytics) and Google (including YouTube and future use of Google Analytics) to support Our Platform's functionality.</p>
+              <p>Companies like Vercel (which hosts and provides analytics) and Google (including YouTube and future use of Google Analytics) to support Our Platform&apos;s functionality.</p>
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Legal and Safety</h3>
@@ -89,7 +89,7 @@ export default function PrivacyPolicy() {
 
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4">5. Data Retention</h2>
-          <p>We retain personal data as long as necessary to provide services, comply with legal obligations, resolve disputes, and enforce agreements. User-generated content (e.g., event listings) may remain on Our Platform even after an account is deleted, as allowed by our Terms of Use.</p>
+          <p>We retain personal data as long as necessary to provide services, comply with legal obligations, resolve disputes, and enforce agreements. User-generated content (e.g., event listings) may remain on Our Platform even after an account is deleted, as allowed by our <a href="/terms-of-use" className="text-blue-300 hover:underline">Terms of Use</a>.</p>
         </section>
 
         <section className="mb-8">
@@ -103,7 +103,7 @@ export default function PrivacyPolicy() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">8. Children's Privacy</h2>
+          <h2 className="text-2xl font-bold mb-4">8. Children&apos;s Privacy</h2>
           <p>Our Platform is not intended for children under the age of 13. We do not knowingly collect personal information from children.</p>
         </section>
 

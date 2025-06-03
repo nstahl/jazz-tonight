@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 export default function TermsAndConditions() {
   return (
@@ -7,7 +8,7 @@ export default function TermsAndConditions() {
       
       <div className="prose prose-invert max-w-none">
         <p className="mb-6">
-          Please read these terms and conditions of use ("Terms") carefully before accessing, using, or obtaining any information, products, or services through Atrium Jazz ("we", "us", "our"). By accessing the Atrium Jazz website, mobile or tablet application, or any other feature or platform we operate (collectively, "Our Platform"), you agree to be bound by these Terms and our Privacy Policy. If you do not accept all of these Terms, you may not use Our Platform.
+          Please read these terms and conditions of use (&quot;Terms&quot;) carefully before accessing, using, or obtaining any information, products, or services through Atrium Jazz (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;). By accessing the Atrium Jazz website, mobile or tablet application, or any other feature or platform we operate (collectively, &quot;Our Platform&quot;), you agree to be bound by these Terms and our <Link href="/privacy" className="text-blue-300 hover:underline">Privacy Policy</Link>. If you do not accept all of these Terms, you may not use Our Platform.
         </p>
 
         <section className="mb-8">
@@ -23,7 +24,7 @@ export default function TermsAndConditions() {
               <ul className="list-disc pl-6 mt-2 space-y-2">
                 <li>Use automated tools (including bots, crawlers, or scrapers) to access or collect data from Our Platform.</li>
                 <li>Violate any applicable laws, intellectual property rights, or privacy rights.</li>
-                <li>Attempt to disrupt or damage Our Platform's functionality.</li>
+                <li>Attempt to disrupt or damage Our Platform&apos;s functionality.</li>
               </ul>
             </div>
           </div>
@@ -51,8 +52,8 @@ export default function TermsAndConditions() {
               <p>Atrium Jazz does not sell tickets or handle bookings for events. All transactions are between you and the event organizers or venues. We are not responsible for cancellations, changes, or issues arising from your attendance.</p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">"As Is" Service</h3>
-              <p>Our Platform and its content are provided "as is" and "as available" without warranties of any kind. We do not guarantee that our service will be error-free or uninterrupted.</p>
+              <h3 className="text-xl font-semibold mb-2">&quot;As Is&quot; Service</h3>
+              <p>Our Platform and its content are provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind. We do not guarantee that our service will be error-free or uninterrupted.</p>
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Limitation of Liability</h3>
@@ -86,7 +87,7 @@ export default function TermsAndConditions() {
           <div className="space-y-4">
             <div>
               <h3 className="text-xl font-semibold mb-2">Entire Agreement</h3>
-              <p>These Terms, along with our Privacy Policy, constitute the entire agreement between you and Atrium Jazz.</p>
+              <p>These Terms, along with our <Link href="/privacy-policy" className="text-blue-300 hover:underline">Privacy Policy</Link>, constitute the entire agreement between you and Atrium Jazz.</p>
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Severability</h3>
