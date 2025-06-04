@@ -2,11 +2,11 @@ import { Metadata } from 'next';
 import HomePageClient from './HomePageClient';
 
 export const metadata: Metadata = {
-  title: 'Atrium Jazz | Nightly Jazz Events',
-  description: 'Discover nightly jazz events, artists, and venues around New York City. Curated by Atrium Jazz.',
+  title: 'Atrium Jazz | Live Jazz Music in NYC',
+  description: 'Discover live jazz music, artists, and venues around New York City. Curated by Atrium Jazz.',
   openGraph: {
-    title: 'Atrium Jazz | Nightly Jazz Events',
-    description: 'Discover nightly jazz events, artists, and venues around New York City. Curated by Atrium Jazz.',
+    title: 'Atrium Jazz | Live Jazz Music in NYC',
+    description: 'Discover live jazz music, artists, and venues in New York City. Curated by Atrium Jazz.',
     url: 'https://nycjazz.vercel.app/',
     images: [
       {
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Atrium Jazz | Nightly Jazz Events',
-    description: 'Discover nightly jazz events, artists, and venues around New York City. Curated by Atrium Jazz.',
+    title: 'Atrium Jazz | Live Jazz Music in NYC',
+    description: 'Discover live jazz music, artists, and venues in New York City. Curated by Atrium Jazz.',
     images: ['https://nycjazz.vercel.app/og-atrium-main.jpg'],
   },
 };
