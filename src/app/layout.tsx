@@ -13,7 +13,7 @@ const dmSans = DM_Sans({
 })
  
 export const metadata: Metadata = {
-  title: 'Atrium Jazz | Nightly Jazz Events',
+  title: 'Atrium Jazz | Nightly Jazz Events in NYC',
   description: 'Discover nightly jazz events, artists, and venues around New York City. Curated by Atrium Jazz.',
 }
  

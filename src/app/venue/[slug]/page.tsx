@@ -129,7 +129,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 mt-20">
+    <div className="max-w-4xl mx-auto p-6">
       {/* Venue Header Section */}
       <div className="rounded-lg mb-8">
         <h1 className={`text-3xl font-bold mb-2 ${fugazOne.className}`}>
