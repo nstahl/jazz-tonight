@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
     openGraph: {
       title: `${venue.name} | Atrium Jazz`,
       description: `Upcoming jazz events at ${venue.name}`,
-      url: `https://nycjazz.vercel.app/venue/${slug}`,
+      url: `https://www.atriumjazz.com/venue/${slug}`,
     },
     twitter: {
       card: 'summary_large_image',

@@ -90,7 +90,7 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
     openGraph: {
       title: `${event.name} at ${event.venue.name} | Atrium Jazz`,
       description: event.logline || `Join ${event.artist?.name || 'us'} at ${event.venue.name} for an unforgettable jazz experience.`,
-      url: `https://nycjazz.vercel.app/event/${slug}`,
+      url: `https://www.atriumjazz.com/event/${slug}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -247,7 +247,7 @@ export default async function Page({ params }: PageProps) {
 
         </div>
         <div className="flex flex-row items-stretch gap-2 ml-4">
-          <ShareButton url={`https://nycjazz.vercel.app/event/${slug}`} className="w-16 h-16 p-0 text-xl font-bold rounded-lg flex items-center justify-center hidden md:flex" showText={false} />
+          <ShareButton url={`https://www.atriumjazz.com/event/${slug}`} className="w-16 h-16 p-0 text-xl font-bold rounded-lg flex items-center justify-center hidden md:flex" showText={false} />
           <a 
             href={event.url}
             target="_blank"
@@ -269,10 +269,9 @@ export default async function Page({ params }: PageProps) {
         >
           Tickets
         </a>
-        <ShareButton url={`https://nycjazz.vercel.app/event/${slug}`} className="w-14 h-14 p-0 text-xl font-bold rounded-lg flex items-center justify-center bg-blue-300 text-black" showText={false} />
+        <ShareButton url={`https://www.atriumjazz.com/event/${slug}`} className="w-14 h-14 p-0 text-xl font-bold rounded-lg flex items-center justify-center bg-blue-300 text-black" showText={false} />
       </div>
 
-      {event.logline && (
         <div className="border-t pt-8">
           
           {event.logline && (
@@ -362,7 +361,6 @@ export default async function Page({ params }: PageProps) {
             </div>
           )}
         </div>
-      )}
 
       {/* Upcoming Events Section */}
       {event.artist?.events && event.artist.events.length > 0 && (
