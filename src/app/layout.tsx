@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { DM_Sans } from 'next/font/google'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import { DateRangeProvider } from '@/context/DateRangeContext'
 // These styles apply to every route in the application
 import './globals.css'
@@ -23,12 +24,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={dmSans.className}>
-      <body>
+      <body className="min-h-screen flex flex-col">
         <DateRangeProvider>
           <Navbar />
-          <main className="mt-20">
+          <main className="mt-20 flex-grow">
             {children}
           </main>
+          <Footer />
         </DateRangeProvider>
         <Analytics />
         <SpeedInsights />
