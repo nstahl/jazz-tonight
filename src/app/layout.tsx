@@ -5,6 +5,7 @@ import { DM_Sans } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { DateRangeProvider } from '@/context/DateRangeContext'
+import { PostHogProvider } from '@/components/PostHogProvider'
 // These styles apply to every route in the application
 import './globals.css'
 
@@ -25,15 +26,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={dmSans.className}>
       <body className="min-h-screen flex flex-col">
-        <DateRangeProvider>
-          <Navbar />
-          <main className="mt-20 flex-grow">
-            {children}
-          </main>
-          <Footer />
-        </DateRangeProvider>
-        <Analytics />
-        <SpeedInsights />
+        <PostHogProvider>
+          <DateRangeProvider>
+            <Navbar />
+            <main className="mt-20 flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </DateRangeProvider>
+          <Analytics />
+          <SpeedInsights />
+        </PostHogProvider>
       </body>
     </html>
   )
