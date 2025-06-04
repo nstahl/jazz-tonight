@@ -187,7 +187,7 @@ export default async function Page({ params }: PageProps) {
           </div>
         </div>
       ) : (
-        <p className="text-gray-300">No upcoming events scheduled at this venue.</p>
+        <p className="text-gray-300">Please visit the club's <a href={venue.url} target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:underline">website</a> for upcoming events.</p>
       )}
     </div>
   );
