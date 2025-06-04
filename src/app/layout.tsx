@@ -14,8 +14,8 @@ const dmSans = DM_Sans({
 })
  
 export const metadata: Metadata = {
-  title: 'Atrium Jazz | Nightly Jazz Events in NYC',
-  description: 'Discover nightly jazz events, artists, and venues around New York City. Curated by Atrium Jazz.',
+  title: 'Atrium Jazz | Live Jazz Music in NYC',
+  description: 'Discover live jazz music, artists, and venues in New York City. Curated by Atrium Jazz.',
 }
  
 export default function RootLayout({
