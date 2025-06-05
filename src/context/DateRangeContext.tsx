@@ -1,6 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
+import { toZonedTime } from 'date-fns-tz';
+import { addDays, format } from 'date-fns';
+import { EVENT_CONFIG } from '@/config/constants';
 
 interface DateRangeContextType {
   startDate: string;
@@ -11,8 +14,13 @@ interface DateRangeContextType {
 const DateRangeContext = createContext<DateRangeContextType | undefined>(undefined);
 
 export function DateRangeProvider({ children }: { children: React.ReactNode }) {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  // Calculate default dates using NYC timezone
+  const nycTime = toZonedTime(new Date(), 'America/New_York');
+  const defaultStartDate = format(nycTime, 'yyyy-MM-dd');
+  const defaultEndDate = format(addDays(nycTime, EVENT_CONFIG.DAYS_AHEAD), 'yyyy-MM-dd');
+
+  const [startDate, setStartDate] = useState(defaultStartDate);
+  const [endDate, setEndDate] = useState(defaultEndDate);
 
   const setDateRange = (newStartDate: string, newEndDate: string) => {
     setStartDate(newStartDate);
@@ -28,6 +36,7 @@ export function DateRangeProvider({ children }: { children: React.ReactNode }) {
 
 export function useDateRange() {
   const context = useContext(DateRangeContext);
+  console.log("useDateRange context", context);
   if (context === undefined) {
     throw new Error('useDateRange must be used within a DateRangeProvider');
   }
