@@ -112,7 +112,7 @@ function EventCard({ event, linkToVenue = true }) {
       id={cardId}
       onClick={() => window.open(`/event/${event.slug}`, '_self')}
       className={`
-        flex flex-col md:flex-row
+        flex flex-col sm:flex-row
         block p-0
         bg-[#18181b]
         rounded-2xl
@@ -131,8 +131,8 @@ function EventCard({ event, linkToVenue = true }) {
       }}
     >
       {/* Left: YouTube player or image */}
-      <div className="md:w-[45%] w-full md:min-w-[280px] md:max-w-[320px] mb-0 md:mb-0 md:mr-0">
-        <div className="relative pb-[56.25%] md:pb-0 md:h-[225px] h-0 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none overflow-hidden">
+      <div className="sm:w-[45%] w-full sm:min-w-[280px] sm:max-w-[320px] mb-0 sm:mb-0 sm:mr-0">
+        <div className="relative pb-[56.25%] sm:pb-0 sm:h-[225px] h-0 rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none overflow-hidden">
           {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 ? (
             (shouldLoadVideo && isThumbnailClicked) ? (
               <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
@@ -187,7 +187,7 @@ function EventCard({ event, linkToVenue = true }) {
       </div>
       {/* Right: Main info section */}
       <div
-        className="flex-1 cursor-pointer rounded-b-2xl md:rounded-b-none md:rounded-r-2xl transition-colors duration-200 p-3 md:p-5 mt-0"
+        className="flex-1 cursor-pointer rounded-b-2xl sm:rounded-b-none sm:rounded-r-2xl transition-colors duration-200 p-3 sm:p-5 mt-0"
         onClick={() => window.open(`/event/${event.slug}`, '_self')}
       >
         <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0`}>
@@ -221,9 +221,9 @@ function EventCard({ event, linkToVenue = true }) {
             )}
             {event.venue?.name && (
               <>
-                <span className="hidden md:inline"> • </span>
-                <span className="block md:inline mt-2 md:mt-0">
-                  <svg className="inline-block w-4 h-4 mr-1 md:hidden" viewBox="0 0 24 24" fill="currentColor">
+                <span className="hidden sm:inline"> • </span>
+                <span className="block sm:inline mt-2 sm:mt-0">
+                  <svg className="inline-block w-4 h-4 mr-1 sm:hidden" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                   </svg>
                   Live at {
