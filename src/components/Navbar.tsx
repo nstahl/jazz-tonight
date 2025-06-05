@@ -32,8 +32,6 @@ const Navbar = () => {
 
   useEffect(() => {
     if (!showCalendar) {
-      console.log("Calendar closed, updating date range");
-      console.log("range", range);
       setDateRange(format(range.startDate, 'yyyy-MM-dd'), format(range.endDate, 'yyyy-MM-dd'));
     }
   }, [showCalendar, range.startDate, range.endDate, setDateRange]);
