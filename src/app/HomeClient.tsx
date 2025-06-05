@@ -29,7 +29,7 @@ interface HomeClientProps {
 }
 
 export default function HomeClient({ startDate, endDate }: HomeClientProps) {
-  const [dateGroups, setDateGroups] = useState<[string, Event[]][]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const hasScrolledRef = useRef(false);
 
@@ -37,18 +37,8 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
     const fetchEvents = async () => {
       try {
         const response = await fetch(`/api/events?startDate=${startDate}&endDate=${endDate}`);
-        const eventsDisagreggated = await response.json();
-
-        // Group events by date
-        const groupedEvents = eventsDisagreggated.reduce((acc: Record<string, Event[]>, event: Event) => {
-          if (!acc[event.dateString]) {
-            acc[event.dateString] = [];
-          }
-          acc[event.dateString].push(event);
-          return acc;
-        }, {});
-
-        setDateGroups(Object.entries(groupedEvents));
+        const events = await response.json();
+        setEvents(events);
       } catch (error) {
         console.error('Error fetching events:', error);
       } finally {
@@ -122,22 +112,11 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-4 lg:px-4 pb-24">
-      <div className="grid gap-2">
-        {dateGroups.map(([dateString, dateEvents]) => (
-            <div key={dateString} className="grid gap-2 mt-2">
-              {dateEvents
-                .sort((a, b) => {
-                  if (!a.timeStrings) return 1;
-                  if (!b.timeStrings) return -1;
-                  return (a.timeStrings[0] || '').localeCompare(b.timeStrings[0] || '');
-                })
-                .map((event) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                  />
-                ))}
-            </div>
+      <div className="grid">
+        {events.map((event) => (
+            <div key={event.id} className="mt-2">
+              <EventCard key={event.id} event={event} />
+          </div>
         ))}
       </div>
     </div>
