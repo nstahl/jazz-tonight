@@ -87,7 +87,7 @@ export default function TermsAndConditions() {
           <div className="space-y-4">
             <div>
               <h3 className="text-xl font-semibold mb-2">Entire Agreement</h3>
-              <p>These Terms, along with our <Link href="/privacy-policy" className="text-blue-300 hover:underline">Privacy Policy</Link>, constitute the entire agreement between you and Atrium Jazz.</p>
+              <p>These Terms, along with our <Link href="/privacy" className="text-blue-300 hover:underline">Privacy Policy</Link>, constitute the entire agreement between you and Atrium Jazz.</p>
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Severability</h3>
