@@ -10,6 +10,7 @@ interface Venue {
   url: string;
   gMapsUrl?: string | null;
   description?: string | null;
+  slug: string;
 }
 
 type VenueWithEventCount = Venue & {
@@ -22,14 +23,14 @@ export default function VenuesTable({ venues }: { venues: VenueWithEventCount[] 
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
-  const handleDelete = async (venueId: string) => {
+  const handleDelete = async (venueSlug: string) => {
     if (!confirm('Are you sure you want to delete this venue and all its associated events? This action cannot be undone.')) {
       return;
     }
 
-    setIsDeleting(venueId);
+    setIsDeleting(venueSlug);
     try {
-      const response = await fetch(`/api/admin/venues/${venueId}`, {
+      const response = await fetch(`/api/admin/venues/${venueSlug}`, {
         method: 'DELETE',
       });
 
@@ -80,13 +81,13 @@ export default function VenuesTable({ venues }: { venues: VenueWithEventCount[] 
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button
-                  onClick={() => handleDelete(venue.id)}
-                  disabled={isDeleting === venue.id}
+                  onClick={() => handleDelete(venue.slug)}
+                  disabled={isDeleting === venue.slug}
                   className={`text-red-600 hover:text-red-900 ${
-                    isDeleting === venue.id ? 'opacity-50 cursor-not-allowed' : ''
+                    isDeleting === venue.slug ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
-                  {isDeleting === venue.id ? 'Deleting...' : 'Delete'}
+                  {isDeleting === venue.slug ? 'Deleting...' : 'Delete'}
                 </button>
               </td>
             </tr>

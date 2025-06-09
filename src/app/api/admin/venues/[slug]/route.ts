@@ -1,14 +1,21 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse, NextRequest } from 'next/server';
+import { Prisma } from '@prisma/client';
 
 export async function DELETE(
   request: NextRequest,
   context: any
 ) {
   try {
+    // Find the venue by slug
+    const venue = await prisma.venue.findUniqueOrThrow({
+      where: { slug: context.params.slug },
+      select: { id: true }
+    });
+
     // Find all event IDs for this venue
     const events = await prisma.event.findMany({
-      where: { venueId: context.params.id },
+      where: { venueId: venue.id },
       select: { id: true },
     });
     const eventIds = events.map((e: { id: string }) => e.id);
@@ -22,17 +29,23 @@ export async function DELETE(
 
     // Delete all events for this venue
     await prisma.event.deleteMany({
-      where: { venueId: context.params.id }
+      where: { venueId: venue.id }
     });
 
     // Delete the venue
     await prisma.venue.delete({
-      where: { id: context.params.id }
+      where: { id: venue.id }
     });
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting venue:', error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      return NextResponse.json(
+        { error: 'Venue not found' },
+        { status: 404 }
+      );
+    }
     return NextResponse.json(
       { error: 'Failed to delete venue' },
       { status: 500 }
