@@ -15,6 +15,13 @@ const fugazOne = Fugaz_One({
   subsets: ['latin'],
 });
 
+// Helper function to get the correct ET offset
+function getETOffset(date: string): string {
+  const dateObj = new Date(date);
+  const isDST = dateObj.getTimezoneOffset() < new Date(dateObj.getFullYear(), 0, 1).getTimezoneOffset();
+  return isDST ? '-04:00' : '-05:00';
+}
+
 type PageProps = {
   params: Promise<{ slug: string }>
 }
@@ -205,14 +212,10 @@ export default async function Page({ params }: PageProps) {
       "name": event.name,
       "description": event.logline || `Join ${event.artist?.name || 'us'} at ${event.venue.name} for an unforgettable jazz experience.`,
       "startDate": event.setTimes && event.setTimes.length > 0 
-        ? formatInTimeZone(new Date(`${event.dateString}T${event.setTimes[0]}`), 'America/New_York', "yyyy-MM-dd'T'HH:mm:ssXXX")
+        ? `${event.dateString}T${event.setTimes[0]}:00${getETOffset(event.dateString)}`
         : formatInTimeZone(new Date(`${event.dateString}T00:00:00`), 'America/New_York', "yyyy-MM-dd'T'HH:mm:ssXXX"),
       "endDate": event.setTimes && event.setTimes.length > 0 
-        ? formatInTimeZone(
-            new Date(new Date(`${event.dateString}T${event.setTimes[event.setTimes.length - 1]}`).getTime() + 90 * 60 * 1000),
-            'America/New_York',
-            "yyyy-MM-dd'T'HH:mm:ssXXX"
-          )
+        ? `${event.dateString}T${event.setTimes[event.setTimes.length - 1]}:00${getETOffset(event.dateString)}`
         : undefined,
       "eventStatus": "https://schema.org/EventScheduled",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
