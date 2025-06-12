@@ -41,7 +41,7 @@ type EventWithArtist = {
   url: string;
   logline?: string;
   artist: ArtistWithVideos | null;
-  venue: { name: string; slug: string; id: string; description: string };
+  venue: { name: string; slug: string; id: string; description: string; url: string; streetAddress: string; addressLocality: string; postalCode: string; addressRegion: string; addressCountry: string };
   performers?: { performer: { name: string; instrument: string } }[];
   setTimes?: string[];
 };
@@ -158,6 +158,11 @@ export default async function Page({ params }: PageProps) {
           id: true,
           description: true,
           url: true,
+          streetAddress: true,
+          addressLocality: true,
+          postalCode: true,
+          addressRegion: true,
+          addressCountry: true,
         }
       },
       performers: {
@@ -217,11 +222,11 @@ export default async function Page({ params }: PageProps) {
         "url": event.venue.gMapsUrl || `https://maps.google.com/?q=${encodeURIComponent(event.venue.name)}`,
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": event.venue.address || "",
-          "addressLocality": event.venue.city || "",
-          "addressRegion": event.venue.state || "",
-          "postalCode": event.venue.zipCode || "",
-          "addressCountry": "US"
+          "streetAddress": event.venue.streetAddress || "",
+          "addressLocality": event.venue.addressLocality || "",
+          "addressRegion": event.venue.addressRegion || "",
+          "postalCode": event.venue.postalCode || "",
+          "addressCountry": event.venue.addressCountry || ""
         }
       },
       "performer": event.artist ? {

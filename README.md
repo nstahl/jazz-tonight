@@ -123,3 +123,11 @@ npm run lint
 ```bash
 ./reset-db.sh
 ```
+
+## Apply migration after updating schema file
+
+```bash
+npx prisma migrate dev --name your_migration_name
+```
+
+That's all you have to do.

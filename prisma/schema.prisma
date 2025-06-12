@@ -17,6 +17,11 @@ model Venue {
   events    Event[]
   hide      Boolean   @default(false)
   thumbnail  String?
+  streetAddress String?
+  addressLocality String?
+  postalCode String?
+  addressRegion String?
+  addressCountry String?
   slug      String   @unique
 
   @@map("venues")
