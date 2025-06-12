@@ -60,6 +60,7 @@ export async function GET() {
     return new NextResponse(sitemap, {
       headers: {
         'Content-Type': 'application/xml',
+        'Cache-Control': 'public, max-age=3600, must-revalidate',
       },
     });
   } catch (err) {
