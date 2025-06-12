@@ -7,6 +7,8 @@ import { EVENT_CONFIG } from '@/config/constants';
 import { Metadata } from 'next';
 import ShareButton from '@/components/ShareButton';
 import React from 'react';
+import JsonLd from '@/components/JsonLd';
+import { formatInTimeZone } from 'date-fns-tz';
 
 const fugazOne = Fugaz_One({
   weight: '400',
@@ -76,7 +78,8 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
         select: {
           name: true,
           description: true,
-          slug: true
+          slug: true,
+          url: true,
         }
       }
     }
@@ -114,6 +117,7 @@ export default async function Page({ params }: PageProps) {
       artist: {
         select: {
           id: true,
+          name: true,
           youtubeUrls: true,
           biography: true,
           website: true,
@@ -128,7 +132,7 @@ export default async function Page({ params }: PageProps) {
               venue: {
                 select: {
                   name: true,
-                  slug: true
+                  slug: true,
                 }
               }
             },
@@ -153,6 +157,7 @@ export default async function Page({ params }: PageProps) {
           slug: true,
           id: true,
           description: true,
+          url: true,
         }
       },
       performers: {
@@ -188,6 +193,47 @@ export default async function Page({ params }: PageProps) {
   }
 
   return (
+    <>
+    <JsonLd json={{
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": event.name,
+      "description": event.logline || `Join ${event.artist?.name || 'us'} at ${event.venue.name} for an unforgettable jazz experience.`,
+      "startDate": event.setTimes && event.setTimes.length > 0 
+        ? formatInTimeZone(new Date(`${event.dateString}T${event.setTimes[0]}`), 'America/New_York', "yyyy-MM-dd'T'HH:mm:ssXXX")
+        : formatInTimeZone(new Date(`${event.dateString}T00:00:00`), 'America/New_York', "yyyy-MM-dd'T'HH:mm:ssXXX"),
+      "endDate": event.setTimes && event.setTimes.length > 0 
+        ? formatInTimeZone(
+            new Date(new Date(`${event.dateString}T${event.setTimes[event.setTimes.length - 1]}`).getTime() + 90 * 60 * 1000),
+            'America/New_York',
+            "yyyy-MM-dd'T'HH:mm:ssXXX"
+          )
+        : undefined,
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": event.venue.name,
+        "url": event.venue.gMapsUrl || `https://maps.google.com/?q=${encodeURIComponent(event.venue.name)}`,
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": event.venue.address || "",
+          "addressLocality": event.venue.city || "",
+          "addressRegion": event.venue.state || "",
+          "postalCode": event.venue.zipCode || "",
+          "addressCountry": "US"
+        }
+      },
+      "performer": event.artist ? {
+        "@type": "MusicGroup",
+        "name": event.artist.name
+      } : undefined,
+      "organizer": {
+        "@type": "Organization",
+        "name": event.venue.name,
+        "url": event.venue.url
+      }
+    }} />
     <div className="max-w-4xl mx-auto p-6 pb-[calc(1.5rem+88px)] md:pb-6">
       {/* Event Header Section */}
       <div className="rounded-lg mb-8 flex justify-between items-start">
@@ -374,5 +420,6 @@ export default async function Page({ params }: PageProps) {
         </div>
       )}
     </div>
+    </>
   )
 }
