@@ -215,7 +215,12 @@ export default async function Page({ params }: PageProps) {
         ? `${event.dateString}T${event.setTimes[0]}:00${getETOffset(event.dateString)}`
         : formatInTimeZone(new Date(`${event.dateString}T00:00:00`), 'America/New_York', "yyyy-MM-dd'T'HH:mm:ssXXX"),
       "endDate": event.setTimes && event.setTimes.length > 0 
-        ? `${event.dateString}T${event.setTimes[event.setTimes.length - 1]}:00${getETOffset(event.dateString)}`
+        ? (() => {
+            const [hours, minutes] = event.setTimes[event.setTimes.length - 1].split(':').map(Number);
+            const endTime = new Date(`${event.dateString}T${hours}:${minutes}:00`);
+            endTime.setMinutes(endTime.getMinutes() + 90);
+            return `${event.dateString}T${endTime.getHours().toString().padStart(2, '0')}:${endTime.getMinutes().toString().padStart(2, '0')}:00${getETOffset(event.dateString)}`;
+          })()
         : undefined,
       "eventStatus": "https://schema.org/EventScheduled",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
