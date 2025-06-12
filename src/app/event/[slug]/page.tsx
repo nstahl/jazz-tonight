@@ -41,7 +41,7 @@ type EventWithArtist = {
   url: string;
   logline?: string;
   artist: ArtistWithVideos | null;
-  venue: { name: string; slug: string; id: string; description: string; url: string; streetAddress: string; addressLocality: string; postalCode: string; addressRegion: string; addressCountry: string };
+  venue: { name: string; slug: string; id: string; description: string; gMapsUrl: string; url: string; streetAddress: string; addressLocality: string; postalCode: string; addressRegion: string; addressCountry: string };
   performers?: { performer: { name: string; instrument: string } }[];
   setTimes?: string[];
 };
