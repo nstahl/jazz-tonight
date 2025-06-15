@@ -116,7 +116,7 @@ function EventCard({ event, linkToVenue = true }) {
         block p-0
         bg-[#18181b]
         rounded-2xl
-        w-full max-w-[900px]
+        w-full max-w-screen-lg
         relative
         mx-auto
         border border-zinc-800

@@ -124,7 +124,8 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
       <div className="grid">
         {sortedDates.map((date) => (
           <div key={date}>
-            <div className="sticky top-20 z-10 bg-black py-2 mb-2 border-b border-zinc-400/30 px-2">
+            <div className="sticky top-20 z-10 bg-black py-2 mb-2 border-b border-zinc-400/30">
+            <div className="max-w-screen-lg mx-auto px-2">
               <span className="text-xl font-bold">
                 {(() => {
                   // date is in YYYY-MM-DD
@@ -135,6 +136,7 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
                   return `${weekday}, ${monthStr} ${Number(day)}, ${year}`;
                 })()}
               </span>
+              </div>
             </div>
             {groupedEvents[date].map((event) => (
               <div key={event.id} className="mt-2 px-2">
