@@ -126,7 +126,7 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
   const sortedDates = Object.keys(groupedEvents).sort();
 
   return (
-    <div className="max-w-screen-2xl mx-auto pb-24">
+    <div className="mx-auto pb-24">
       <div className="grid">
         {sortedDates.map((date) => (
           <div key={date}>
