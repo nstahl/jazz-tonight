@@ -5,7 +5,7 @@ import { EVENT_CONFIG } from '@/config/constants';
 import { toZonedTime } from 'date-fns-tz';
 import { addDays, format } from 'date-fns';
 
-const BASE_URL = 'https://atriumjazz.com';
+const BASE_URL = 'https://www.atriumjazz.com';
 
 export async function GET() {
   try {
