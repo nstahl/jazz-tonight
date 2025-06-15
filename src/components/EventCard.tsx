@@ -193,14 +193,8 @@ function EventCard({ event, linkToVenue = true }) {
         <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0`}>
           <span>{event.name}</span>
         </div>
-        <div className="flex justify-between text-sm text-zinc-400">
+        <div className="flex justify-between text-md text-zinc-400">
           <span>
-            {new Date(event.dateString).toLocaleDateString('en-US', {
-              weekday: 'long',
-              month: 'short', 
-              day: 'numeric',
-              timeZone: 'UTC'
-            })} • {' '}
             {event.setTimes && event.setTimes.length > 0 ? (
               <>
                 {event.setTimes.map((timeString, index) => (

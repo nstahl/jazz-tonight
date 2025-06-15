@@ -120,12 +120,12 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
   const sortedDates = Object.keys(groupedEvents).sort();
 
   return (
-    <div className="max-w-screen-2xl mx-auto px-4 pb-24">
+    <div className="max-w-screen-2xl mx-auto pb-24">
       <div className="grid">
         {sortedDates.map((date) => (
           <div key={date}>
-            <div className="sticky top-20 z-10 bg-[#18181b] py-2 px-2 border-l-4 border-red-400 mb-2">
-              <span className="text-2xl font-bold text-red-400">
+            <div className="sticky top-20 z-10 bg-black py-2 mb-2 border-b border-zinc-400/30 px-2">
+              <span className="text-xl font-bold">
                 {(() => {
                   // date is in YYYY-MM-DD
                   const [year, month, day] = date.split('-');
@@ -137,7 +137,7 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
               </span>
             </div>
             {groupedEvents[date].map((event) => (
-              <div key={event.id} className="mt-2">
+              <div key={event.id} className="mt-2 px-2">
                 <EventCard key={event.id} event={event} />
               </div>
             ))}

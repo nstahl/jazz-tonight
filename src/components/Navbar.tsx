@@ -82,13 +82,12 @@ const Navbar = () => {
     >
       <div className="
       container
-      px-4 
       mx-auto 
       flex 
       md:justify-center 
       items-center 
       h-full">
-        <Link href="/" className="absolute left-4 flex items-center space-x-2 cursor-pointer lg:px-5">
+        <Link href="/" className="absolute left-2 flex items-center space-x-2 cursor-pointer">
           <div>
             <Image
               src={logoSrc}
@@ -103,7 +102,7 @@ const Navbar = () => {
         {pathname === '/' && (
           <>
             {/* Mobile Calendar Icon */}
-            <div className="md:hidden absolute right-4 flex items-center cursor-pointer select-none" 
+            <div className="md:hidden absolute right-2 flex items-center cursor-pointer select-none" 
               onClick={() => setShowCalendar(true)}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
