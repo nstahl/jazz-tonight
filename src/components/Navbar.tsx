@@ -28,7 +28,6 @@ const Navbar = () => {
 
   const pickerRef = useRef<HTMLDivElement>(null);
 
-  const formatDisplay = (date: Date) => format(date, 'MMM d');
 
   useEffect(() => {
     if (!showCalendar) {
