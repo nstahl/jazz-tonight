@@ -139,7 +139,7 @@ function EventCard({ event, linkToVenue = true }) {
     >
       {/* Left: YouTube player or image */}
       <div className="sm:w-[45%] w-full sm:min-w-[280px] sm:max-w-[320px] mb-0 sm:mb-0 sm:mr-0">
-        <div className={`relative ${event.artist?.spotifyTopTrack ? 'pb-[80px] sm:pb-0 sm:h-[80px]' : 'pb-[56.25%] sm:pb-0 sm:h-[225px]'} h-0 rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none overflow-hidden`}>
+        <div className={`relative ${event.artist?.spotifyTopTrack ? 'pb-[80px] sm:pb-0 sm:h-[120px]' : 'pb-[56.25%] sm:pb-0 sm:h-[225px]'} h-0 rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none overflow-hidden`}>
           {event.artist?.spotifyTopTrack ? (
             <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
               <iframe
@@ -259,7 +259,7 @@ function EventCard({ event, linkToVenue = true }) {
 
         <div className="flex flex-col gap-y-4 mt-2">
           {/* Event Logline */}
-          {event.logline && (
+          {!event.artist?.spotifyTopTrack && event.logline && (
             <>
               <div className="hidden md:block text-sm text-zinc-200">
                 <p>{event.logline}</p>
