@@ -12,6 +12,13 @@ const getYoutubeVideoId = (url: string) => {
   return (match && match[2].length === 11) ? match[2] : null;
 };
 
+// Helper function to extract track ID from Spotify URL
+const getSpotifyTrackId = (url: string) => {
+  const regExp = /track\/([a-zA-Z0-9]+)/;
+  const match = url.match(regExp);
+  return match ? match[1] : null;
+};
+
 const fugazOne = Fugaz_One({
     weight: '400',
     subsets: ['latin'],
@@ -132,8 +139,20 @@ function EventCard({ event, linkToVenue = true }) {
     >
       {/* Left: YouTube player or image */}
       <div className="sm:w-[45%] w-full sm:min-w-[280px] sm:max-w-[320px] mb-0 sm:mb-0 sm:mr-0">
-        <div className="relative pb-[56.25%] sm:pb-0 sm:h-[225px] h-0 rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none overflow-hidden">
-          {event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 ? (
+        <div className={`relative ${event.artist?.spotifyTopTrack ? 'pb-[80px] sm:pb-0 sm:h-[80px]' : 'pb-[56.25%] sm:pb-0 sm:h-[225px]'} h-0 rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none overflow-hidden`}>
+          {event.artist?.spotifyTopTrack ? (
+            <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
+              <iframe
+                src={`https://open.spotify.com/embed/track/${getSpotifyTrackId(event.artist.spotifyTopTrack)}`}
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+                className="rounded-xl"
+              ></iframe>
+            </div>
+          ) : event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 ? (
             (shouldLoadVideo && isThumbnailClicked) ? (
               <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
                 <YouTube

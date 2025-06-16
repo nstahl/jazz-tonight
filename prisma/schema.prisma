@@ -31,6 +31,7 @@ model ArtistProfile {
   id          String   @id @default(cuid())
   name        String   @unique
   website     String?
+  spotifyTopTrack     String?
   instagram   String?
   youtubeUrls String[]
   biography   String?
