@@ -117,7 +117,6 @@ function EventCard({ event, linkToVenue = true }) {
   return (
     <div
       id={cardId}
-      onClick={() => window.open(`/event/${event.slug}`, '_self')}
       className={`
         flex flex-col sm:flex-row
         block p-0
@@ -128,86 +127,14 @@ function EventCard({ event, linkToVenue = true }) {
         mx-auto
         border border-zinc-800
         shadow-xl shadow-black/40 transition-all duration-200
-        cursor-pointer
-        hover:bg-[#23232a]
-        hover:border-zinc-400
         overflow-hidden
       `}
       style={{
         background: selectedGradient
       }}
     >
-      {/* Left: YouTube player or image */}
-      <div className="sm:w-[45%] w-full sm:min-w-[280px] sm:max-w-[320px] mb-0 sm:mb-0 sm:mr-0">
-        <div className={`relative ${event.artist?.spotifyTopTrack ? 'pb-[80px] sm:pb-0 sm:h-[80px]' : 'pb-[56.25%] sm:pb-0 sm:h-[225px]'} h-0 rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none overflow-hidden`}>
-          {event.artist?.spotifyTopTrack ? (
-            <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
-              <iframe
-                src={`https://open.spotify.com/embed/track/${getSpotifyTrackId(event.artist.spotifyTopTrack)}`}
-                width="100%"
-                height="100%"
-                frameBorder="0"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                className="rounded-xl"
-              ></iframe>
-            </div>
-          ) : event.artist?.youtubeUrls && event.artist.youtubeUrls.length > 0 ? (
-            (shouldLoadVideo && isThumbnailClicked) ? (
-              <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
-                <YouTube
-                  videoId={getYoutubeVideoId(event.artist.youtubeUrls[0])}
-                  opts={{ 
-                    playerVars: { 
-                      autoplay: 1, 
-                      modestbranding: 1,
-                      rel: 0,
-                      start: 30,
-                      playsinline: 1,
-                      enablejsapi: 1,
-                    } 
-                  }}
-                  className="w-full h-full"
-                  iframeClassName="w-full h-full"
-                  onReady={onReady}
-                  onStateChange={onPlayerStateChange}
-                  onError={onError}
-                />
-              </div>
-            ) : (
-              <div 
-                className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden cursor-pointer"
-                onClick={handleThumbnailClick}
-              >
-                <img
-                  src={`https://img.youtube.com/vi/${getYoutubeVideoId(event.artist.youtubeUrls[0])}/hqdefault.jpg`}
-                  alt={`${event.artist.name} preview`}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            )
-          ) : (
-            <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
-              <img
-                src={event.venue?.thumbnail ? `/${event.venue.thumbnail}` : "/thumb_generic.jpg"}
-                alt="Event preview"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
-        </div>
-      </div>
-      {/* Right: Main info section */}
       <div
-        className={`flex-1 cursor-pointer rounded-b-2xl sm:rounded-b-none sm:rounded-r-2xl transition-colors duration-200 ${event.artist?.spotifyTopTrack ? 'px-3 sm:px-5 py-1' : 'p-3 sm:p-5'} mt-0`}
-        onClick={() => window.open(`/event/${event.slug}`, '_self')}
+        className={`flex-1 rounded-b-2xl transition-colors duration-200 p-3 sm:p-5 mt-0`}
       >
         <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0`}>
           <span>{event.name}</span>
@@ -256,16 +183,6 @@ function EventCard({ event, linkToVenue = true }) {
             )}
           </span>
         </div>
-{/* Event Logline */}
-{!event.artist?.spotifyTopTrack && event.logline && (
-        <div className="flex flex-col gap-y-4 mt-2">
-            <>
-              <div className="hidden md:block text-sm text-zinc-200">
-                <p>{event.logline}</p>
-              </div>
-            </>
-        </div>
-      )}
       </div>
     </div>
   );
