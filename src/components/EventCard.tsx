@@ -139,7 +139,7 @@ function EventCard({ event, linkToVenue = true }) {
     >
       {/* Left: YouTube player or image */}
       <div className="sm:w-[45%] w-full sm:min-w-[280px] sm:max-w-[320px] mb-0 sm:mb-0 sm:mr-0">
-        <div className={`relative ${event.artist?.spotifyTopTrack ? 'pb-[80px] sm:pb-0 sm:h-[120px]' : 'pb-[56.25%] sm:pb-0 sm:h-[225px]'} h-0 rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none overflow-hidden`}>
+        <div className={`relative ${event.artist?.spotifyTopTrack ? 'pb-[80px] sm:pb-0 sm:h-[80px]' : 'pb-[56.25%] sm:pb-0 sm:h-[225px]'} h-0 rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none overflow-hidden`}>
           {event.artist?.spotifyTopTrack ? (
             <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden">
               <iframe
@@ -206,7 +206,7 @@ function EventCard({ event, linkToVenue = true }) {
       </div>
       {/* Right: Main info section */}
       <div
-        className="flex-1 cursor-pointer rounded-b-2xl sm:rounded-b-none sm:rounded-r-2xl transition-colors duration-200 p-3 sm:p-5 mt-0"
+        className={`flex-1 cursor-pointer rounded-b-2xl sm:rounded-b-none sm:rounded-r-2xl transition-colors duration-200 ${event.artist?.spotifyTopTrack ? 'px-3 sm:px-5 py-1' : 'p-3 sm:p-5'} mt-0`}
         onClick={() => window.open(`/event/${event.slug}`, '_self')}
       >
         <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0`}>
@@ -256,17 +256,16 @@ function EventCard({ event, linkToVenue = true }) {
             )}
           </span>
         </div>
-
+{/* Event Logline */}
+{!event.artist?.spotifyTopTrack && event.logline && (
         <div className="flex flex-col gap-y-4 mt-2">
-          {/* Event Logline */}
-          {!event.artist?.spotifyTopTrack && event.logline && (
             <>
               <div className="hidden md:block text-sm text-zinc-200">
                 <p>{event.logline}</p>
               </div>
             </>
-          )}
         </div>
+      )}
       </div>
     </div>
   );
