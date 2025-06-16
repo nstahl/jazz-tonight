@@ -184,6 +184,16 @@ function EventCard({ event, linkToVenue = true }) {
           </span>
         </div>
       </div>
+      {/* Tickets Button */}
+      <div className="flex items-center justify-center p-4 sm:p-0 sm:pr-6">
+        <a
+          href={`/event/${event.slug}`}
+          className="bg-zinc-100 text-black font-bold rounded-xl px-8 py-4 text-lg hover:bg-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+          onClick={e => e.stopPropagation()}
+        >
+          Tickets
+        </a>
+      </div>
     </div>
   );
 }
