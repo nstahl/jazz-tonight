@@ -12,7 +12,10 @@ const fugazOne = Fugaz_One({
 
 function EventCard({ event, linkToVenue = true }) {
 
-  console.log(event);
+  let proxiedPreviewUrl = null;
+  if (event.artist?.spotifyTopTrack) {
+    proxiedPreviewUrl = `/api/deezer-proxy?url=${encodeURIComponent(event.artist.spotifyTopTrack)}`;
+  }
 
   const cardId = React.useId(); // Generate a unique ID for this card instance
   const [isPlaying, setIsPlaying] = React.useState(false);
@@ -83,20 +86,19 @@ function EventCard({ event, linkToVenue = true }) {
     <div
       id={cardId}
       className={`
-        flex flex-col sm:flex-row
-        block p-0
-        bg-[#18181b]
-        rounded-2xl
-        w-full max-w-screen-lg
+        flex 
+        flex-row
+        block
+        w-full 
+        max-w-screen-lg
         relative
         mx-auto
-        border border-zinc-800
-        shadow-xl shadow-black/40 transition-all duration-200
+        shadow-xl 
+        shadow-black/40 
+        transition-all 
+        duration-200
         overflow-hidden
       `}
-      style={{
-        background: selectedGradient
-      }}
     >
       <div
         className={`flex-1 rounded-b-2xl transition-colors duration-200 p-3 sm:p-5 mt-0`}
@@ -175,11 +177,15 @@ function EventCard({ event, linkToVenue = true }) {
             </button>
             <audio
               ref={audioRef}
-              className="spotify-preview"
-              src={event.artist.spotifyTopTrack}
+              className="deezer-preview"
+              src="https://cdnt-preview.dzcdn.net/api/1/1/d/a/3/0/da374eaef7a5670616ca4f673de94324.mp3?hdnea=exp=1750122963~acl=/api/1/1/d/a/3/0/da374eaef7a5670616ca4f673de94324.mp3*~data=user_id=0,application_id=42~hmac=790ab762babe99b135f60973e860637ae73281ec7b1aa3d80f35f703ec42cb92"
               onEnded={handleAudioEnded}
               onPause={() => setIsPlaying(false)}
               onPlay={() => setIsPlaying(true)}
+              onError={() => {
+                console.warn("Deezer preview failed to load");
+                setIsPlaying(false);
+              }}
             />
           </>
         )}
