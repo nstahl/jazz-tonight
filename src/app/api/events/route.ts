@@ -38,7 +38,17 @@ export async function GET(request: Request) {
           thumbnail: true
         }
       },
-      artist: true,
+      artist: {
+        select: {
+          id: true,
+          name: true,
+          spotifyTopTrack: true,
+          youtubeUrls: true,
+          biography: true,
+          website: true,
+          instagram: true,
+        }
+      },
       performers: {
         include: {
           performer: true

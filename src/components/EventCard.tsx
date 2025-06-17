@@ -3,34 +3,20 @@
 
 import React from 'react';
 import { Fugaz_One } from 'next/font/google';
-import YouTube from 'react-youtube';
-
-// Helper function to extract video ID from YouTube URL
-const getYoutubeVideoId = (url: string) => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
-};
-
-// Helper function to extract track ID from Spotify URL
-const getSpotifyTrackId = (url: string) => {
-  const regExp = /track\/([a-zA-Z0-9]+)/;
-  const match = url.match(regExp);
-  return match ? match[1] : null;
-};
 
 const fugazOne = Fugaz_One({
     weight: '400',
     subsets: ['latin'],
   });
 
-// Add this at the top level of the file, outside the component
-let activePlayerId: string | null = null;
 
 function EventCard({ event, linkToVenue = true }) {
-  const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false);
-  const [isThumbnailClicked, setIsThumbnailClicked] = React.useState(false);
+
+  console.log(event);
+
   const cardId = React.useId(); // Generate a unique ID for this card instance
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const audioRef = React.useRef(null);
 
   // Generate a unique gradient angle based on the card ID
   const gradientAngle = React.useMemo(() => {
@@ -57,62 +43,41 @@ function EventCard({ event, linkToVenue = true }) {
     return gradients[index];
   }, [gradientAngle]);
 
-  // Add a ref to store the player instance
-  const playerRef = React.useRef(null);
-  const hasSeekedRef = React.useRef(false);
-  
-  // Update onPlayerStateChange handler
-  const onPlayerStateChange = (event) => {
-    if (event && event.target) {
-      // YouTube.PlayerState.PLAYING = 1
-      if (event.data === 1) {
-        // If there's an active player that's not this one, pause it
-        if (activePlayerId && activePlayerId !== cardId && window[`player_${activePlayerId}`]) {
-          try {
-            window[`player_${activePlayerId}`].pauseVideo();
-          } catch (error) {
-            console.error('Error pausing video:', error);
-          }
-        }
-        // Set this as the active player
-        activePlayerId = cardId;
-        window[`player_${cardId}`] = event.target;
+  // Only allow one audio preview at a time
+  React.useEffect(() => {
+    if (!isPlaying) return;
+    // Pause all other audio elements
+    document.querySelectorAll('audio.spotify-preview').forEach((audio) => {
+      if (audio !== audioRef.current) {
+        audio.pause();
       }
+    });
+  }, [isPlaying]);
+
+  const handleSpotifyPlayPause = (e) => {
+    e.stopPropagation();
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
     }
+    setIsPlaying(!isPlaying);
   };
 
-  // Add onReady handler to store the player instance
-  const onReady = (event) => {
-    console.log('onReady');
-    if (event && event.target) {
-      playerRef.current = event.target;
-      hasSeekedRef.current = false;
-    }
+  // Pause when audio ends
+  const handleAudioEnded = () => {
+    setIsPlaying(false);
   };
 
-  // Add error handler
-  const onError = (error) => {
-    console.error('YouTube player error:', error);
-  };
-
-  // Add cleanup effect
+  // Pause if unmounting
   React.useEffect(() => {
     return () => {
-      if (playerRef.current) {
-        try {
-          playerRef.current.destroy();
-        } catch (error) {
-          console.error('Error destroying player:', error);
-        }
+      if (audioRef.current) {
+        audioRef.current.pause();
       }
     };
   }, []);
-
-  const handleThumbnailClick = (e) => {
-    e.stopPropagation(); // Prevent the card click event from firing
-    setIsThumbnailClicked(true);
-    setShouldLoadVideo(true);
-  };
 
   return (
     <div
@@ -184,8 +149,40 @@ function EventCard({ event, linkToVenue = true }) {
           </span>
         </div>
       </div>
-      {/* Tickets Button */}
-      <div className="flex items-center justify-center p-4 sm:p-0 sm:pr-6">
+      {/* Tickets Button + Spotify Button */}
+      <div className="flex items-center justify-center p-4 sm:p-0 sm:pr-6 gap-2">
+        {/* Spotify Play Button */}
+        {event.artist?.spotifyTopTrack && (
+          <>
+            <button
+              onClick={handleSpotifyPlayPause}
+              className="rounded-full bg-blue-200 hover:bg-blue-300 transition-colors w-12 h-12 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400"
+              aria-label={isPlaying ? 'Pause preview' : 'Play preview'}
+            >
+              {isPlaying ? (
+                // Pause icon
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="6" y="6" width="5" height="16" rx="2" fill="#2563eb" />
+                  <rect x="17" y="6" width="5" height="16" rx="2" fill="#2563eb" />
+                </svg>
+              ) : (
+                // Play icon
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="14" cy="14" r="14" fill="#bfdbfe" />
+                  <polygon points="11,8 22,14 11,20" fill="#2563eb" />
+                </svg>
+              )}
+            </button>
+            <audio
+              ref={audioRef}
+              className="spotify-preview"
+              src={event.artist.spotifyTopTrack}
+              onEnded={handleAudioEnded}
+              onPause={() => setIsPlaying(false)}
+              onPlay={() => setIsPlaying(true)}
+            />
+          </>
+        )}
         <a
           href={`/event/${event.slug}`}
           className="bg-zinc-100 text-black font-bold rounded-xl px-8 py-4 text-lg hover:bg-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"

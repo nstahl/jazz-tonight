@@ -38,6 +38,7 @@ type VenueWithEvents = {
       id: string;
       name: string;
       youtubeUrls: string[];
+      spotifyTopTrack: string | null;
     } | null;
     venue: {
       name: string;
@@ -104,7 +105,8 @@ export default async function Page({ params }: PageProps) {
             select: {
               id: true,
               name: true,
-              youtubeUrls: true
+              youtubeUrls: true,
+              spotifyTopTrack: true,
             }
           },
           venue: {
