@@ -102,7 +102,7 @@ function EventCard({ event, linkToVenue = true }) {
         className={`flex-1 rounded-b-2xl transition-colors duration-200 p-3 sm:p-5 mt-0`}
       >
         <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0`}>
-          <span>{event.name}</span>
+          <span>{event.name.length > 72 ? `${event.name.slice(0, 72)}...` : event.name}</span>
         </div>
         <div className="flex justify-between text-md text-zinc-400">
           <span>
