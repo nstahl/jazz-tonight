@@ -104,7 +104,7 @@ function EventCard({ event, linkToVenue = true }) {
         className={`flex-1 rounded-b-2xl transition-colors duration-200 p-3 sm:p-5 mt-0`}
       >
         <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0`}>
-          <span>{event.name.length > 72 ? `${event.name.slice(0, 72)}...` : event.name}</span>
+          <a href={`/event/${event.slug}`} className="line-clamp-2 sm:line-clamp-1">{event.name}</a>
         </div>
         <div className="flex justify-between text-md text-zinc-400">
           <span>
@@ -152,13 +152,13 @@ function EventCard({ event, linkToVenue = true }) {
         </div>
       </div>
       {/* Tickets Button + Spotify Button */}
-      <div className="flex items-center justify-center p-4 sm:p-0 sm:pr-6 gap-2">
+      <div className="flex items-center justify-center sm:p-4 sm:p-0 sm:pr-6 sm:gap-2">
         {/* Spotify Play Button */}
-        {event.artist?.spotifyTopTrack && (
+        {(event.artist?.spotifyTopTrack || true) && (
           <>
             <button
               onClick={handleSpotifyPlayPause}
-              className="rounded-full bg-blue-200 hover:bg-blue-300 transition-colors w-12 h-12 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="hidden sm:flex rounded-full bg-blue-200 hover:bg-blue-300 transition-colors w-12 h-12 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400"
               aria-label={isPlaying ? 'Pause preview' : 'Play preview'}
             >
               {isPlaying ? (
@@ -191,7 +191,7 @@ function EventCard({ event, linkToVenue = true }) {
         )}
         <a
           href={`/event/${event.slug}`}
-          className="bg-zinc-100 text-black font-bold rounded-xl px-8 py-4 text-lg hover:bg-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="hidden sm:block bg-zinc-100 text-black font-bold rounded-xl sm:px-8 sm:py-4 text-lg hover:bg-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
           onClick={e => e.stopPropagation()}
         >
           Tickets

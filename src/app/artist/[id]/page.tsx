@@ -8,6 +8,7 @@ import { EVENT_CONFIG } from '@/config/constants';
 import Biography from './Biography';
 import { Metadata } from 'next';
 import ShareButton from '@/components/ShareButton';
+import SpotifyPlayer from '@/components/SpotifyPlayer';
 
 const fugazOne = Fugaz_One({
   weight: '400',
@@ -32,6 +33,7 @@ type Artist = {
   biography: string | null;
   website: string | null;
   instagram: string | null;
+  spotifyTopTrack: string | null;
   events: {
     id: string;
     name: string;
@@ -57,6 +59,7 @@ export default async function Page({ params }: PageProps) {
       biography: true,
       website: true,
       instagram: true,
+      spotifyTopTrack: true,
       events: {
         select: {
           id: true,
@@ -104,6 +107,11 @@ export default async function Page({ params }: PageProps) {
         <h1 className={`text-3xl font-bold ${fugazOne.className}`}>{artist.name}</h1>
         <ShareButton url={`https://nycjazz.vercel.app/artist/${artist.id}`} className="text-xl font-bold flex items-center justify-center" showText={true} />
       </div>
+
+      {/* Spotify Player */}
+      {artist.spotifyTopTrack && (
+        <SpotifyPlayer trackId={artist.spotifyTopTrack} />
+      )}
 
       {/* Artist Content */}
       <div className="border-t pt-8">

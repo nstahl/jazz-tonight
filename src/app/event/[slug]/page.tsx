@@ -9,6 +9,7 @@ import ShareButton from '@/components/ShareButton';
 import React from 'react';
 import JsonLd from '@/components/JsonLd';
 import { formatInTimeZone } from 'date-fns-tz';
+import SpotifyPlayer from '@/components/SpotifyPlayer';
 
 const fugazOne = Fugaz_One({
   weight: '400',
@@ -337,6 +338,11 @@ export default async function Page({ params }: PageProps) {
             <div className="mb-6">
               <p className="italic text-lg">{event.logline}</p>
             </div>
+          )}
+
+          {/* Spotify Player */}
+          {event.artist?.spotifyTopTrack && (
+          <SpotifyPlayer trackId={event.artist?.spotifyTopTrack} />
           )}
 
           {event.artist && (
