@@ -178,7 +178,8 @@ function EventCard({ event, linkToVenue = true }) {
             <audio
               ref={audioRef}
               className="deezer-preview"
-              src="https://cdnt-preview.dzcdn.net/api/1/1/d/a/3/0/da374eaef7a5670616ca4f673de94324.mp3?hdnea=exp=1750122963~acl=/api/1/1/d/a/3/0/da374eaef7a5670616ca4f673de94324.mp3*~data=user_id=0,application_id=42~hmac=790ab762babe99b135f60973e860637ae73281ec7b1aa3d80f35f703ec42cb92"
+              src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/86/3a/a7/863aa78c-6d5b-13b2-446a-179e0947ee5d/mzaf_7418669135393679219.plus.aac.p.m4a"
+              preload="none"
               onEnded={handleAudioEnded}
               onPause={() => setIsPlaying(false)}
               onPlay={() => setIsPlaying(true)}
