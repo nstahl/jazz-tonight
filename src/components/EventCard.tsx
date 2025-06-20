@@ -12,11 +12,6 @@ const fugazOne = Fugaz_One({
 
 function EventCard({ event, linkToVenue = true }) {
 
-  let proxiedPreviewUrl = null;
-  if (event.artist?.spotifyTopTrack) {
-    proxiedPreviewUrl = `/api/deezer-proxy?url=${encodeURIComponent(event.artist.spotifyTopTrack)}`;
-  }
-
   const cardId = React.useId(); // Generate a unique ID for this card instance
   const [isPlaying, setIsPlaying] = React.useState(false);
   const audioRef = React.useRef(null);
@@ -50,7 +45,7 @@ function EventCard({ event, linkToVenue = true }) {
   React.useEffect(() => {
     if (!isPlaying) return;
     // Pause all other audio elements
-    document.querySelectorAll('audio.spotify-preview').forEach((audio) => {
+    document.querySelectorAll('audio.audio-preview').forEach((audio) => {
       if (audio !== audioRef.current) {
         audio.pause();
       }
@@ -177,14 +172,14 @@ function EventCard({ event, linkToVenue = true }) {
             </button>
             <audio
               ref={audioRef}
-              className="deezer-preview"
+              className="audio-preview"
               src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/86/3a/a7/863aa78c-6d5b-13b2-446a-179e0947ee5d/mzaf_7418669135393679219.plus.aac.p.m4a"
               preload="none"
               onEnded={handleAudioEnded}
               onPause={() => setIsPlaying(false)}
               onPlay={() => setIsPlaying(true)}
               onError={() => {
-                console.warn("Deezer preview failed to load");
+                console.warn("Apple Music preview failed to load");
                 setIsPlaying(false);
               }}
             />
