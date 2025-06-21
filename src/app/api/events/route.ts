@@ -47,6 +47,14 @@ export async function GET(request: Request) {
           biography: true,
           website: true,
           instagram: true,
+          appleMusicPreviews: {
+            select: {
+              trackName: true,
+              previewUrl: true,
+              appleMusicUrl: true,
+              artworkUrl: true
+            }
+          }
         }
       },
       performers: {

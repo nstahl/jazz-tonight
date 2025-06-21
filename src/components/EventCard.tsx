@@ -12,6 +12,8 @@ const fugazOne = Fugaz_One({
 
 function EventCard({ event, linkToVenue = true }) {
 
+  console.log(event);
+
   const cardId = React.useId(); // Generate a unique ID for this card instance
   const [isPlaying, setIsPlaying] = React.useState(false);
   const audioRef = React.useRef(null);
@@ -149,7 +151,7 @@ function EventCard({ event, linkToVenue = true }) {
       {/* Tickets Button + Spotify Button */}
       <div className="flex items-center justify-center sm:p-4 sm:p-0 sm:pr-6 sm:gap-2">
         {/* Spotify Play Button */}
-        {(event.artist?.spotifyTopTrack || true) && (
+        {(event.artist?.appleMusicPreviews[0]?.previewUrl) && (
           <>
             <button
               onClick={handleSpotifyPlayPause}
@@ -173,7 +175,7 @@ function EventCard({ event, linkToVenue = true }) {
             <audio
               ref={audioRef}
               className="audio-preview"
-              src="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/86/3a/a7/863aa78c-6d5b-13b2-446a-179e0947ee5d/mzaf_7418669135393679219.plus.aac.p.m4a"
+              src={event.artist?.appleMusicPreviews[0]?.previewUrl}
               preload="none"
               onEnded={handleAudioEnded}
               onPause={() => setIsPlaying(false)}
