@@ -37,8 +37,23 @@ model ArtistProfile {
   biography   String?
   updatedAt   DateTime @updatedAt @map("updated_at")
   events      Event[]
+  appleMusicPreviews AppleMusicPreview[]
 
   @@map("artist_profiles")
+}
+
+model AppleMusicPreview {
+  id            String        @id @default(cuid())
+  artistName    String
+  trackName     String
+  previewUrl    String
+  appleMusicUrl String
+  artworkUrl    String
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  artistProfile ArtistProfile @relation(fields: [artistProfileId], references: [id])
+  artistProfileId String
+
+  @@map("apple_music_previews")
 }
 
 model Performer {
