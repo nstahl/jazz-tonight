@@ -147,6 +147,23 @@ function EventCard({ event, linkToVenue = true }) {
             )}
           </span>
         </div>
+        <div className="flex justify-between text-sm text-zinc-400">
+          {event.artist?.appleMusicPreviews[0]?.appleMusicUrl && (
+            <a
+              href={event.artist.appleMusicPreviews[0].appleMusicUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-zinc-400 hover:text-zinc-300 transition-colors pt-1"
+            >
+              <img 
+                src="/Apple_Music_Icon_wht_sm_073120.svg"
+                alt="Apple Music"
+                className="w-4 h-4"
+              />
+              <span>Listen on Apple Music</span>
+            </a>
+          )}
+        </div>
       </div>
       {/* Tickets Button + Spotify Button */}
       <div className="flex items-center justify-center sm:p-4 sm:p-0 sm:pr-6 sm:gap-2">
