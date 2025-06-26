@@ -166,13 +166,13 @@ function EventCard({ event, linkToVenue = true }) {
         </div>
       </div>
       {/* Tickets Button + Spotify Button */}
-      <div className="flex items-center justify-center sm:p-4 sm:p-0 sm:pr-6 sm:gap-2">
+      <div className="flex sm:items-center justify-center py-3 px-1 sm:p-4 sm:p-0 sm:pr-6 sm:gap-2">
         {/* Spotify Play Button */}
         {(event.artist?.appleMusicPreviews[0]?.previewUrl) && (
           <>
             <button
               onClick={handleSpotifyPlayPause}
-              className="hidden sm:flex rounded-full bg-blue-200 hover:bg-blue-300 transition-colors w-12 h-12 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="sm:flex rounded-full bg-blue-200 hover:bg-blue-300 transition-colors w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400"
               aria-label={isPlaying ? 'Pause preview' : 'Play preview'}
             >
               {isPlaying ? (
@@ -206,7 +206,7 @@ function EventCard({ event, linkToVenue = true }) {
         )}
         <a
           href={`/event/${event.slug}`}
-          className="hidden sm:block bg-zinc-100 text-black font-bold rounded-xl sm:px-8 sm:py-4 text-lg hover:bg-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className={`${fugazOne.className} hidden sm:block bg-zinc-100 text-black font-bold rounded-xl sm:px-8 sm:py-4 text-lg hover:bg-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400`}
           onClick={e => e.stopPropagation()}
         >
           Tickets
