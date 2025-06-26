@@ -107,16 +107,27 @@ function EventCard({ event, linkToVenue = true }) {
           <span>
             {event.setTimes && event.setTimes.length > 0 ? (
               <>
-                {event.setTimes.map((timeString, index) => (
-                  <React.Fragment key={timeString}>
-                    {new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
-                      hour: 'numeric',
-                      minute: '2-digit',
-                      hour12: true
-                    })}
-                    {index < event.setTimes.length - 1 && ' & '}
-                  </React.Fragment>
-                ))}
+                {event.setTimes.map((timeString, index) => {
+                  const currentTime = new Date(`2000-01-01T${timeString}`);
+                  const nextTime = event.setTimes[index + 1] ? new Date(`2000-01-01T${event.setTimes[index + 1]}`) : null;
+                  
+                  // Show AM/PM if:
+                  // 1. It's the last time, OR
+                  // 2. The next time has a different AM/PM period
+                  const showAMPM = index === event.setTimes.length - 1 || 
+                    (nextTime && currentTime.getHours() < 12 !== nextTime.getHours() < 12);
+                  
+                  return (
+                    <React.Fragment key={timeString}>
+                      {currentTime.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                      }).replace(showAMPM ? '' : /[AP]M/, '')}
+                      {index < event.setTimes.length - 1 && ' & '}
+                    </React.Fragment>
+                  );
+                })}
                 {' '}
                 <span className="text-zinc-400">ET</span>
               </>
@@ -127,7 +138,7 @@ function EventCard({ event, linkToVenue = true }) {
               <>
                 <span className="hidden sm:inline"> • </span>
                 <span className="block sm:inline mt-2 sm:mt-0">
-                  <svg className="inline-block w-4 h-4 mr-1 sm:hidden" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="inline-block w-4 h-4 mr-1 sm:hidden" viewBox="0 0 24 24" fill="white">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                   </svg>
                   Live at {
@@ -147,7 +158,7 @@ function EventCard({ event, linkToVenue = true }) {
             )}
           </span>
         </div>
-        <div className="flex justify-between text-sm text-zinc-400">
+        <div className="flex justify-between text-md text-zinc-400">
           {event.artist?.appleMusicPreviews[0]?.appleMusicUrl && (
             <a
               href={event.artist.appleMusicPreviews[0].appleMusicUrl}
