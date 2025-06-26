@@ -136,12 +136,9 @@ function EventCard({ event, linkToVenue = true }) {
             )}
             {event.venue?.name && (
               <>
-                <span className="hidden sm:inline"> • </span>
-                <span className="block sm:inline mt-2 sm:mt-0">
-                  <svg className="inline-block w-4 h-4 mr-1 sm:hidden" viewBox="0 0 24 24" fill="white">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                  </svg>
-                  Live at {
+                <span className="inline"> • </span>
+                <span className="inline">
+             {
                 linkToVenue ? (
                   <a 
                     href={`/venue/${event.venue.slug}`} 
@@ -158,8 +155,8 @@ function EventCard({ event, linkToVenue = true }) {
             )}
           </span>
         </div>
-        <div className="flex justify-between text-md text-zinc-400">
-          {event.artist?.appleMusicPreviews[0]?.appleMusicUrl && (
+        <div className="flex justify-between text-md text-zinc-400 pt-1">
+          {event.artist?.appleMusicPreviews?.length > 0 && event.artist?.appleMusicPreviews[0]?.appleMusicUrl && (
             <a
               href={event.artist.appleMusicPreviews[0].appleMusicUrl}
               target="_blank"
@@ -179,7 +176,7 @@ function EventCard({ event, linkToVenue = true }) {
       {/* Tickets Button + Spotify Button */}
       <div className="flex sm:items-center justify-center py-3 px-1 sm:p-4 sm:p-0 sm:pr-6 sm:gap-2">
         {/* Spotify Play Button */}
-        {(event.artist?.appleMusicPreviews[0]?.previewUrl) && (
+        {(event.artist?.appleMusicPreviews?.length > 0 && event.artist?.appleMusicPreviews[0]?.previewUrl) && (
           <>
             <button
               onClick={handleSpotifyPlayPause}
