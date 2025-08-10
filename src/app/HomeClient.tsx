@@ -132,7 +132,7 @@ export default function HomeClient({ startDate, endDate }: HomeClientProps) {
           <div key={date}>
             <div className="sticky top-20 z-10 bg-black py-2 mb-2 border-t border-b border-zinc-400/30">    
             <div className="max-w-screen-lg mx-auto px-2">
-              <span className={`text-xl font-bold ${fugazOne.className}`}>
+              <span className={`text-xl font-bold text-white ${fugazOne.className}`}>
                 {(() => {
                   // date is in YYYY-MM-DD
                   const [year, month, day] = date.split('-');

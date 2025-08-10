@@ -98,10 +98,10 @@ function EventCard({ event, linkToVenue = true }) {
       `}
     >
       <div
-        className={`flex-1 rounded-b-2xl transition-colors duration-200 p-3 sm:p-5 mt-0`}
+        className={`flex-1 rounded-b-2xl transition-colors duration-200 p-2 sm:p-3`}
       >
-        <div className={`text-xl font-bold mb-2 text-white ${fugazOne.className} px-0 pt-0`}>
-          <a href={`/event/${event.slug}`} className="line-clamp-2 sm:line-clamp-1">{event.name}</a>
+        <div className={`text-xl font-bold mb-1 text-white ${fugazOne.className}`}>
+          <a href={`/event/${event.slug}`} className="line-clamp-2 sm:line-clamp-1 hover:underline">{event.name}</a>
         </div>
         <div className="flex justify-between text-md text-zinc-400">
           <span>
@@ -161,7 +161,7 @@ function EventCard({ event, linkToVenue = true }) {
               href={event.artist.appleMusicPreviews[0].appleMusicUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-zinc-400 hover:text-zinc-300 transition-colors pt-1"
+              className="flex items-center gap-1 text-zinc-400 hover:text-zinc-300 transition-colors"
             >
               <img 
                 src="/Apple_Music_Icon_wht_sm_073120.svg"
@@ -174,7 +174,7 @@ function EventCard({ event, linkToVenue = true }) {
         </div>
       </div>
       {/* Tickets Button + Spotify Button */}
-      <div className="flex sm:items-center justify-center py-3 px-1 sm:p-4 sm:p-0 sm:pr-6 sm:gap-2">
+      <div className="flex items-start justify-center py-3 px-1 sm:p-4 sm:p-0 sm:pr-6 sm:gap-2">
         {/* Spotify Play Button */}
         {(event.artist?.appleMusicPreviews?.length > 0 && event.artist?.appleMusicPreviews[0]?.previewUrl) && (
           <>
@@ -214,7 +214,7 @@ function EventCard({ event, linkToVenue = true }) {
         )}
         <a
           href={`/event/${event.slug}`}
-          className={`${fugazOne.className} hidden sm:block bg-zinc-100 text-black font-bold rounded-xl sm:px-8 sm:py-4 text-lg hover:bg-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400`}
+          className={`${fugazOne.className} hidden sm:flex items-center justify-center bg-zinc-100 text-black font-bold rounded-xl h-10 sm:h-12 sm:px-8 text-lg hover:bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400`}
           onClick={e => e.stopPropagation()}
         >
           Tickets
