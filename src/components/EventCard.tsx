@@ -18,31 +18,6 @@ function EventCard({ event, linkToVenue = true }) {
   const [isPlaying, setIsPlaying] = React.useState(false);
   const audioRef = React.useRef(null);
 
-  // Generate a unique gradient angle based on the card ID
-  const gradientAngle = React.useMemo(() => {
-    // Convert the card ID to a number and use it to generate an angle between 0 and 360
-    const hash = cardId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    // If event.id exists, use it to generate a more stable hash
-    if (event.id) {
-      const idHash = event.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      return (idHash % 360);
-    }
-    return (hash % 360);
-  }, [cardId]);
-
-  // Define a set of gradients
-  const gradients = [
-    `linear-gradient(120deg, rgba(10, 23, 253, 0.1) 0%, rgba(120, 138, 255, 0.1) 50%, rgba(168, 144, 254, 0.2) 100%)`,
-    `linear-gradient(120deg, rgba(23, 10, 253, 0.1) 0%, rgba(138, 120, 255, 0.1) 50%, rgba(203, 190, 250, 0.2) 100%)`,
-    `linear-gradient(120deg, rgba(123, 10, 253, 0.1) 0%, rgba(138, 120, 255, 0.1) 50%, rgba(210, 201, 246, 0.2) 100%)`,
-  ];
-
-  // Choose a gradient based on the angle
-  const selectedGradient = React.useMemo(() => {
-    const index = Math.floor((gradientAngle / 360) * gradients.length);
-    return gradients[index];
-  }, [gradientAngle]);
-
   // Only allow one audio preview at a time
   React.useEffect(() => {
     if (!isPlaying) return;
